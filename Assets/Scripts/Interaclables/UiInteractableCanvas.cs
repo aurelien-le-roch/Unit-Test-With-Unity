@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CanvasGroup))]
-public class InteractableCanvas : MonoBehaviour
+public class UiInteractableCanvas : MonoBehaviour
 {
-    [SerializeField] private InteraclablePanel _interaclablePanel;
+    [SerializeField] private UiInteraclablePanel uiInteraclablePanel;
     [SerializeField] private Animator _interactablePanelAnimator;
     private static readonly int PlayerIsOut = Animator.StringToHash("PlayerIsOut");
 
@@ -21,13 +21,13 @@ public class InteractableCanvas : MonoBehaviour
 
     private void HandleHit100Percent()
     {
-        _interaclablePanel.gameObject.SetActive(false);
+        uiInteraclablePanel.gameObject.SetActive(false);
     }
 
 
     private void HandlePlayerEnterZone()
     {
-        _interaclablePanel.gameObject.SetActive(true);
+        uiInteraclablePanel.gameObject.SetActive(true);
         _interactablePanelAnimator.SetBool(PlayerIsOut,false);
     }
     

@@ -315,8 +315,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e4666317b47ab143bd9c2ea85dc7f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definition: {fileID: 11400000, guid: b1fa9e5253c2e464e87c972c7d1a25a7, type: 2}
   _interactSpeed: 2
+  _definition: {fileID: 11400000, guid: b1fa9e5253c2e464e87c972c7d1a25a7, type: 2}
   _animator: {fileID: 1070276935878033494}
 --- !u!1001 &6548267416345912969
 PrefabInstance:
@@ -445,6 +445,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6069301672116524273, guid: c3a5342ee0647b347b02d21b9247b384,
+        type: 3}
+      propertyPath: uiInteractableCanvas
+      value: 
+      objectReference: {fileID: 1070276934718852146}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3a5342ee0647b347b02d21b9247b384, type: 3}
 --- !u!224 &1070276934718852149 stripped
@@ -453,3 +458,15 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6548267416345912969}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1070276934718852146 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6069301671771908795, guid: c3a5342ee0647b347b02d21b9247b384,
+    type: 3}
+  m_PrefabInstance: {fileID: 6548267416345912969}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b309d4171d1b4933b6e3f684d17d1bc9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

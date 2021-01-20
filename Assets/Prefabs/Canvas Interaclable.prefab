@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b309d4171d1b4933b6e3f684d17d1bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interaclablePanel: {fileID: 6069301672116524273}
+  uiInteraclablePanel: {fileID: 6069301672116524273}
   _interactablePanelAnimator: {fileID: 6069301672116524272}
 --- !u!1 &6069301671843348940
 GameObject:
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 6069301671771908792}
-  _interactableCanvas: {fileID: 6069301671771908795}
+  uiInteractableCanvas: {fileID: 6069301671771908795}
   _fadeSpeed: 1
   _progressBar: {fileID: 6069301672116524279}
 --- !u!95 &6069301672116524272
