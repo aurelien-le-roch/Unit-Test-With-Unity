@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class QTEMining
 {
-    private bool _isRunning;
+    public bool IsRunning { get; private set; }
     private float _startTime;
-    private float _totalTime;
-    private FloatRange _mediumRange;
-    private FloatRange _perfectRange;
+    public float TotalTime { get; private set; }
+    public FloatRange MediumRange { get; private set; }
+    public FloatRange PerfectRange { get; private set; }
 
     private Coroutine _checkMaxTimeRoutine;
     public event Action<float, float, float> OnQTESetup;
@@ -18,59 +18,55 @@ public class QTEMining
     public event Action<QteResult> OnQTEEnd;
     public bool IsSetup { get; private set; }
     
-    
-
-    public void Use(MonoBehaviour coroutineRunner)
+    public void Use(MonoBehaviour coroutineRunner,float time)
     {
-        if (_isRunning)
+        if (IsRunning)
         {
-            StopAndPickResult(coroutineRunner);
+            StopAndPickResult(coroutineRunner,time);
         }
         else
         {
-            StartRunning(coroutineRunner);
+            StartRunning(coroutineRunner,time);
         }
     }
 
     public void SetupQTE(float totalTime, float mediumTime, float perfectTime)
     {
-        _totalTime = totalTime;
+        TotalTime = totalTime;
 
         var midTime = totalTime / 2;
-
         var minMediumRange = midTime - mediumTime / 2;
         var maxMediumRange = midTime + mediumTime / 2;
-
         var minPerfectRange = midTime - perfectTime / 2;
         var maxPerfectRange = midTime + perfectTime / 2;
 
-        _mediumRange = new FloatRange(minMediumRange, maxMediumRange);
-        _perfectRange = new FloatRange(minPerfectRange, maxPerfectRange);
+        MediumRange = new FloatRange(minMediumRange, maxMediumRange);
+        PerfectRange = new FloatRange(minPerfectRange, maxPerfectRange);
 
         IsSetup = true;
         OnQTESetup?.Invoke(totalTime, mediumTime, perfectTime);
         //Ui register for event, then it prepare + active the qte panel
     }
-    private void StartRunning(MonoBehaviour coroutineRunner)
+    private void StartRunning(MonoBehaviour coroutineRunner,float time)
     {
-        _startTime = Time.time;
+        _startTime = time;
         //_maxTime = Time.time + _totalTime;
 
         
         _checkMaxTimeRoutine=coroutineRunner.StartCoroutine(CheckForQTEMaxTime(coroutineRunner));
 
-        _isRunning = true;
-        OnStartQte?.Invoke(_totalTime);
+        IsRunning = true;
+        OnStartQte?.Invoke(TotalTime);
     }
 
     private IEnumerator CheckForQTEMaxTime(MonoBehaviour coroutineRunner)
     {
-        yield return new WaitForSeconds(_totalTime);
-        StopAndPickResult(coroutineRunner);
+        yield return new WaitForSeconds(TotalTime);
+        StopAndPickResult(coroutineRunner,Time.time);
     }
 
 
-    private void StopAndPickResult(MonoBehaviour coroutineRunner)
+    private void StopAndPickResult(MonoBehaviour coroutineRunner,float time)
     {
         if (_checkMaxTimeRoutine != null)
         {
@@ -78,22 +74,21 @@ public class QTEMining
             _checkMaxTimeRoutine = null;
         }
         
-        _isRunning = false;
+        IsRunning = false;
         
-        var timeInQTE = Time.time - _startTime;
+        var timeInQTE = time - _startTime;
 
         
-        if (_perfectRange.InRange(timeInQTE))
+        if (PerfectRange.InRange(timeInQTE))
         {
             OnQTEEnd?.Invoke(QteResult.Perfect);
         }
-        else if (_mediumRange.InRange(timeInQTE))
+        else if (MediumRange.InRange(timeInQTE))
         {
             OnQTEEnd?.Invoke(QteResult.Medium);
         }
         else
         {
-            Debug.Log("result fail");
             OnQTEEnd?.Invoke(QteResult.Fail);
         }
     }
@@ -108,3 +103,4 @@ public class QTEMining
         OnJobOver?.Invoke();
     }
 }
+

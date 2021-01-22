@@ -73,7 +73,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         if (_numberOfQteDone >= _numberOfQTENeeded)
             return;
         
-        QTEMining.Use(this);
+        QTEMining.Use(this,Time.time);
     }
     
     private void PrepareNodeToQTE(QteMiningSetting setting)
@@ -83,7 +83,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         
         _numberOfQTENeeded = setting.Number;
         _difficultyOfQTE = setting.Difficulty;
-        QTEMining.SetupQTE(1f,0.5f,0.2f);
+        QTEMining.SetupQTE(10.6f,4f,0.2f);
     }
     
     private void HandleQTEResult(QteResult result)

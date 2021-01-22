@@ -1,13 +1,13 @@
 ﻿public struct FloatRange
 {
-    private readonly float _min;
-    private readonly float _max;
+    public readonly float Min;
+    public readonly float Max;
 
     public FloatRange(float min, float max)
     {
-        _min = min;
-        _max = max;
+        Min = min;
+        Max = max;
     }
 
-    public bool InRange(float value) => value >= _min && value <= _max;
+    public bool InRange(float value) => value >= Min && value <= Max;
 }

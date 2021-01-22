@@ -30,7 +30,6 @@ public abstract class InteractablePercentZone : MonoBehaviour
     {
         if (InteractPercent > 0 && AlreadyHit100Percent==false)
         {
-            Debug.Log("reduce");
             InteractPercent -= Time.deltaTime * _interactSpeed;
         }
     }
