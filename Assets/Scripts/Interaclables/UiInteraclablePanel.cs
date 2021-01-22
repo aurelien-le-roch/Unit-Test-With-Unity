@@ -8,6 +8,8 @@ public class UiInteraclablePanel : MonoBehaviour
     [SerializeField] private UiInteractableCanvas uiInteractableCanvas;
     [SerializeField] private float _fadeSpeed;
     [SerializeField] private Image _progressBar;
+
+    public float FillAmount => _progressBar.fillAmount;
     
     
     private void OnEnable()
@@ -33,7 +35,5 @@ public class UiInteraclablePanel : MonoBehaviour
             gameObject.SetActive(false);
         }
     }
-
-    
 }
 

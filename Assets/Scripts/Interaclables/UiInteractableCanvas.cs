@@ -6,11 +6,13 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CanvasGroup))]
 public class UiInteractableCanvas : MonoBehaviour
 {
-    [SerializeField] private UiInteraclablePanel uiInteraclablePanel;
+    [SerializeField] private UiInteraclablePanel _uiInteraclablePanel;
     [SerializeField] private Animator _interactablePanelAnimator;
     private static readonly int PlayerIsOut = Animator.StringToHash("PlayerIsOut");
 
     public InteractablePercentZone InteractablePercent { get; private set; }
+
+    public UiInteraclablePanel UiInteraclablePanel => _uiInteraclablePanel;
     private void Awake()
     {
         InteractablePercent = GetComponentInParent<InteractablePercentZone>();
@@ -21,13 +23,13 @@ public class UiInteractableCanvas : MonoBehaviour
 
     private void HandleHit100Percent()
     {
-        uiInteraclablePanel.gameObject.SetActive(false);
+        _uiInteraclablePanel.gameObject.SetActive(false);
     }
 
 
     private void HandlePlayerEnterZone()
     {
-        uiInteraclablePanel.gameObject.SetActive(true);
+        _uiInteraclablePanel.gameObject.SetActive(true);
         _interactablePanelAnimator.SetBool(PlayerIsOut,false);
     }
     

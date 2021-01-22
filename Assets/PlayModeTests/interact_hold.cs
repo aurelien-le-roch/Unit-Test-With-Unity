@@ -21,7 +21,7 @@ namespace interaclableTest
             player.PlayerInput = testPlayerInput;
             player.transform.position += Vector3.right;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
             testPlayerInput.InteractHold.Returns(true);
         }
         
@@ -50,6 +50,18 @@ namespace interaclableTest
             yield return new WaitForSeconds(0.1f);
 
             Assert.IsTrue(oreNode.AlreadyHit100Percent);
+        }
+        
+        [UnityTest]
+        public IEnumerator interact_panel_fillAmount_increase_with_InteractPercent()
+        {
+            var interactCanvas = GameObject.FindObjectOfType<UiInteractableCanvas>();
+            var interactPanel = interactCanvas.UiInteraclablePanel;
+            
+            
+            yield return new WaitForSeconds(0.1f);
+
+            Assert.AreEqual(oreNode.InteractPercent,interactPanel.FillAmount);
         }
     }
 }

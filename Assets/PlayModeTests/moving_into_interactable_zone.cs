@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using NUnit.Framework;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.TestTools;
@@ -26,7 +27,7 @@ namespace interaclableTest
             Assert.IsFalse(oreNode.PlayerInZone);
 
             player.transform.position += Vector3.right;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
 
             Assert.IsTrue(oreNode.PlayerInZone);
         }
@@ -37,45 +38,23 @@ namespace interaclableTest
             Assert.AreEqual(0, oreNode.InteractPercent);
 
             player.transform.position += Vector3.right;
-            yield return new WaitForSeconds(0.1f);
-
+            yield return new WaitForFixedUpdate();
             Assert.AreEqual(0, oreNode.InteractPercent);
         }
-    }
-
-    public class moving_out_interaclable_zone
-    {
+        
         [UnityTest]
-        public IEnumerator in_zone_flag_false_after_player_exit()
+        public IEnumerator interact_panel_get_enable()
         {
-            yield return Helpers.LoadInteractablesTestsScene();
-            var player = GameObject.FindObjectOfType<Player>();
-            var oreNode = GameObject.FindObjectOfType<OreNode>();
+            var interactCanvas = GameObject.FindObjectOfType<UiInteractableCanvas>();
+            var interactPanel = interactCanvas.UiInteraclablePanel;
+            
+            Assert.IsFalse(interactPanel.gameObject.activeSelf);
 
             player.transform.position += Vector3.right;
-            yield return new WaitForSeconds(0.1f);
-            Assert.IsTrue(oreNode.PlayerInZone);
-
-            player.transform.position -= Vector3.right;
-            yield return new WaitForSeconds(0.1f);
-
-            Assert.IsFalse(oreNode.PlayerInZone);
+            yield return new WaitForFixedUpdate();
+            Assert.IsTrue(interactPanel.gameObject.activeSelf);
         }
-
-        [UnityTest]
-        public IEnumerator interact_percent_is_equal_to_zero_after_player_exit()
-        {
-            yield return Helpers.LoadInteractablesTestsScene();
-            var player = GameObject.FindObjectOfType<Player>();
-            var oreNode = GameObject.FindObjectOfType<OreNode>();
-
-            player.transform.position += Vector3.right;
-            yield return new WaitForSeconds(0.1f);
-
-            player.transform.position -= Vector3.right;
-            yield return new WaitForSeconds(0.1f);
-
-            Assert.LessOrEqual(0, oreNode.InteractPercent);
-        }
+        
+        
     }
 }

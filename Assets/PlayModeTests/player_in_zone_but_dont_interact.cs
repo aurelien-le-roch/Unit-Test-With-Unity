@@ -22,7 +22,7 @@ namespace interaclableTest
             player.PlayerInput = testPlayerInput;
             player.transform.position += Vector3.right;
 
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForFixedUpdate();
             
         }
         

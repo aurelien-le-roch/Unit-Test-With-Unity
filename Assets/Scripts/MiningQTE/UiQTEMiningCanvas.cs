@@ -10,10 +10,12 @@ public class UiQTEMiningCanvas : MonoBehaviour
     [SerializeField] private RectTransform _cursor;
 
     [SerializeField] private UiCanvasQteResult _uiCanvasQteResult;
-    
+
+    public GameObject QtePanel => _background.gameObject;
     private QTEMining _QTEMining;
     private CanvasGroup _canvasGroup;
 
+    
     private void Start()
     {
         _QTEMining = GetComponentInParent<IHaveQTEMining>().QTEMining;
@@ -67,6 +69,7 @@ public class UiQTEMiningCanvas : MonoBehaviour
 
     private void FirstReset()
     {
+        Debug.Log("first Reset");
         _background.gameObject.SetActive(true);
         _cursor.DOKill();
         _cursor.anchoredPosition=Vector3.zero;

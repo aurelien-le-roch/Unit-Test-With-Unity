@@ -104,6 +104,7 @@ namespace QteMiningTest
         
     }
 
+    
     public class EmptyMonoBehaviourForTest : MonoBehaviour
     {
         
@@ -112,4 +113,5 @@ namespace QteMiningTest
     {
         void HandleQteResult(QteResult result);
     }
+    
 }
