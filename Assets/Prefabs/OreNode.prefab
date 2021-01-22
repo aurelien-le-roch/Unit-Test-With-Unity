@@ -316,7 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _interactSpeed: 2
-  _definition: {fileID: 11400000, guid: b1fa9e5253c2e464e87c972c7d1a25a7, type: 2}
+  _definition: {fileID: 11400000, guid: fce71262f3a6d2448aa92c9b69eeec14, type: 2}
   _animator: {fileID: 1070276935878033494}
 --- !u!1001 &6548267416345912969
 PrefabInstance:

@@ -80,4 +80,14 @@ public class UiQTEMiningCanvas : MonoBehaviour
         _cursor.DOKill();
         _background.gameObject.SetActive(false);
     }
+
+    private void OnDestroy()
+    {
+        _canvasGroup.DOKill();
+        _QTEMining.OnQTESetup -= HandleQteSetup;
+        _QTEMining.OnStartQte -= HandleQTESTart;
+        _QTEMining.OnJobOver -= HandleJobOver;
+        _QTEMining.OnQTEEnd -= HandleQTEEnd;
+        _QTEMining.OnQTEReset -= HandleReset;
+    }
 }

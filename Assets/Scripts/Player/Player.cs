@@ -6,7 +6,7 @@ public class Player : MonoBehaviour, IHaveWorkController
     [SerializeField] private float _speed;
 
     public IWorkController WorkController { get; private set; }
-    public PlayerInput PlayerInput { get; private set; }
+    public IPlayerInput PlayerInput { get; set; }
     public float Speed => _speed;
 
     private PlayerMover _mover;
@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IHaveWorkController
     private void Awake()
     {
         WorkController = new WorkControllerTest();
-        PlayerInput = new PlayerInput();
+        PlayerInput=new PlayerInput();
         _mover = new PlayerMover(this);
         _handleInteractable = new PlayerHandleInteractable(this);
     }

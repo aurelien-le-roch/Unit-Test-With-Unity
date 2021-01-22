@@ -3,7 +3,7 @@
 public class PlayerHandleInteractable
 {
     private readonly Player _player;
-    private ItsAlmostAStack<IInteractablePercent> _currentInteractables = new ItsAlmostAStack<IInteractablePercent>();
+    private ItsAlmostAStack<InteractablePercentZone> _currentInteractables = new ItsAlmostAStack<InteractablePercentZone>();
 
     public PlayerHandleInteractable(Player player)
     {
@@ -32,7 +32,7 @@ public class PlayerHandleInteractable
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        var interactable = other.GetComponentInParent<IInteractablePercent>();
+        var interactable = other.GetComponentInParent<InteractablePercentZone>();
         if (interactable == null)
             return;
 
@@ -48,7 +48,7 @@ public class PlayerHandleInteractable
 
     public void OnTriggerExit2D(Collider2D other)
     {
-        var interactable = other.GetComponentInParent<IInteractablePercent>();
+        var interactable = other.GetComponentInParent<InteractablePercentZone>();
 
         var peek = _currentInteractables.Peek();
         if (peek != null && interactable == peek)

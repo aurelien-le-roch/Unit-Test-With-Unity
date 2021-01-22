@@ -123,7 +123,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
             randomPosition += transform.position;
             Instantiate(_definition.GemsDropAfterMine, randomPosition, Quaternion.identity);
         }
-        //SpawnGems;
+        
         Destroy(gameObject);
     }
 

@@ -1,18 +1,18 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class InteractablePercentZone : MonoBehaviour,IInteractablePercent
+public abstract class InteractablePercentZone : MonoBehaviour
 {
     [SerializeField] private float _interactSpeed;
     
     public event Action OnPlayerEnterZone;
     public event Action OnPlayerExitZone;
     public event Action OnInteractableHit100Percent;
-    
+
     public float InteractPercent { get; set; }
     public bool PlayerInZone { get; private set; }
     
-    protected bool AlreadyHit100Percent;
+    public bool AlreadyHit100Percent { get; private set; }
     
     public void PlayerEnterZone()
     {
@@ -30,6 +30,7 @@ public abstract class InteractablePercentZone : MonoBehaviour,IInteractablePerce
     {
         if (InteractPercent > 0 && AlreadyHit100Percent==false)
         {
+            Debug.Log("reduce");
             InteractPercent -= Time.deltaTime * _interactSpeed;
         }
     }

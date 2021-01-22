@@ -10,10 +10,10 @@ public class UiInteractableCanvas : MonoBehaviour
     [SerializeField] private Animator _interactablePanelAnimator;
     private static readonly int PlayerIsOut = Animator.StringToHash("PlayerIsOut");
 
-    public IInteractablePercent InteractablePercent { get; private set; }
+    public InteractablePercentZone InteractablePercent { get; private set; }
     private void Awake()
     {
-        InteractablePercent = GetComponentInParent<IInteractablePercent>();
+        InteractablePercent = GetComponentInParent<InteractablePercentZone>();
         InteractablePercent.OnPlayerEnterZone += HandlePlayerEnterZone;
         InteractablePercent.OnPlayerExitZone += HandlePlayerExitZone;
         InteractablePercent.OnInteractableHit100Percent += HandleHit100Percent;
@@ -41,5 +41,6 @@ public class UiInteractableCanvas : MonoBehaviour
     {
         InteractablePercent.OnPlayerEnterZone -= HandlePlayerEnterZone;
         InteractablePercent.OnPlayerExitZone -= HandlePlayerExitZone;
+        InteractablePercent.OnInteractableHit100Percent -= HandleHit100Percent;
     }
 }
