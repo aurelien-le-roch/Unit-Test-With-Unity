@@ -15,7 +15,7 @@ public class UiInteractablePercentCanvas : MonoBehaviour
     public UiInteraclablePercenPanel UiInteraclablePercenPanel => uiInteraclablePercenPanel;
     private void Awake()
     {
-        InteractablePercent = GetComponentInParent<InteractablePercentZone>();
+        InteractablePercent = GetComponentInParent<IHaveInteractablePercentZone>().InteractablePercentZone;
         InteractablePercent.OnPlayerEnterZone += HandlePlayerEnterZone;
         InteractablePercent.OnPlayerExitZone += HandlePlayerExitZone;
         InteractablePercent.OnInteractableHit100Percent += HandleHit100Percent;

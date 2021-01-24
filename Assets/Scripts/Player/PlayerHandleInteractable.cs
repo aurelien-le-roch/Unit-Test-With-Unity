@@ -2,85 +2,77 @@
 
 public class PlayerHandleInteractable
 {
-    private readonly Player _player;
-    private ItsAlmostAStack<IInteraclable> _currentInteractables = new ItsAlmostAStack<IInteraclable>();
-
-    public PlayerHandleInteractable(Player player)
+    private readonly IPlayer _player;
+    public ItsAlmostAStack<IInteraclable> CurrentInteractables { get; } = new ItsAlmostAStack<IInteraclable>();
+    
+    public PlayerHandleInteractable(IPlayer player)
     {
         _player = player;
     }
 
     public void Tick()
     {
-        if (_currentInteractables.Count <= 0)
+        if (CurrentInteractables.Count <= 0)
             return;
 
 
         if (_player.PlayerInput.InteractDown)
         {
-            _currentInteractables.Peek().InteractDown(_player.gameObject);
+            CurrentInteractables.Peek().InteractDown(_player.gameObject);
         }
         else if (_player.PlayerInput.InteractHold)
         {
-            _currentInteractables.Peek().InteractHold(_player.gameObject);
+            CurrentInteractables.Peek().InteractHold(_player.gameObject);
         }
         else
         {
-            _currentInteractables.Peek().DontInteract();
+            CurrentInteractables.Peek().DontInteract();
         }
     }
 
-    public void OnTriggerEnter2D(Collider2D other)
+    public void OnTriggerEnter2D(IInteraclable iInteraclable)
     {
-        var interactable = other.GetComponentInParent<IInteraclable>();
-        if (interactable == null)
-            return;
-
-
-        if (_currentInteractables.Count > 0)
+        if (CurrentInteractables.Count > 0)
         {
-            
-            IInteraclable peek = _currentInteractables.Peek();
+            IInteraclable peek = CurrentInteractables.Peek();
             
             if (peek is IHandlePlayerInZone peekHandlePlayerInZone)
                 peekHandlePlayerInZone.PlayerExitZone();
         }
-
-        _currentInteractables.Push(interactable);
         
-        if(interactable is IHandlePlayerInZone interactableIHandlePlayerInZone)
+        CurrentInteractables.Push(iInteraclable);
+        
+        if(iInteraclable is IHandlePlayerInZone interactableIHandlePlayerInZone)
             interactableIHandlePlayerInZone.PlayerEnterZone();
     }
 
-    public void OnTriggerExit2D(Collider2D other)
+    public void OnTriggerExit2D(IInteraclable iInteraclable)
     {
+        var peek = CurrentInteractables.Peek();
         
-        var interactable = other.GetComponentInParent<IInteraclable>();
-
-        var peek = _currentInteractables.Peek();
-        
-        if (LeaveCurrentInteraclableZone(peek, interactable))
+        if (LeaveCurrentInteraclableZone(peek, iInteraclable))
         {
             if (peek is IHandlePlayerInZone peekHandlePlayerInZone)
                 peekHandlePlayerInZone.PlayerExitZone();
             
-            _currentInteractables.Pop();
+            CurrentInteractables.Pop();
             
-            if (_currentInteractables.Count > 0)
+            if (CurrentInteractables.Count > 0)
             {
-                var peek2 =_currentInteractables.Peek();
+                var peek2 =CurrentInteractables.Peek();
                 if (peek2 is IHandlePlayerInZone peek2HandlePlayerInZone)
                     peek2HandlePlayerInZone.PlayerEnterZone();
             }
         }
 
-        if (_currentInteractables.Contains(interactable))
+        if (CurrentInteractables.Contains(iInteraclable))
         {
-            _currentInteractables.Remove(interactable);
+            CurrentInteractables.Remove(iInteraclable);
+            
         }
     }
 
-    private static bool LeaveCurrentInteraclableZone(IInteraclable peek, IInteraclable interactable)
+    private bool LeaveCurrentInteraclableZone(IInteraclable peek, IInteraclable interactable)
     {
         return peek != null && interactable == peek;
     }

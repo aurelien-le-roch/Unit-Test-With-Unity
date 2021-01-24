@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 1070276935878033493}
   - component: {fileID: 1070276935878033492}
   - component: {fileID: 1070276935878033494}
-  - component: {fileID: 1070276935878033495}
+  - component: {fileID: 13440700273535083}
   m_Layer: 0
   m_Name: OreNode
   m_TagString: Untagged
@@ -304,7 +304,7 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1070276935878033495
+--- !u!114 &13440700273535083
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -313,10 +313,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1070276935878033499}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e4666317b47ab143bd9c2ea85dc7f67, type: 3}
+  m_Script: {fileID: 11500000, guid: 5700b3e8df35fe648ae5b410b8e731a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _interactSpeed: 2
   _definition: {fileID: 11400000, guid: fce71262f3a6d2448aa92c9b69eeec14, type: 2}
   _animator: {fileID: 1070276935878033494}
 --- !u!1001 &2067266691899401298

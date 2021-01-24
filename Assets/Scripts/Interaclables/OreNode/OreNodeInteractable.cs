@@ -3,10 +3,10 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class OreNode : InteractablePercentZone,IHaveQTEMining
+public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
 {
-    [SerializeField] private OreNodeDefinition _definition;
-    [SerializeField] private Animator _animator;
+    private OreNodeDefinition _definition;
+    private Animator _animator;
     private static readonly int InteractAnimation = Animator.StringToHash("Interact");
     
     private int _numberOfQTENeeded;
@@ -18,11 +18,22 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
 
     public QTEMining QTEMining { get; private set; }
 
-    private void Awake()
+    private MonoBehaviour _oreNodeMonoBehaviour;
+
+    public OreNodeInteractable(MonoBehaviour monoBehaviour,OreNodeDefinition definition,Animator animator)
     {
+        _oreNodeMonoBehaviour = monoBehaviour;
+        _definition = definition;
+        _animator = animator;
         QTEMining=new QTEMining();
         QTEMining.OnQTEEnd += HandleQTEResult;
     }
+
+//    private void Awake()
+//    {
+//        QTEMining=new QTEMining();
+//        QTEMining.OnQTEEnd += HandleQTEResult;
+//    }
     
     public override void PlayerExitZone()
     {
@@ -33,7 +44,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         if (AlreadyHit100Percent)
         {
             QTEMining.JobIsOver();
-            StartCoroutine(DestroyAndGiveGems(0));
+            _oreNodeMonoBehaviour.StartCoroutine(DestroyAndGiveGems(0));
         }
     }
     
@@ -73,7 +84,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         if (_numberOfQteDone >= _numberOfQTENeeded)
             return;
         
-        QTEMining.Use(this,Time.time);
+        QTEMining.Use(_oreNodeMonoBehaviour,Time.time);
     }
     
     private void PrepareNodeToQTE(QteMiningSetting setting)
@@ -101,7 +112,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         {
             QTEMining.Reset(result);
             QTEMining.JobIsOver();
-            StartCoroutine(DestroyAndGiveGems(_qualityOfQTE));
+            _oreNodeMonoBehaviour.StartCoroutine(DestroyAndGiveGems(_qualityOfQTE));
         }
             
         else
@@ -116,16 +127,16 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         var numberOfGemsBeforePercent = Random.Range(_definition.MinOreGiven, _definition.MaxOreGiven + 1);
         var numberOfGemsSpawn = numberOfGemsBeforePercent * percent;
 
-        ObjectsSpawner.InRandomCircle(_definition.GemsDropAfterMine,(int) numberOfGemsSpawn,0.5f,transform.position);
-        Destroy(gameObject);
+        ObjectsSpawner.InRandomCircle(_definition.GemsDropAfterMine,(int) numberOfGemsSpawn,0.5f,_oreNodeMonoBehaviour.transform.position);
+        GameObject.Destroy(_oreNodeMonoBehaviour.gameObject);
     }
 
     
 
-    private void OnDisable()
-    {
-        QTEMining.OnQTEEnd -= HandleQTEResult;
-    }
+//    private void OnDisable()
+//    {
+//        QTEMining.OnQTEEnd -= HandleQTEResult;
+//    }
 }
 
 public static class ObjectsSpawner
@@ -150,5 +161,5 @@ public interface IHaveWorkController
 
 public interface IWorkController
 {
-    QteMiningSetting ProcessOreMining(OreNode oreNode);
+    QteMiningSetting ProcessOreMining(OreNodeInteractable oreNodeInteractable);
 }

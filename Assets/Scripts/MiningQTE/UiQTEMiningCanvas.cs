@@ -20,7 +20,7 @@ public class UiQTEMiningCanvas : MonoBehaviour
     
     private void Start()
     {
-        _QTEMining = GetComponentInParent<IHaveQTEMining>().QTEMining;
+        _QTEMining = GetComponentInParent<IHaveIHaveQteMining>().HaveQteMining.QTEMining;
         _canvasGroup = GetComponent<CanvasGroup>();
         _QTEMining.OnQTESetup += HandleQteSetup;
         _QTEMining.OnStartQte += HandleQTESTart;

@@ -1,4 +1,4 @@
-﻿public interface IHaveQTEMining
+﻿public interface IHaveQteMining
 {
     QTEMining QTEMining { get; }
 }

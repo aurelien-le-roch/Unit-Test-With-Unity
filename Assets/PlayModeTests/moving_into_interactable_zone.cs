@@ -11,35 +11,35 @@ namespace interaclableTest
     public class moving_into_interactable_zone
     {
         private Player player;
-        private OreNode oreNode;
+        private OreNodeInteractable _oreNodeInteractable;
         
         [UnitySetUp]
         public IEnumerator init()
         {
             yield return Helpers.LoadInteractablesTestsScene();
             player = Helpers.GetPlayer();
-            oreNode = Helpers.GetOreNode();
+            _oreNodeInteractable = Helpers.GetOreNode().OreNodeInteractable;
             
         }
         [UnityTest]
         public IEnumerator in_zone_flag_true_when_player_enter()
         {
-            Assert.IsFalse(oreNode.PlayerInZone);
+            Assert.IsFalse(_oreNodeInteractable.PlayerInZone);
 
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();
 
-            Assert.IsTrue(oreNode.PlayerInZone);
+            Assert.IsTrue(_oreNodeInteractable.PlayerInZone);
         }
 
         [UnityTest]
         public IEnumerator interact_percent_equal_0_when_player_enter()
         {
-            Assert.AreEqual(0, oreNode.InteractPercent);
+            Assert.AreEqual(0, _oreNodeInteractable.InteractPercent);
 
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();
-            Assert.AreEqual(0, oreNode.InteractPercent);
+            Assert.AreEqual(0, _oreNodeInteractable.InteractPercent);
         }
         
         [UnityTest]

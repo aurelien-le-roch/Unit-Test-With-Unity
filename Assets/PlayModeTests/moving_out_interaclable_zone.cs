@@ -12,7 +12,7 @@ namespace interaclableTest
         {
             yield return Helpers.LoadInteractablesTestsScene();
             var player = GameObject.FindObjectOfType<Player>();
-            var oreNode = GameObject.FindObjectOfType<OreNode>();
+            var oreNode = GameObject.FindObjectOfType<OreNode>().OreNodeInteractable;
 
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();
@@ -29,7 +29,7 @@ namespace interaclableTest
         {
             yield return Helpers.LoadInteractablesTestsScene();
             var player = GameObject.FindObjectOfType<Player>();
-            var oreNode = GameObject.FindObjectOfType<OreNode>();
+            var oreNode = GameObject.FindObjectOfType<OreNode>().OreNodeInteractable;
 
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHaveWorkController
+public class Player : MonoBehaviour, IHaveWorkController,IPlayer
 {
     [SerializeField] private float _speed;
 
@@ -33,11 +33,21 @@ public class Player : MonoBehaviour, IHaveWorkController
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        _handleInteractable.OnTriggerEnter2D(other);
+        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
+        if(haveIInteraclable!=null)
+            _handleInteractable.OnTriggerEnter2D(haveIInteraclable.Interaclable);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        _handleInteractable.OnTriggerExit2D(other);
+        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
+        if(haveIInteraclable!=null)
+            _handleInteractable.OnTriggerExit2D(haveIInteraclable.Interaclable);
     }
+}
+
+public interface IPlayer
+{
+     IPlayerInput PlayerInput { get; set; }
+     GameObject gameObject { get; }
 }

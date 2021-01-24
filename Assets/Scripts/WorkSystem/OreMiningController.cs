@@ -1,26 +1,26 @@
 ﻿public class OreMiningController
 {
-    public QteMiningSetting ProcessOreMining(OreNode oreNode)
+    public QteMiningSetting ProcessOreMining(OreNodeInteractable oreNodeInteractable)
     {
-        var numberOfQTE = GetNumberOfQTE(oreNode);
+        var numberOfQTE = GetNumberOfQTE(oreNodeInteractable);
 
         if (numberOfQTE == 0)
         {
             return new QteMiningSetting(0, 0);
         }
 
-        var difficultyOfQTE = GetDifficultyOfQTE(oreNode);
+        var difficultyOfQTE = GetDifficultyOfQTE(oreNodeInteractable);
 
         return new QteMiningSetting(numberOfQTE, difficultyOfQTE);
     }
 
 
-    private int GetDifficultyOfQTE(OreNode oreNode)
+    private int GetDifficultyOfQTE(OreNodeInteractable oreNodeInteractable)
     {
         return 1;
     }
 
-    private int GetNumberOfQTE(OreNode oreNode)
+    private int GetNumberOfQTE(OreNodeInteractable oreNodeInteractable)
     {
         return 2;
     }

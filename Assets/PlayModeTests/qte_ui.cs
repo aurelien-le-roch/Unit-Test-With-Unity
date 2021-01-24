@@ -19,7 +19,7 @@ namespace QteMiningTest
             
             Assert.IsFalse(qteCanvas.QtePanel.activeSelf);
             yield return new WaitForFixedUpdate();
-            oreNode.QTEMining.SetupQTE(1, 0.5f, 0.2f);
+            oreNode.HaveQteMining.QTEMining.SetupQTE(1, 0.5f, 0.2f);
             yield return new WaitForFixedUpdate();
             Assert.IsTrue(qteCanvas.QtePanel.activeSelf);
         }
@@ -36,7 +36,7 @@ namespace QteMiningTest
             var qteCanvas = oreNode.GetComponentInChildren<UiQTEMiningCanvas>();
             
             yield return new WaitForFixedUpdate();
-            oreNode.QTEMining.SetupQTE(totalTime, mediumTime, 0.2f);
+            oreNode.HaveQteMining.QTEMining.SetupQTE(totalTime, mediumTime, 0.2f);
             yield return new WaitForFixedUpdate();
             var expectedLocalScale = new Vector3(scaleX,scaleY,scaleZ);
             
@@ -54,7 +54,7 @@ namespace QteMiningTest
             var qteCanvas = oreNode.GetComponentInChildren<UiQTEMiningCanvas>();
             
             yield return new WaitForFixedUpdate();
-            oreNode.QTEMining.SetupQTE(totalTime, totalTime*0.9f, perfectTime);
+            oreNode.HaveQteMining.QTEMining.SetupQTE(totalTime, totalTime*0.9f, perfectTime);
             yield return new WaitForFixedUpdate();
             var expectedLocalScale = new Vector3(scaleX,scaleY,scaleZ);
             

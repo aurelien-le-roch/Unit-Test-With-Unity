@@ -1,9 +1,9 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class InteractablePercentZone : MonoBehaviour, IHandlePlayerInZone, IInteraclable
+public abstract class InteractablePercentZone :  IInteractableWithZone
 {
-    [SerializeField] private float _interactSpeed;
+    private float _interactSpeed=2f;
 
     public event Action OnPlayerEnterZone;
     public event Action OnPlayerExitZone;
@@ -138,4 +138,9 @@ public interface IInteraclable
     void InteractDown(GameObject interactor);
     void InteractHold(GameObject interactor);
     void DontInteract();
+}
+
+public interface IInteractableWithZone : IHandlePlayerInZone,IInteraclable
+{
+    
 }

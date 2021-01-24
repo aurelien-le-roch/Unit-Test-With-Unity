@@ -7,8 +7,8 @@
         _oreMiningController = new OreMiningController();
     }
 
-    public QteMiningSetting ProcessOreMining(OreNode oreNode)
+    public QteMiningSetting ProcessOreMining(OreNodeInteractable oreNodeInteractable)
     {
-        return _oreMiningController.ProcessOreMining(oreNode);
+        return _oreMiningController.ProcessOreMining(oreNodeInteractable);
     }
 }
