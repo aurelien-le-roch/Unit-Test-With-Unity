@@ -3,7 +3,7 @@
 public class PlayerHandleInteractable
 {
     private readonly Player _player;
-    private ItsAlmostAStack<InteractablePercentZone> _currentInteractables = new ItsAlmostAStack<InteractablePercentZone>();
+    private ItsAlmostAStack<IInteraclable> _currentInteractables = new ItsAlmostAStack<IInteraclable>();
 
     public PlayerHandleInteractable(Player player)
     {
@@ -32,36 +32,56 @@ public class PlayerHandleInteractable
 
     public void OnTriggerEnter2D(Collider2D other)
     {
-        var interactable = other.GetComponentInParent<InteractablePercentZone>();
+        var interactable = other.GetComponentInParent<IInteraclable>();
         if (interactable == null)
             return;
 
 
         if (_currentInteractables.Count > 0)
         {
-            _currentInteractables.Peek().PlayerExitZone();
+            
+            IInteraclable peek = _currentInteractables.Peek();
+            
+            if (peek is IHandlePlayerInZone peekHandlePlayerInZone)
+                peekHandlePlayerInZone.PlayerExitZone();
         }
 
         _currentInteractables.Push(interactable);
-        interactable.PlayerEnterZone();
+        
+        if(interactable is IHandlePlayerInZone interactableIHandlePlayerInZone)
+            interactableIHandlePlayerInZone.PlayerEnterZone();
     }
 
     public void OnTriggerExit2D(Collider2D other)
     {
-        var interactable = other.GetComponentInParent<InteractablePercentZone>();
+        
+        var interactable = other.GetComponentInParent<IInteraclable>();
 
         var peek = _currentInteractables.Peek();
-        if (peek != null && interactable == peek)
+        
+        if (LeaveCurrentInteraclableZone(peek, interactable))
         {
-            peek.PlayerExitZone();
+            if (peek is IHandlePlayerInZone peekHandlePlayerInZone)
+                peekHandlePlayerInZone.PlayerExitZone();
+            
             _currentInteractables.Pop();
+            
             if (_currentInteractables.Count > 0)
-                _currentInteractables.Peek().PlayerEnterZone();
+            {
+                var peek2 =_currentInteractables.Peek();
+                if (peek2 is IHandlePlayerInZone peek2HandlePlayerInZone)
+                    peek2HandlePlayerInZone.PlayerEnterZone();
+            }
         }
 
         if (_currentInteractables.Contains(interactable))
         {
             _currentInteractables.Remove(interactable);
         }
+    }
+
+    private static bool LeaveCurrentInteraclableZone(IInteraclable peek, IInteraclable interactable)
+    {
+        return peek != null && interactable == peek;
     }
 }

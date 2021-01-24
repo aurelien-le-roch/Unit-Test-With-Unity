@@ -12,6 +12,8 @@ public class UiQTEMiningCanvas : MonoBehaviour
     [SerializeField] private UiCanvasQteResult _uiCanvasQteResult;
 
     public GameObject QtePanel => _background.gameObject;
+    public Vector3 _mediumBarLocalScale=>_mediumBar.localScale;
+    public Vector3 _perfectBarLocalScale=>_perfectBar.localScale;
     private QTEMining _QTEMining;
     private CanvasGroup _canvasGroup;
 

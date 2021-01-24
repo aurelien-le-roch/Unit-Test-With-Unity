@@ -55,8 +55,8 @@ namespace interaclableTest
         [UnityTest]
         public IEnumerator interact_panel_fillAmount_increase_with_InteractPercent()
         {
-            var interactCanvas = GameObject.FindObjectOfType<UiInteractableCanvas>();
-            var interactPanel = interactCanvas.UiInteraclablePanel;
+            var interactCanvas = GameObject.FindObjectOfType<UiInteractablePercentCanvas>();
+            var interactPanel = interactCanvas.UiInteraclablePercenPanel;
             
             
             yield return new WaitForSeconds(0.1f);

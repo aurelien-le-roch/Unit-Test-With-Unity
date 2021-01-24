@@ -45,8 +45,8 @@ namespace interaclableTest
         [UnityTest]
         public IEnumerator interact_panel_get_enable()
         {
-            var interactCanvas = GameObject.FindObjectOfType<UiInteractableCanvas>();
-            var interactPanel = interactCanvas.UiInteraclablePanel;
+            var interactCanvas = GameObject.FindObjectOfType<UiInteractablePercentCanvas>();
+            var interactPanel = interactCanvas.UiInteraclablePercenPanel;
             
             Assert.IsFalse(interactPanel.gameObject.activeSelf);
 

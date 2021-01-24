@@ -83,7 +83,7 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         
         _numberOfQTENeeded = setting.Number;
         _difficultyOfQTE = setting.Difficulty;
-        QTEMining.SetupQTE(10.6f,4f,0.2f);
+        QTEMining.SetupQTE(1f,0.6f,0.2f);
     }
     
     private void HandleQTEResult(QteResult result)
@@ -115,15 +115,8 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
         
         var numberOfGemsBeforePercent = Random.Range(_definition.MinOreGiven, _definition.MaxOreGiven + 1);
         var numberOfGemsSpawn = numberOfGemsBeforePercent * percent;
-        
-        for (int i = 0; i < numberOfGemsSpawn; i++)
-        {
-            var randomPosition = Random.insideUnitSphere*0.5f;
-            randomPosition = new Vector3(randomPosition.x,randomPosition.y,0);
-            randomPosition += transform.position;
-            Instantiate(_definition.GemsDropAfterMine, randomPosition, Quaternion.identity);
-        }
-        
+
+        ObjectsSpawner.InRandomCircle(_definition.GemsDropAfterMine,(int) numberOfGemsSpawn,0.5f,transform.position);
         Destroy(gameObject);
     }
 
@@ -135,6 +128,20 @@ public class OreNode : InteractablePercentZone,IHaveQTEMining
     }
 }
 
+public static class ObjectsSpawner
+{
+    public static void InRandomCircle
+        (MonoBehaviour objectToSpawn,int numberToSpawn, float circleRange, Vector3 centerPosition)
+    {
+        for (int i = 0; i < numberToSpawn; i++)
+        {
+            var randomPosition = Random.insideUnitSphere*circleRange;
+            randomPosition = new Vector3(randomPosition.x,randomPosition.y,0);
+            randomPosition += centerPosition;
+            GameObject.Instantiate(objectToSpawn, randomPosition, Quaternion.identity);
+        }
+    }
+}
 
 public interface IHaveWorkController
 {

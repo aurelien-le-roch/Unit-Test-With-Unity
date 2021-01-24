@@ -103,7 +103,7 @@ GameObject:
   - component: {fileID: 6069301671771908792}
   - component: {fileID: 6069301671771908795}
   m_Layer: 0
-  m_Name: Canvas Interaclable
+  m_Name: Canvas Interaclable Percent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b309d4171d1b4933b6e3f684d17d1bc9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uiInteraclablePanel: {fileID: 6069301672116524273}
+  uiInteraclablePercenPanel: {fileID: 6069301672116524273}
   _interactablePanelAnimator: {fileID: 6069301672116524272}
 --- !u!1 &6069301671843348940
 GameObject:
@@ -459,7 +459,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _canvasGroup: {fileID: 6069301671771908792}
-  uiInteractableCanvas: {fileID: 6069301671771908795}
+  uiInteractablePercentCanvas: {fileID: 6069301671771908795}
   _fadeSpeed: 1
   _progressBar: {fileID: 6069301672116524279}
 --- !u!95 &6069301672116524272
