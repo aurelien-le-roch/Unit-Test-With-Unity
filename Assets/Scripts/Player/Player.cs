@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
 
     private void Update()
     {
-        _handleInteractable.Tick();
+        _handleInteractable.Tick(Time.deltaTime);
     }
 
     private void FixedUpdate()
@@ -33,9 +33,9 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
-        if(haveIInteraclable!=null)
-            _handleInteractable.OnTriggerEnter2D(haveIInteraclable.Interaclable);
+//        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
+//        if(haveIInteraclable!=null)
+//            _handleInteractable.OnTriggerEnter2D(haveIInteraclable.Interaclable);
     }
 
     private void OnTriggerExit2D(Collider2D other)

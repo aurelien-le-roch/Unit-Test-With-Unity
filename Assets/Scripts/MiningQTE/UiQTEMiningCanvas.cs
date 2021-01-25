@@ -71,7 +71,6 @@ public class UiQTEMiningCanvas : MonoBehaviour
 
     private void FirstReset()
     {
-        Debug.Log("first Reset");
         _background.gameObject.SetActive(true);
         _cursor.DOKill();
         _cursor.anchoredPosition=Vector3.zero;

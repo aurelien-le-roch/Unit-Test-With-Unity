@@ -12,7 +12,7 @@ public class UiInteractableCounterCanvas : MonoBehaviour
     
     private void Awake()
     {
-        InteractableCounterZone = GetComponentInParent<InteractableCounterZone>();
+        InteractableCounterZone = GetComponentInParent<IHaveInteractableCounterZone>().InteractableCounterZone;
         InteractableCounterZone.OnPlayerEnterZone += HandlePlayerEnterZone;
         InteractableCounterZone.OnPlayerExitZone += DisablePanel;
         InteractableCounterZone.OnCounterChange += HandleCounterChange;

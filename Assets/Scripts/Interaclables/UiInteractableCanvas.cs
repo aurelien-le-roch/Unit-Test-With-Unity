@@ -8,9 +8,9 @@ public class UiInteractableCanvas : MonoBehaviour
     private static readonly int PlayerIsOut = Animator.StringToHash("PlayerIsOut");
 
     public IHandlePlayerInZone IHandlePlayerInZone { get; private set; }
-    private void Awake()
+    private void Start()
     {
-        IHandlePlayerInZone = GetComponentInParent<IHandlePlayerInZone>();
+        IHandlePlayerInZone = GetComponentInParent<IHaveIHandlePlayerInZone>().HandlePlayerInZone;
         IHandlePlayerInZone.OnPlayerEnterZone += HandlePlayerEnterZone;
         IHandlePlayerInZone.OnPlayerExitZone += HandlePlayerExitZone;
     }

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public abstract class InteractablePercentZone :  IInteractableWithZone
+public class InteractablePercentZone :  IInteractableWithZone
 {
     private float _interactSpeed=2f;
 
@@ -16,7 +16,7 @@ public abstract class InteractablePercentZone :  IInteractableWithZone
 
     public void PlayerEnterZone()
     {
-        PlayerInZone = true;
+       PlayerInZone = true;
         OnPlayerEnterZone?.Invoke();
     }
 
@@ -27,15 +27,20 @@ public abstract class InteractablePercentZone :  IInteractableWithZone
         OnPlayerExitZone?.Invoke();
     }
 
-    public virtual void DontInteract()
+    public virtual void DontInteract(float deltaTime)
     {
         if (InteractPercent > 0 && AlreadyHit100Percent == false)
         {
-            InteractPercent -= Time.deltaTime * _interactSpeed;
+            InteractPercent -= deltaTime * _interactSpeed;
+        }
+
+        if (InteractPercent < 0)
+        {
+            InteractPercent = 0;
         }
     }
 
-    public virtual void InteractHold(GameObject interactor)
+    public virtual void InteractHold(GameObject interactor,float deltaTime)
     {
         if (InteractPercent >= 1)
         {
@@ -44,7 +49,7 @@ public abstract class InteractablePercentZone :  IInteractableWithZone
 
         if (InteractPercent < 1)
         {
-            InteractPercent += Time.deltaTime * _interactSpeed;
+            InteractPercent += deltaTime * _interactSpeed;
         }
     }
 
@@ -73,18 +78,23 @@ public abstract class InteractablePercentZone :  IInteractableWithZone
     }
 }
 
-public abstract class InteractableCounterZone : MonoBehaviour, IHandlePlayerInZone, IInteraclable
+public class InteractableCounterZone :  IHandlePlayerInZone, IInteraclable
 {
-    [SerializeField] private int _maxCounter;
+    private int _maxCounter;
     public event Action OnPlayerEnterZone;
     public event Action OnPlayerExitZone;
     public event Action<int, int> OnCounterChange;
     public event Action OnMaxCounterHit;
     public int MaxCounter => _maxCounter;
-    public int CurrentCounter { get; private set; }
+    public int CurrentCounter { get; set; }
     public bool PlayerInZone { get; private set; }
 
 
+    public InteractableCounterZone(int maxCounter)
+    {
+        _maxCounter = maxCounter;
+    }
+    
     public void PlayerEnterZone()
     {
         PlayerInZone = true;
@@ -109,11 +119,11 @@ public abstract class InteractableCounterZone : MonoBehaviour, IHandlePlayerInZo
         if (CurrentCounter >= _maxCounter)
             MaxCounterHit();
     }
-    public void InteractHold(GameObject interactor)
+    public void InteractHold(GameObject interactor,float deltaTime)
     {
     }
 
-    public void DontInteract()
+    public void DontInteract(float deltaTime)
     {
     }
 
@@ -123,6 +133,10 @@ public abstract class InteractableCounterZone : MonoBehaviour, IHandlePlayerInZo
     }
 }
 
+public interface IHaveInteractableCounterZone
+{
+    InteractableCounterZone InteractableCounterZone { get; }
+}
 
 public interface IHandlePlayerInZone
 {
@@ -136,8 +150,8 @@ public interface IHandlePlayerInZone
 public interface IInteraclable
 {
     void InteractDown(GameObject interactor);
-    void InteractHold(GameObject interactor);
-    void DontInteract();
+    void InteractHold(GameObject interactor,float deltaTime);
+    void DontInteract(float deltaTime);
 }
 
 public interface IInteractableWithZone : IHandlePlayerInZone,IInteraclable

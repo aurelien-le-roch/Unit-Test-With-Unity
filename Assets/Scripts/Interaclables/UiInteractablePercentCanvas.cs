@@ -13,7 +13,7 @@ public class UiInteractablePercentCanvas : MonoBehaviour
     public InteractablePercentZone InteractablePercent { get; private set; }
 
     public UiInteraclablePercenPanel UiInteraclablePercenPanel => uiInteraclablePercenPanel;
-    private void Awake()
+    private void Start()
     {
         InteractablePercent = GetComponentInParent<IHaveInteractablePercentZone>().InteractablePercentZone;
         InteractablePercent.OnPlayerEnterZone += HandlePlayerEnterZone;

@@ -10,7 +10,7 @@ public class PlayerHandleInteractable
         _player = player;
     }
 
-    public void Tick()
+    public void Tick(float deltaTime)
     {
         if (CurrentInteractables.Count <= 0)
             return;
@@ -22,11 +22,11 @@ public class PlayerHandleInteractable
         }
         else if (_player.PlayerInput.InteractHold)
         {
-            CurrentInteractables.Peek().InteractHold(_player.gameObject);
+            CurrentInteractables.Peek().InteractHold(_player.gameObject,deltaTime);
         }
         else
         {
-            CurrentInteractables.Peek().DontInteract();
+            CurrentInteractables.Peek().DontInteract(deltaTime);
         }
     }
 

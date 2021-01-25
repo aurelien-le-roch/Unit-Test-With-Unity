@@ -5,6 +5,7 @@ namespace PlayerHandleInteraclableTest
 {
     public class player_handle_interactable_on_trigger_tick
     {
+        private float baseDeltatime=0.01f;
         [Test]
         public void on_PlayerInput_InteractDown_the_InteractDown_method_get_call_on_the_current_interactable()
         {
@@ -20,10 +21,10 @@ namespace PlayerHandleInteraclableTest
             playerHandleInteractable.OnTriggerEnter2D(interaclable2);
             playerHandleInteractable.OnTriggerEnter2D(interaclable3);
 
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(0.01f);
             interaclable3.DidNotReceive().InteractDown(player.gameObject);
             playerInput.InteractDown.Returns(true);
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(0.01f);
             interaclable3.Received().InteractDown(player.gameObject);
         }
         
@@ -42,11 +43,11 @@ namespace PlayerHandleInteraclableTest
             playerHandleInteractable.OnTriggerEnter2D(interaclable2);
             playerHandleInteractable.OnTriggerEnter2D(interaclable3);
 
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(baseDeltatime);
             interaclable1.DidNotReceive().InteractDown(player.gameObject);
             interaclable2.DidNotReceive().InteractDown(player.gameObject);
             playerInput.InteractDown.Returns(true);
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(baseDeltatime);
             interaclable1.DidNotReceive().InteractDown(player.gameObject);
             interaclable2.DidNotReceive().InteractDown(player.gameObject);
         }
@@ -66,11 +67,11 @@ namespace PlayerHandleInteraclableTest
             playerHandleInteractable.OnTriggerEnter2D(interaclable2);
             playerHandleInteractable.OnTriggerEnter2D(interaclable3);
 
-            playerHandleInteractable.Tick();
-            interaclable3.DidNotReceive().InteractHold(player.gameObject);
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable3.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
             playerInput.InteractHold.Returns(true);
-            playerHandleInteractable.Tick();
-            interaclable3.Received().InteractHold(player.gameObject);
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable3.Received().InteractHold(player.gameObject,baseDeltatime);
         }
         
         [Test]
@@ -88,13 +89,13 @@ namespace PlayerHandleInteraclableTest
             playerHandleInteractable.OnTriggerEnter2D(interaclable2);
             playerHandleInteractable.OnTriggerEnter2D(interaclable3);
 
-            playerHandleInteractable.Tick();
-            interaclable1.DidNotReceive().InteractHold(player.gameObject);
-            interaclable2.DidNotReceive().InteractHold(player.gameObject);
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable1.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
+            interaclable2.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
             playerInput.InteractHold.Returns(true);
-            playerHandleInteractable.Tick();
-            interaclable1.DidNotReceive().InteractHold(player.gameObject);
-            interaclable2.DidNotReceive().InteractHold(player.gameObject);
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable1.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
+            interaclable2.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
         }
 
         [Test]
@@ -114,8 +115,8 @@ namespace PlayerHandleInteraclableTest
             
             playerInput.InteractDown.Returns(false);
             playerInput.InteractHold.Returns(false);
-            playerHandleInteractable.Tick();
-            interaclable3.Received().DontInteract();
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable3.Received().DontInteract(baseDeltatime);
         }
         
         [Test]
@@ -135,9 +136,9 @@ namespace PlayerHandleInteraclableTest
             
             playerInput.InteractDown.Returns(false);
             playerInput.InteractHold.Returns(false);
-            playerHandleInteractable.Tick();
-            interaclable1.DidNotReceive().DontInteract();
-            interaclable2.DidNotReceive().DontInteract();
+            playerHandleInteractable.Tick(baseDeltatime);
+            interaclable1.DidNotReceive().DontInteract(baseDeltatime);
+            interaclable2.DidNotReceive().DontInteract(baseDeltatime);
         }
 
         [Test]
@@ -153,29 +154,29 @@ namespace PlayerHandleInteraclableTest
             playerInput.InteractDown.Returns(true);
             playerInput.InteractHold.Returns(true);
             
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(baseDeltatime);
             
             interaclable1.Received().InteractDown(player.gameObject);
-            interaclable1.DidNotReceive().InteractHold(player.gameObject);
-            interaclable1.DidNotReceive().DontInteract();
+            interaclable1.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
+            interaclable1.DidNotReceive().DontInteract(baseDeltatime);
             
             interaclable1.ClearReceivedCalls();
             playerInput.InteractDown.Returns(false);
             playerInput.InteractHold.Returns(true);
             
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(baseDeltatime);
             interaclable1.DidNotReceive().InteractDown(player.gameObject);
-            interaclable1.Received().InteractHold(player.gameObject);
-            interaclable1.DidNotReceive().DontInteract();
+            interaclable1.Received().InteractHold(player.gameObject,baseDeltatime);
+            interaclable1.DidNotReceive().DontInteract(baseDeltatime);
             
             interaclable1.ClearReceivedCalls();
             playerInput.InteractDown.Returns(false);
             playerInput.InteractHold.Returns(false);
-            playerHandleInteractable.Tick();
+            playerHandleInteractable.Tick(baseDeltatime);
             
             interaclable1.DidNotReceive().InteractDown(player.gameObject);
-            interaclable1.DidNotReceive().InteractHold(player.gameObject);
-            interaclable1.Received().DontInteract();
+            interaclable1.DidNotReceive().InteractHold(player.gameObject,baseDeltatime);
+            interaclable1.Received().DontInteract(baseDeltatime);
         }
     }
 }

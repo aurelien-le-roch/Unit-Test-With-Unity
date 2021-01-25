@@ -28,12 +28,6 @@ public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
         QTEMining=new QTEMining();
         QTEMining.OnQTEEnd += HandleQTEResult;
     }
-
-//    private void Awake()
-//    {
-//        QTEMining=new QTEMining();
-//        QTEMining.OnQTEEnd += HandleQTEResult;
-//    }
     
     public override void PlayerExitZone()
     {
@@ -48,15 +42,15 @@ public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
         }
     }
     
-    public override void DontInteract()
+    public override void DontInteract(float deltaTime)
     {
-        base.DontInteract();
+        base.DontInteract(deltaTime);
         _animator.SetBool(InteractAnimation, false);
     }
 
-    public override void InteractHold(GameObject interactor)
+    public override void InteractHold(GameObject interactor,float deltaTime)
     {
-        base.InteractHold(interactor);
+        base.InteractHold(interactor,deltaTime);
         _animator.SetBool(InteractAnimation, true);
     }
 
@@ -130,13 +124,6 @@ public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
         ObjectsSpawner.InRandomCircle(_definition.GemsDropAfterMine,(int) numberOfGemsSpawn,0.5f,_oreNodeMonoBehaviour.transform.position);
         GameObject.Destroy(_oreNodeMonoBehaviour.gameObject);
     }
-
-    
-
-//    private void OnDisable()
-//    {
-//        QTEMining.OnQTEEnd -= HandleQTEResult;
-//    }
 }
 
 public static class ObjectsSpawner
