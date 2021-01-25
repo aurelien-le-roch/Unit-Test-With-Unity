@@ -85,31 +85,4 @@ namespace interaclableTest
             return GameObject.FindObjectOfType<OreNode>();
         }
     }
-
-        
-//        [UnityTest]
-//        public IEnumerator interact_panel_get_enable()
-//        {
-//            var interactCanvas = GameObject.FindObjectOfType<UiInteractablePercentCanvas>();
-//            var interactPanel = interactCanvas.UiInteraclablePercenPanel;
-//            
-//            Assert.IsFalse(interactPanel.gameObject.activeSelf);
-//
-//            player.transform.position += Vector3.right;
-//            yield return new WaitForFixedUpdate();
-//            Assert.IsTrue(interactPanel.gameObject.activeSelf);
-//        }
-        
-//    [UnityTest]
-//    public IEnumerator interact_panel_fillAmount_increase_with_InteractPercent()
-//    {
-//    var interactCanvas = GameObject.FindObjectOfType<UiInteractablePercentCanvas>();
-//    var interactPanel = interactCanvas.UiInteraclablePercenPanel;
-//            
-//            
-//    yield return new WaitForSeconds(0.1f);
-//
-//    Assert.AreEqual(_oreNodeInteractable.InteractPercent,interactPanel.FillAmount);
-//    }
-    
 }

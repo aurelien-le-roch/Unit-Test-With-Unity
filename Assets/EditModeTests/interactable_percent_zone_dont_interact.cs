@@ -52,21 +52,4 @@ namespace interaclableTest
             Assert.AreEqual(0,_interactablePercentZone.InteractPercent);
         }
     }
-
-    public interface IDummySubscriberForIHandlePlayerInZone
-    {
-        void HandlePlayerEnterZone();
-        void HandlePlayerExitZone();
-    }
-
-    public interface IDummySubscriverForInteractablePercent
-    {
-        void HandleInteractableHit100Percent();
-    }
-    
-    public interface IDummySubscriverForInteractableCounter
-    {
-        void HandleCounterChange(int max,int current);
-        void HandleMaxCounterHit();
-    }
 }

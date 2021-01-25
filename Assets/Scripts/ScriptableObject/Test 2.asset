@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Level: 1
   OreType: 0
-  MinOreGiven: 1
-  MaxOreGiven: 8
+  MinOreGiven: 4
+  MaxOreGiven: 12
   GemsDropAfterMine: {fileID: 6191814086094961308, guid: 30b3c18cb50a4da46aca81eaec1697f4,
     type: 3}

@@ -45,9 +45,3 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
             HandleInteractable.OnTriggerExit2D(haveIInteraclable.Interaclable);
     }
 }
-
-public interface IPlayer
-{
-     IPlayerInput PlayerInput { get; set; }
-     GameObject gameObject { get; }
-}

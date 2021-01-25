@@ -48,3 +48,18 @@ namespace interaclableTest
     }
 }
 
+//  zombi test (dont work anymore) can be upgrade to test fillamount on panel
+//        
+
+//    [UnityTest]
+//    public IEnumerator interact_panel_fillAmount_increase_with_InteractPercent()
+//    {
+//    var interactCanvas = GameObject.FindObjectOfType<UiInteractablePercentCanvas>();
+//    var interactPanel = interactCanvas.UiInteraclablePercenPanel;
+//            
+//            
+//    yield return new WaitForSeconds(0.1f);
+//
+//    Assert.AreEqual(_oreNodeInteractable.InteractPercent,interactPanel.FillAmount);
+//    }
+

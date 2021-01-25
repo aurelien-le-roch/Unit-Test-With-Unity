@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 namespace PlayerHandleInteraclableTest
 {
+    //note can be better with [Setup] method
     public class player_handle_interactable_on_trigger_tick
     {
         private float baseDeltatime=0.01f;

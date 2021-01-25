@@ -10,7 +10,7 @@ namespace QteMiningTest
         public void when_use_get_call_twice_IsRunning_flag_is_false()
         {
             var gameobject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForTest>();
+            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForQteMiningTest>();
             var qteMining = new QTEMining();
             
             Assert.False(qteMining.IsRunning);
@@ -24,7 +24,7 @@ namespace QteMiningTest
         public void when_use_get_call_once_IsRunning_flag_is_true()
         {
             var gameobject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForTest>();
+            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForQteMiningTest>();
             var qteMining = new QTEMining();
             
             Assert.False(qteMining.IsRunning);
@@ -40,7 +40,7 @@ namespace QteMiningTest
         public void when_use_get_call_twice_OnQTEEnd_event_get_raise_with_correct_result(float totalTime,float mediumTime,float perfectTime,float timeBetweenUSe,QteResult expectedResult)
         {
             var gameobject = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForTest>();
+            var emptyMonoBehaviour = gameobject.AddComponent<EmptyMonoBehaviourForQteMiningTest>();
             var qteMining = new QTEMining();
             var dummySubscriber = Substitute.For<IDummySubscriberForQteResult>();
 
@@ -77,15 +77,9 @@ namespace QteMiningTest
             dummySubscriber.Received().HandleQteReset(result);
         }
     }
-    public class EmptyMonoBehaviourForTest : MonoBehaviour
+    public class EmptyMonoBehaviourForQteMiningTest : MonoBehaviour
     {
         
-    }
-    public interface IDummySubscriberForQteResult
-    {
-        void HandleQteResult(QteResult result);
-        void HandleJobOver();
-        void HandleQteReset(QteResult result);
     }
 }
 

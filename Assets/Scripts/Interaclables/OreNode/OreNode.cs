@@ -23,24 +23,3 @@ public class OreNode : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteraclable
 
     
 }
-
-public interface IHaveIInteraclable
-{
-    IInteraclable Interaclable { get; }
-}
-
-public interface IHaveInteractablePercentZone
-{
-    InteractablePercentZone InteractablePercentZone { get; }
-}
-public interface IHaveIHaveQteMining
-{
-    IHaveQteMining HaveQteMining { get; }
-}
-
-public interface IHaveIHandlePlayerInZone
-{
-    IHandlePlayerInZone HandlePlayerInZone { get; }
-}
-
-
