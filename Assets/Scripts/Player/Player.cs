@@ -11,19 +11,19 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
 
     private PlayerMover _mover;
 
-    private PlayerHandleInteractable _handleInteractable;
+    public IPlayerHandleInteractable HandleInteractable { get; set; }
 
     private void Awake()
     {
         WorkController = new WorkControllerTest();
         PlayerInput=new PlayerInput();
         _mover = new PlayerMover(this);
-        _handleInteractable = new PlayerHandleInteractable(this);
+        HandleInteractable = new PlayerHandleInteractable(this);
     }
 
     private void Update()
     {
-        _handleInteractable.Tick(Time.deltaTime);
+        HandleInteractable.Tick(Time.deltaTime);
     }
 
     private void FixedUpdate()
@@ -33,16 +33,16 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-//        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
-//        if(haveIInteraclable!=null)
-//            _handleInteractable.OnTriggerEnter2D(haveIInteraclable.Interaclable);
+        var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
+        if(haveIInteraclable!=null)
+            HandleInteractable.OnTriggerEnter2D(haveIInteraclable.Interaclable);
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
         var haveIInteraclable = other.GetComponentInParent<IHaveIInteraclable>();
         if(haveIInteraclable!=null)
-            _handleInteractable.OnTriggerExit2D(haveIInteraclable.Interaclable);
+            HandleInteractable.OnTriggerExit2D(haveIInteraclable.Interaclable);
     }
 }
 
