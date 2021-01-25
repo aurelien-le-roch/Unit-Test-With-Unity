@@ -10,7 +10,7 @@ using UnityEngine.TestTools;
 
 namespace interaclableTest
 {
-    public class player_call_the_right_interactable_methodes
+    public class player_call_the_right_interactable_methodes_when_moving_in_out_of_trigger
     {
         [UnityTest]
         public IEnumerator PlayerEnterZone_method_get_call()
