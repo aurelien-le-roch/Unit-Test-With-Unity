@@ -65,7 +65,7 @@ namespace PlayerHandleInteraclableTest
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
             var interaclable1 = Substitute.For<IInteraclable>();
-            var interaclable2 = Substitute.For<IInteractableWithZone>();
+            var interaclable2 = Substitute.For<IInteractableWithFocusHandling>();
             var interaclable3 = Substitute.For<IInteraclable>();
             
             playerHandleInteractable.OnTriggerEnter2D(interaclable1);
@@ -74,7 +74,7 @@ namespace PlayerHandleInteraclableTest
             
             interaclable2.ClearReceivedCalls();
             playerHandleInteractable.OnTriggerExit2D(interaclable2);
-            interaclable2.DidNotReceive().PlayerExitZone();
+            interaclable2.DidNotReceive().PlayerStopToFocusMe();
         }
         
         [Test]
@@ -84,7 +84,7 @@ namespace PlayerHandleInteraclableTest
             var playerHandleInteractable = new PlayerHandleInteractable(player);
             var interaclable1 = Substitute.For<IInteraclable>();
             var interaclable2 = Substitute.For<IInteraclable>();
-            var interaclable3 = Substitute.For<IInteractableWithZone>();
+            var interaclable3 = Substitute.For<IInteractableWithFocusHandling>();
             
             playerHandleInteractable.OnTriggerEnter2D(interaclable1);
             playerHandleInteractable.OnTriggerEnter2D(interaclable2);
@@ -92,7 +92,7 @@ namespace PlayerHandleInteraclableTest
             
             interaclable3.ClearReceivedCalls();
             playerHandleInteractable.OnTriggerExit2D(interaclable3);
-            interaclable3.Received().PlayerExitZone();
+            interaclable3.Received().PlayerStopToFocusMe();
         }
         
         [Test]
@@ -101,7 +101,7 @@ namespace PlayerHandleInteraclableTest
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
             var interaclable1 = Substitute.For<IInteraclable>();
-            var interaclable2 = Substitute.For<IInteractableWithZone>();
+            var interaclable2 = Substitute.For<IInteractableWithFocusHandling>();
             var interaclable3 = Substitute.For<IInteraclable>();
             
             playerHandleInteractable.OnTriggerEnter2D(interaclable1);
@@ -110,7 +110,7 @@ namespace PlayerHandleInteraclableTest
             
             interaclable2.ClearReceivedCalls();
             playerHandleInteractable.OnTriggerExit2D(interaclable3);
-            interaclable2.Received().PlayerEnterZone();
+            interaclable2.Received().PlayerStartToFocusMe();
         }
         
     }

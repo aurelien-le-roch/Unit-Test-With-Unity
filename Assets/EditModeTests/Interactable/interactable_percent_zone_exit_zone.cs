@@ -5,18 +5,18 @@ namespace interaclableTest
 {
     public class interactable_percent_zone_exit_zone
     {
-        private InteractablePercentZone _interactablePercentZone;
+        private InteractablePercentFocusHandling _interactablePercentFocusHandling;
 
         [SetUp]
         public void Init()
         {
-            _interactablePercentZone = new InteractablePercentZone();
+            _interactablePercentFocusHandling = new InteractablePercentFocusHandling();
         }
         [Test]
         public void when_PlayerExitZone_method_get_call_PlayerInZone_flag_is_set_to_false()
         {
-            _interactablePercentZone.PlayerExitZone();
-            Assert.IsFalse(_interactablePercentZone.PlayerInZone);
+            _interactablePercentFocusHandling.PlayerStopToFocusMe();
+            Assert.IsFalse(_interactablePercentFocusHandling.IHavePlayerFocus);
         }
         
         [Test]
@@ -24,10 +24,10 @@ namespace interaclableTest
         {
             var dummySubscriber = Substitute.For<IDummySubscriberForIHandlePlayerInZone>();
 
-            _interactablePercentZone.OnPlayerExitZone += dummySubscriber.HandlePlayerExitZone;
+            _interactablePercentFocusHandling.OnPlayerStopFocusMe += dummySubscriber.HandlePlayerExitFocusHandling;
             
-            _interactablePercentZone.PlayerExitZone();
-            dummySubscriber.Received().HandlePlayerExitZone();
+            _interactablePercentFocusHandling.PlayerStopToFocusMe();
+            dummySubscriber.Received().HandlePlayerExitFocusHandling();
         }
         
         [TestCase(0, 0)]
@@ -37,9 +37,9 @@ namespace interaclableTest
         [TestCase(1.1f,0)]
         public void when_PlayerExitZone_method_get_call_InteractPercent_is_set_to_0(float percentBeforeExit,float result)
         {
-            _interactablePercentZone.InteractPercent = percentBeforeExit;
-            _interactablePercentZone.PlayerExitZone();
-            Assert.AreEqual(result,_interactablePercentZone.InteractPercent);
+            _interactablePercentFocusHandling.InteractPercent = percentBeforeExit;
+            _interactablePercentFocusHandling.PlayerStopToFocusMe();
+            Assert.AreEqual(result,_interactablePercentFocusHandling.InteractPercent);
         }
     }
 }

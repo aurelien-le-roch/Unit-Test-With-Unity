@@ -7,13 +7,13 @@ public class TestGemsBox : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteracl
     [SerializeField] private int _maxAmount;
 
 
-    public IHandlePlayerInZone HandlePlayerInZone { get; private set; }
+    public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }
     public IInteraclable Interaclable { get; private set; }
 
     private void Awake()
     {
         var testGemsBoxInteractable = new TestGemsBoxInteractable(gameObject, _gems, _minAmount, _maxAmount);
-        HandlePlayerInZone = testGemsBoxInteractable;
+        HandlePlayerInteractableFocus = testGemsBoxInteractable;
         Interaclable = testGemsBoxInteractable;
     }
 }

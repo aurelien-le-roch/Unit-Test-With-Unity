@@ -13,8 +13,8 @@ public class UiInteractableCounterCanvas : MonoBehaviour
     private void Awake()
     {
         InteractableCounterZone = GetComponentInParent<IHaveInteractableCounterZone>().InteractableCounterZone;
-        InteractableCounterZone.OnPlayerEnterZone += HandlePlayerEnterZone;
-        InteractableCounterZone.OnPlayerExitZone += DisablePanel;
+        InteractableCounterZone.OnPlayerFocusMe += HandlePlayerEnterZone;
+        InteractableCounterZone.OnPlayerStopFocusMe += DisablePanel;
         InteractableCounterZone.OnCounterChange += HandleCounterChange;
         InteractableCounterZone.OnMaxCounterHit += DisablePanel;
     }
@@ -46,8 +46,8 @@ public class UiInteractableCounterCanvas : MonoBehaviour
 
     private void OnDisable()
     {
-        InteractableCounterZone.OnPlayerEnterZone -= HandlePlayerEnterZone;
-        InteractableCounterZone.OnPlayerExitZone -= DisablePanel;
+        InteractableCounterZone.OnPlayerFocusMe -= HandlePlayerEnterZone;
+        InteractableCounterZone.OnPlayerStopFocusMe -= DisablePanel;
         InteractableCounterZone.OnMaxCounterHit -= DisablePanel;
     }
 }

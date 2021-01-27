@@ -1,30 +1,30 @@
 ﻿using System;
 using UnityEngine;
 
-public class InteractablePercentZone :  IInteractableWithZone
+public class InteractablePercentFocusHandling :  IInteractableWithFocusHandling
 {
     private float _interactSpeed=2f;
 
-    public event Action OnPlayerEnterZone;
-    public event Action OnPlayerExitZone;
+    public event Action OnPlayerFocusMe;
+    public event Action OnPlayerStopFocusMe;
     public event Action OnInteractableHit100Percent;
 
     public float InteractPercent { get; set; }
-    public bool PlayerInZone { get; private set; }
+    public bool IHavePlayerFocus { get; private set; }
 
     public bool AlreadyHit100Percent { get; private set; }
 
-    public void PlayerEnterZone()
+    public void PlayerStartToFocusMe()
     {
-       PlayerInZone = true;
-        OnPlayerEnterZone?.Invoke();
+       IHavePlayerFocus = true;
+        OnPlayerFocusMe?.Invoke();
     }
 
-    public virtual void PlayerExitZone()
+    public virtual void PlayerStopToFocusMe()
     {
-        PlayerInZone = false;
+        IHavePlayerFocus = false;
         ResetInteractPercent();
-        OnPlayerExitZone?.Invoke();
+        OnPlayerStopFocusMe?.Invoke();
     }
 
     public virtual void DontInteract(float deltaTime)

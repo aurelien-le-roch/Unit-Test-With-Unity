@@ -3,7 +3,7 @@ using UnityEngine;
 using Random = UnityEngine.Random;
 
 
-public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
+public class OreNodeInteractable : InteractablePercentFocusHandling,IHaveQteMining
 {
     private OreNodeDefinition _definition;
     private Animator _animator;
@@ -29,9 +29,9 @@ public class OreNodeInteractable : InteractablePercentZone,IHaveQteMining
         QTEMining.OnQTEEnd += HandleQTEResult;
     }
     
-    public override void PlayerExitZone()
+    public override void PlayerStopToFocusMe()
     {
-        base.PlayerExitZone();
+        base.PlayerStopToFocusMe();
         
         _animator.SetBool(InteractAnimation, false);
         

@@ -1,16 +1,16 @@
 ﻿using System;
 using UnityEngine;
 
-public class InteractableCounterZone :  IHandlePlayerInZone, IInteraclable
+public class InteractableCounterZone :  IHandlePlayerInteractableFocus, IInteraclable
 {
     private int _maxCounter;
-    public event Action OnPlayerEnterZone;
-    public event Action OnPlayerExitZone;
+    public event Action OnPlayerFocusMe;
+    public event Action OnPlayerStopFocusMe;
     public event Action<int, int> OnCounterChange;
     public event Action OnMaxCounterHit;
     public int MaxCounter => _maxCounter;
     public int CurrentCounter { get; set; }
-    public bool PlayerInZone { get; private set; }
+    public bool IHavePlayerFocus { get; private set; }
 
 
     public InteractableCounterZone(int maxCounter)
@@ -18,19 +18,19 @@ public class InteractableCounterZone :  IHandlePlayerInZone, IInteraclable
         _maxCounter = maxCounter;
     }
     
-    public void PlayerEnterZone()
+    public void PlayerStartToFocusMe()
     {
-        PlayerInZone = true;
-        OnPlayerEnterZone?.Invoke();
+        IHavePlayerFocus = true;
+        OnPlayerFocusMe?.Invoke();
     }
 
-    public void PlayerExitZone()
+    public void PlayerStopToFocusMe()
     {
-        PlayerInZone = false;
+        IHavePlayerFocus = false;
         CurrentCounter = 0;
         OnCounterChange?.Invoke(_maxCounter, CurrentCounter);
 
-        OnPlayerExitZone?.Invoke();
+        OnPlayerStopFocusMe?.Invoke();
     }
 
     public virtual void InteractDown(GameObject interactor)

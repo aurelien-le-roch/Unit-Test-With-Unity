@@ -16,10 +16,10 @@ namespace interaclableTest
         [Test]
         public void when_PlayerEnterZone_method_get_call_PlayerInZone_flag_is_set_to_true()
         {
-            Assert.IsFalse(_interactableCounterZone.PlayerInZone);
+            Assert.IsFalse(_interactableCounterZone.IHavePlayerFocus);
             
-            _interactableCounterZone.PlayerEnterZone();
-            Assert.IsTrue(_interactableCounterZone.PlayerInZone);
+            _interactableCounterZone.PlayerStartToFocusMe();
+            Assert.IsTrue(_interactableCounterZone.IHavePlayerFocus);
         }
         
         [Test]
@@ -27,10 +27,10 @@ namespace interaclableTest
         {
             var dummySubscriber = Substitute.For<IDummySubscriberForIHandlePlayerInZone>();
 
-            _interactableCounterZone.OnPlayerEnterZone += dummySubscriber.HandlePlayerEnterZone;
+            _interactableCounterZone.OnPlayerFocusMe += dummySubscriber.HandlePlayerEnterFocusHandling;
             
-            _interactableCounterZone.PlayerEnterZone();
-            dummySubscriber.Received().HandlePlayerEnterZone();
+            _interactableCounterZone.PlayerStartToFocusMe();
+            dummySubscriber.Received().HandlePlayerEnterFocusHandling();
         }
     }
 }

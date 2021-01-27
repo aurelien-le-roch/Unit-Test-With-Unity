@@ -15,8 +15,8 @@ namespace interaclableTest
         [Test]
         public void when_PlayerExitZone_method_get_call_PlayerInZone_flag_is_set_to_false()
         {
-            _interactableCounterZone.PlayerExitZone();
-            Assert.IsFalse(_interactableCounterZone.PlayerInZone);
+            _interactableCounterZone.PlayerStopToFocusMe();
+            Assert.IsFalse(_interactableCounterZone.IHavePlayerFocus);
         }
         
         [Test]
@@ -24,10 +24,10 @@ namespace interaclableTest
         {
             var dummySubscriber = Substitute.For<IDummySubscriberForIHandlePlayerInZone>();
 
-            _interactableCounterZone.OnPlayerExitZone += dummySubscriber.HandlePlayerExitZone;
+            _interactableCounterZone.OnPlayerStopFocusMe += dummySubscriber.HandlePlayerExitFocusHandling;
             
-            _interactableCounterZone.PlayerExitZone();
-            dummySubscriber.Received().HandlePlayerExitZone();
+            _interactableCounterZone.PlayerStopToFocusMe();
+            dummySubscriber.Received().HandlePlayerExitFocusHandling();
         }
         
         [Test]
@@ -35,7 +35,7 @@ namespace interaclableTest
         {
          
             _interactableCounterZone.CurrentCounter+=3;
-            _interactableCounterZone.PlayerExitZone();
+            _interactableCounterZone.PlayerStopToFocusMe();
             Assert.AreEqual(0,_interactableCounterZone.CurrentCounter);
         }
     }

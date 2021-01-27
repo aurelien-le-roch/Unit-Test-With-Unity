@@ -13,25 +13,25 @@ namespace interaclableTest
     public class player_call_the_right_interactable_methodes_when_moving_in_out_of_trigger
     {
         [UnityTest]
-        public IEnumerator PlayerEnterZone_method_get_call()
+        public IEnumerator PlayerStartToFocusMe_method_get_call()
         {
             yield return LoadInteractablesTestsScene();
             Player player = GetPlayer();
             OreNode oreNode = GetOreNode();
             
-            var interactableWithZone = Substitute.For<IInteractableWithZone>();
+            var interactableWithFocusHandling = Substitute.For<IInteractableWithFocusHandling>();
 
-            oreNode.Interaclable = interactableWithZone;
-            oreNode.HandlePlayerInZone = interactableWithZone;
-            interactableWithZone.DidNotReceive().PlayerEnterZone();
+            oreNode.Interaclable = interactableWithFocusHandling;
+            oreNode.HandlePlayerInteractableFocus = interactableWithFocusHandling;
+            interactableWithFocusHandling.DidNotReceive().PlayerStartToFocusMe();
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();
-            interactableWithZone.Received().PlayerEnterZone();
+            interactableWithFocusHandling.Received().PlayerStartToFocusMe();
             yield return new WaitForFixedUpdate();
-            interactableWithZone.ClearReceivedCalls();
+            interactableWithFocusHandling.ClearReceivedCalls();
             player.transform.position -= Vector3.right;
             yield return new WaitForFixedUpdate();
-            interactableWithZone.DidNotReceive().PlayerEnterZone();
+            interactableWithFocusHandling.DidNotReceive().PlayerStartToFocusMe();
         }
         
         [UnityTest]
@@ -41,17 +41,17 @@ namespace interaclableTest
             Player player = GetPlayer();
             OreNode oreNode = GetOreNode();
             
-            var interactableWithZone = Substitute.For<IInteractableWithZone>();
+            var interactableWithFocusHandling = Substitute.For<IInteractableWithFocusHandling>();
 
-            oreNode.Interaclable = interactableWithZone;
-            oreNode.HandlePlayerInZone = interactableWithZone;
-            interactableWithZone.DidNotReceive().PlayerExitZone();
+            oreNode.Interaclable = interactableWithFocusHandling;
+            oreNode.HandlePlayerInteractableFocus = interactableWithFocusHandling;
+            interactableWithFocusHandling.DidNotReceive().PlayerStopToFocusMe();
             player.transform.position += Vector3.right;
             yield return new WaitForFixedUpdate();
-            interactableWithZone.DidNotReceive().PlayerExitZone();
+            interactableWithFocusHandling.DidNotReceive().PlayerStopToFocusMe();
             player.transform.position -= Vector3.right;
             yield return new WaitForFixedUpdate();
-            interactableWithZone.Received().PlayerExitZone();
+            interactableWithFocusHandling.Received().PlayerStopToFocusMe();
         }
         
         [UnityTest]

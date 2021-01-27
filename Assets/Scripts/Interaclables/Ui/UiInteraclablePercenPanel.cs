@@ -18,7 +18,7 @@ public class UiInteraclablePercenPanel : MonoBehaviour
     }
     private void Update()
     {
-        if (uiInteractablePercentCanvas.InteractablePercent.PlayerInZone)
+        if (uiInteractablePercentCanvas.InteractablePercent.IHavePlayerFocus)
         {
             if (_canvasGroup.alpha < 1)
             {

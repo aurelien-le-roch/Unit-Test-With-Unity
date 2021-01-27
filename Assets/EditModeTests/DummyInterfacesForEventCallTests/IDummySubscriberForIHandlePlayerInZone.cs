@@ -2,7 +2,7 @@
 {
     public interface IDummySubscriberForIHandlePlayerInZone
     {
-        void HandlePlayerEnterZone();
-        void HandlePlayerExitZone();
+        void HandlePlayerEnterFocusHandling();
+        void HandlePlayerExitFocusHandling();
     }
 }

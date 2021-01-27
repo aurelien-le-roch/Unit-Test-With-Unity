@@ -1,4 +1,4 @@
 ﻿public interface IHaveInteractablePercentZone
 {
-    InteractablePercentZone InteractablePercentZone { get; }
+    InteractablePercentFocusHandling InteractablePercentFocusHandling { get; }
 }

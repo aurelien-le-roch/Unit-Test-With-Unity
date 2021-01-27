@@ -41,11 +41,11 @@ namespace PlayerHandleInteraclableTest
         {
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
-            var interaclableWithZone = Substitute.For<IInteractableWithZone>();
+            var interaclableWithZone = Substitute.For<IInteractableWithFocusHandling>();
 
             playerHandleInteractable.OnTriggerEnter2D(interaclableWithZone);
 
-            interaclableWithZone.Received().PlayerEnterZone();
+            interaclableWithZone.Received().PlayerStartToFocusMe();
         }
         
         [Test]
@@ -53,14 +53,14 @@ namespace PlayerHandleInteraclableTest
         {
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
-            var interaclableWithZone = Substitute.For<IInteractableWithZone>();
+            var interaclableWithZone = Substitute.For<IInteractableWithFocusHandling>();
 
             playerHandleInteractable.OnTriggerEnter2D(interaclableWithZone);
 
             var secondInteractable = Substitute.For<IInteraclable>();
             
             playerHandleInteractable.OnTriggerEnter2D(secondInteractable);
-            interaclableWithZone.Received().PlayerExitZone();
+            interaclableWithZone.Received().PlayerStopToFocusMe();
         }
     }
 }

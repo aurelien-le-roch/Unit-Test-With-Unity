@@ -7,22 +7,22 @@ public class UiInteractableCanvas : MonoBehaviour
     [SerializeField] private Animator _interactablePanelAnimator;
     private static readonly int PlayerIsOut = Animator.StringToHash("PlayerIsOut");
 
-    public IHandlePlayerInZone IHandlePlayerInZone { get; private set; }
+    public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }
     private void Start()
     {
-        IHandlePlayerInZone = GetComponentInParent<IHaveIHandlePlayerInZone>().HandlePlayerInZone;
-        IHandlePlayerInZone.OnPlayerEnterZone += HandlePlayerEnterZone;
-        IHandlePlayerInZone.OnPlayerExitZone += HandlePlayerExitZone;
+        HandlePlayerInteractableFocus = GetComponentInParent<IHaveIHandlePlayerInZone>().HandlePlayerInteractableFocus;
+        HandlePlayerInteractableFocus.OnPlayerFocusMe += HandlePlayerFocusMe;
+        HandlePlayerInteractableFocus.OnPlayerStopFocusMe += HandlePlayerStopFocusMe;
     }
 
     
-    private void HandlePlayerEnterZone()
+    private void HandlePlayerFocusMe()
     {
         _panel.SetActive(true);
         _interactablePanelAnimator.SetBool(PlayerIsOut,false);
     }
     
-    private void HandlePlayerExitZone()
+    private void HandlePlayerStopFocusMe()
     {
         _panel.SetActive(false);
         _interactablePanelAnimator.SetBool(PlayerIsOut,true);
@@ -32,7 +32,7 @@ public class UiInteractableCanvas : MonoBehaviour
     
     private void OnDisable()
     {
-        IHandlePlayerInZone.OnPlayerEnterZone -= HandlePlayerEnterZone;
-        IHandlePlayerInZone.OnPlayerExitZone -= HandlePlayerExitZone;
+        HandlePlayerInteractableFocus.OnPlayerFocusMe -= HandlePlayerFocusMe;
+        HandlePlayerInteractableFocus.OnPlayerStopFocusMe -= HandlePlayerStopFocusMe;
     }
 }

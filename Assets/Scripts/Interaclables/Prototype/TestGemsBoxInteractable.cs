@@ -2,11 +2,11 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class TestGemsBoxInteractable : IHandlePlayerInZone, IInteraclable
+public class TestGemsBoxInteractable : IHandlePlayerInteractableFocus, IInteraclable
 {
-    public event Action OnPlayerEnterZone;
-    public event Action OnPlayerExitZone;
-    public bool PlayerInZone { get; private set; }
+    public event Action OnPlayerFocusMe;
+    public event Action OnPlayerStopFocusMe;
+    public bool IHavePlayerFocus { get; private set; }
 
     private GameObject TestGemsBox;
     private LootableItem _gems;
@@ -20,16 +20,16 @@ public class TestGemsBoxInteractable : IHandlePlayerInZone, IInteraclable
         _minAmount = minAmount;
         _maxAmount = maxAmount;
     }
-    public void PlayerEnterZone()
+    public void PlayerStartToFocusMe()
     {
-        PlayerInZone = true;
-        OnPlayerEnterZone?.Invoke();
+        IHavePlayerFocus = true;
+        OnPlayerFocusMe?.Invoke();
     }
 
-    public void PlayerExitZone()
+    public void PlayerStopToFocusMe()
     {
-        PlayerInZone = false;
-        OnPlayerExitZone?.Invoke();
+        IHavePlayerFocus = false;
+        OnPlayerStopFocusMe?.Invoke();
     }
     public void InteractDown(GameObject interactor)
     {

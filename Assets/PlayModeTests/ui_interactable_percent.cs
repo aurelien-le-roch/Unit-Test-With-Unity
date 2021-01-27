@@ -11,7 +11,7 @@ namespace interaclableTest
     public class ui_interactable_percent 
     {
         [UnityTest]
-        public IEnumerator panel_get_enable_when_interactor_enter_interactable_zone()
+        public IEnumerator panel_get_enable_when_interactable_become_focus_by_interactor()
         {
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
@@ -26,7 +26,7 @@ namespace interaclableTest
         }
         
         [UnityTest]
-        public IEnumerator panel_dont_get_disable_when_interactor_exit_interactable_zone()
+        public IEnumerator panel_don_get_disable_when_interactable_become_focus_by_interactor()
         {
             var player = Substitute.For<IPlayer>();
             var playerHandleInteractable = new PlayerHandleInteractable(player);
