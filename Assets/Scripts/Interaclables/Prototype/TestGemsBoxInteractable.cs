@@ -9,11 +9,11 @@ public class TestGemsBoxInteractable : IHandlePlayerInteractableFocus, IInteracl
     public bool IHavePlayerFocus { get; private set; }
 
     private GameObject TestGemsBox;
-    private LootableItem _gems;
+    private LootableResource _gems;
     private int _minAmount;
     private int _maxAmount;
 
-    public TestGemsBoxInteractable(GameObject gameObject,LootableItem prefabToSpawn,int minAmount,int maxAmount)
+    public TestGemsBoxInteractable(GameObject gameObject,LootableResource prefabToSpawn,int minAmount,int maxAmount)
     {
         TestGemsBox = gameObject;
         _gems = prefabToSpawn;

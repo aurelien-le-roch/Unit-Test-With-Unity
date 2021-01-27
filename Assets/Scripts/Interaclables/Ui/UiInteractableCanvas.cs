@@ -10,7 +10,7 @@ public class UiInteractableCanvas : MonoBehaviour
     public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }
     private void Start()
     {
-        HandlePlayerInteractableFocus = GetComponentInParent<IHaveIHandlePlayerInZone>().HandlePlayerInteractableFocus;
+        HandlePlayerInteractableFocus = GetComponentInParent<IHaveIHandlePlayerInteractableFocus>().HandlePlayerInteractableFocus;
         HandlePlayerInteractableFocus.OnPlayerFocusMe += HandlePlayerFocusMe;
         HandlePlayerInteractableFocus.OnPlayerStopFocusMe += HandlePlayerStopFocusMe;
     }

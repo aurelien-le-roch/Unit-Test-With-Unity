@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Workbench : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteraclable
+public class Workbench : MonoBehaviour,IHaveIHandlePlayerInteractableFocus,IHaveIInteraclable
 {
     public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }
     public IInteraclable Interaclable { get; private set; }

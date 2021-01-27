@@ -1,8 +1,4 @@
-﻿using UnityEngine;
-
-
-
-public class PlayerHandleInteractable : IPlayerHandleInteractable
+﻿public class PlayerHandleInteractable : IPlayerHandleInteractable
 {
     private readonly IPlayer _player;
     public ItsAlmostAStack<IInteraclable> CurrentInteractables { get; } = new ItsAlmostAStack<IInteraclable>();

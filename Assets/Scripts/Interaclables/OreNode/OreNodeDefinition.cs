@@ -7,5 +7,5 @@ public class OreNodeDefinition : ScriptableObject
     public OreType OreType;
     public int MinOreGiven;
     public int MaxOreGiven;
-    public LootableItem GemsDropAfterMine;
+    public LootableResource GemsDropAfterMine;
 }

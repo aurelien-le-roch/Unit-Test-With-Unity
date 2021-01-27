@@ -1,4 +1,4 @@
-﻿public interface IHaveIHandlePlayerInZone
+﻿public interface IHaveIHandlePlayerInteractableFocus
 {
     IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; }
 }

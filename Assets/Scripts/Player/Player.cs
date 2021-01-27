@@ -12,6 +12,8 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
     private PlayerMover _mover;
 
     public IPlayerHandleInteractable HandleInteractable { get; set; }
+    
+    public ResourceInventory ResourceInventory { get; private set; }
 
     private void Awake()
     {
@@ -19,6 +21,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
         PlayerInput=new PlayerInput();
         _mover = new PlayerMover(this);
         HandleInteractable = new PlayerHandleInteractable(this);
+        ResourceInventory = new ResourceInventory();
     }
 
     private void Update()

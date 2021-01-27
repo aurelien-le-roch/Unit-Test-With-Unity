@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class OreNode : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteraclable,IHaveInteractablePercentZone,IHaveIHaveQteMining
+public class OreNode : MonoBehaviour,IHaveIHandlePlayerInteractableFocus,IHaveIInteraclable,IHaveInteractablePercentZone,IHaveIHaveQteMining
 {
     [SerializeField] private OreNodeDefinition _definition;
     [SerializeField] private Animator _animator;

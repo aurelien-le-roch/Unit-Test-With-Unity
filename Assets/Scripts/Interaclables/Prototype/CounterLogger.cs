@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class CounterLogger : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteraclable,IHaveInteractableCounterZone
+public class CounterLogger : MonoBehaviour,IHaveIHandlePlayerInteractableFocus,IHaveIInteraclable,IHaveInteractableCounterZone
 {
     [SerializeField] private int _maxCounter;
     public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }

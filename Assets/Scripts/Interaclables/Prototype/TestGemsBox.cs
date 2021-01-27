@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-public class TestGemsBox : MonoBehaviour,IHaveIHandlePlayerInZone,IHaveIInteraclable
+public class TestGemsBox : MonoBehaviour,IHaveIHandlePlayerInteractableFocus,IHaveIInteraclable
 {
-    [SerializeField] private LootableItem _gems;
+    [SerializeField] private LootableResource _gems;
     [SerializeField] private int _minAmount;
     [SerializeField] private int _maxAmount;
 
