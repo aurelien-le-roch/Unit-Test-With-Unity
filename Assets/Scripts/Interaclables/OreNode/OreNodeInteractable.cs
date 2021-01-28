@@ -93,7 +93,6 @@ public class OreNodeInteractable : InteractablePercentFocusHandling,IHaveQteMini
     
     private void HandleQTEResult(QteResult result)
     {
-        Debug.Log("result are here = "+result);
         _numberOfQteDone++;
         if (result == QteResult.Perfect)
             _qualityOfQTE = 1;

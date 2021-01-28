@@ -12,7 +12,7 @@ public class LootableResource : MonoBehaviour
         if (player == null)
             return;
 
-        player.ResourceInventory.Add(_definition,1);
+        player.ResourceInventory.Add(_definition,2);
         Destroy(gameObject);
     }
 }

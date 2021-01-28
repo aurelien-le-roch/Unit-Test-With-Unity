@@ -61,7 +61,6 @@ public class UiQTEMiningCanvas : MonoBehaviour
     {
         var canvasResult = Instantiate(_uiCanvasQteResult, transform.position, Quaternion.identity);
         canvasResult.Setup(2f,result, _mediumBar.localScale,_perfectBar.localScale,_cursor.anchoredPosition.x);
-        Debug.Log("Handle reset");
         _background.gameObject.SetActive(true);
         _cursor.DOKill();
         _cursor.anchoredPosition=Vector3.zero;
@@ -80,7 +79,6 @@ public class UiQTEMiningCanvas : MonoBehaviour
     
     private void HandleJobOver()
     {
-        Debug.Log("QTE End");
         _cursor.DOKill();
         _background.gameObject.SetActive(false);
     }

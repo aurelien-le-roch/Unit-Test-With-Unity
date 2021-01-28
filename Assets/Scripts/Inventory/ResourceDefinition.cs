@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "Item")]
+[CreateAssetMenu(menuName = "ResourceDefinition")]
 public class ResourceDefinition : ScriptableObject
 {
     [SerializeField] private Sprite _sprite;
