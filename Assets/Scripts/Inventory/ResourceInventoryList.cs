@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 
 public class ResourceInventoryList : IResourceInventory
 {
@@ -37,22 +36,6 @@ public class ResourceInventoryList : IResourceInventory
         }
 
         return 0;
-    }
-}
-
-public class RecipeInventory : IRecipeInventory
-{
-    private List<RecipeDefinition> _recipes = new List<RecipeDefinition>();
-    public event Action<List<RecipeDefinition> > OnRecipeAdded;
-    
-    public void Add(RecipeDefinition newRecipe)
-    {
-        if (_recipes.Contains(newRecipe)==false)
-        {
-            _recipes.Add(newRecipe);
-            Debug.Log("recipe added");
-        }
-        OnRecipeAdded?.Invoke(_recipes);
     }
 }
 

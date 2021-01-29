@@ -10,6 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 967c94dbb76747548a147bd6352f1472, type: 3}
-  m_Name: unit_test_resource2
+  m_Name: unit_test_resource1
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: e058339fb7fa6fe45860c6bbf80fd7d9, type: 3}
+  _amountToAddInTheResourceInventory: 1
