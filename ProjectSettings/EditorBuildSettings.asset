@@ -9,9 +9,15 @@ EditorBuildSettings:
     path: Assets/Scenes/InteractableScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/CraftScene.unity
+    guid: 0471483679cfad9468ec5a5dce78457e
+  - enabled: 1
+    path: Assets/Scenes/Ui.unity
+    guid: 492a49f41898f7a42aa44ddbf067081c
+  - enabled: 1
     path: Assets/Scenes/InteraclablesTestsScene.unity
     guid: 1d81c93d9dc227246a6fde212168e326
   - enabled: 1
-    path: Assets/Scenes/CraftScene.unity
-    guid: 0471483679cfad9468ec5a5dce78457e
+    path: Assets/Scenes/LootablesTestsScene.unity
+    guid: 6effe7fe03a548f45abdeadc0e787b7b
   m_configObjects: {}

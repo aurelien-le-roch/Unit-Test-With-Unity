@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "ResourceDefinition")]
-public class ResourceDefinition : ScriptableObject,ICanBeAddedToPlayer
+public class ResourceDefinition : ScriptableObject,ICanBeAddedToInventories
 {
     [SerializeField] private Sprite _sprite;
     public Sprite Sprite => _sprite;
 
-    public void AddToPlayer(Player player)
+    public void AddToInventories(IHaveInventories iHaveInventories)
     {
-        player.ResourceInventory.Add(this,2);
+        iHaveInventories.ResourceInventory.Add(this,2);
     }
 }
 
-public interface ICanBeAddedToPlayer
+public interface ICanBeAddedToInventories
 {
-    void AddToPlayer(Player player);
+    void AddToInventories(IHaveInventories iHaveInventories);
 }

@@ -5,42 +5,42 @@ public class Lootable : MonoBehaviour
 {
     [SerializeField] private ScriptableObject _definition;
 
-    private ICanBeAddedToPlayer _canBeAddedToPlayer;
-
+    public ICanBeAddedToInventories CanBeAddedToInventories { get; set; }
+    
     private void Awake()
     {
-        if (_definition is ICanBeAddedToPlayer canBeAddedToPlayer)
+        if (_definition is ICanBeAddedToInventories canBeAddedToPlayer)
         {
-            _canBeAddedToPlayer = canBeAddedToPlayer;
+            CanBeAddedToInventories = canBeAddedToPlayer;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_canBeAddedToPlayer == null)
+        if (_definition is ICanBeAddedToInventories == false)
         {
             Debug.LogWarning("Attention the scriptable object drop here must implement, ICanBeAddedTo player interface",this);
             return;
         }
         
-        var player = other.GetComponentInParent<Player>();
-        if (player == null)
+        var iHaveInventories = other.GetComponentInParent<IHaveInventories>();
+        if (iHaveInventories == null)
             return;
         
-        _canBeAddedToPlayer.AddToPlayer(player); 
+        CanBeAddedToInventories.AddToInventories(iHaveInventories); 
         Destroy(gameObject);
     }
 
     public void OnValidate()
     {
-        if (_definition is ICanBeAddedToPlayer canBeAddedToPlayer)
+        if (_definition is ICanBeAddedToInventories canBeAddedToPlayer)
         {
-            _canBeAddedToPlayer = canBeAddedToPlayer;
+            CanBeAddedToInventories = canBeAddedToPlayer;
         }
         else
         {
-            _canBeAddedToPlayer=null;
-            Debug.LogError("the scriptable object drop here must implement, ICanBeAddedTo player interface",this);
+            CanBeAddedToInventories=null;
+            Debug.LogWarning("the scriptable object drop here must implement, ICanBeAddedTo player interface",this);
         }
     }
 }

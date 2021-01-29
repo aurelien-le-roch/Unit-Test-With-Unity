@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "RecipeDefinition")]
-public class RecipeDefinition : ScriptableObject, ICanBeAddedToPlayer
+public class RecipeDefinition : ScriptableObject, ICanBeAddedToInventories
 {
     [SerializeField] private Sprite _sprite;
     [SerializeField] private List<ResourceDefinitionWithAmountStruct> _resourcesNeeded;
     public Sprite Sprite => _sprite;
     public List<ResourceDefinitionWithAmountStruct> ResourcesNeeded => _resourcesNeeded;
-
-    public void AddToPlayer(Player player)
+    
+    public void AddToInventories(IHaveInventories iHaveInventories)
     {
-        player.RecipeInventory.Add(this);
+        iHaveInventories.RecipeInventory.Add(this);
     }
 
     public int GetCraftableAmount(IResourceInventory resourceInventory)

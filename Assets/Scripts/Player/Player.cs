@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHaveWorkController,IPlayer
+public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventories
 {
     [SerializeField] private float _speed;
 
@@ -51,4 +51,19 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
         if(haveIInteraclable!=null)
             HandleInteractable.OnTriggerExit2D(haveIInteraclable.Interaclable);
     }
+}
+
+public interface IHaveIResourceInventory
+{
+    IResourceInventory ResourceInventory { get; }
+}
+
+public interface IHaveRecipeInventory
+{
+    RecipeInventory RecipeInventory { get; }
+}
+
+public interface IHaveInventories : IHaveIResourceInventory,IHaveRecipeInventory
+{
+    
 }
