@@ -40,7 +40,7 @@ public class ResourceInventoryList : IResourceInventory
     }
 }
 
-public class RecipeInventory
+public class RecipeInventory : IRecipeInventory
 {
     private List<RecipeDefinition> _recipes = new List<RecipeDefinition>();
     public event Action<List<RecipeDefinition> > OnRecipeAdded;
@@ -56,11 +56,17 @@ public class RecipeInventory
     }
 }
 
+public interface IRecipeInventory
+{
+    void Add(RecipeDefinition newRecipe);
+    event Action<List<RecipeDefinition> > OnRecipeAdded;
+}
+
 public class CraftController
 {
     private readonly Player _player;
     private IResourceInventory ResourceInventory => _player.ResourceInventory;
-    private RecipeInventory RecipeInventory => _player.RecipeInventory;
+    private IRecipeInventory RecipeInventory => _player.RecipeInventory;
 
     private Dictionary<RecipeDefinition, int> _recipeCraftableAmount=new Dictionary<RecipeDefinition, int>();
 

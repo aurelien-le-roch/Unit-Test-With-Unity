@@ -14,7 +14,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
     public IPlayerHandleInteractable HandleInteractable { get; set; }
     
     public IResourceInventory ResourceInventory { get; private set; }
-    public RecipeInventory RecipeInventory { get; private set; }
+    public IRecipeInventory RecipeInventory { get; private set; }
     public CraftController CraftController { get; private set; }
 
     private void Awake()
@@ -60,7 +60,7 @@ public interface IHaveIResourceInventory
 
 public interface IHaveRecipeInventory
 {
-    RecipeInventory RecipeInventory { get; }
+    IRecipeInventory RecipeInventory { get; }
 }
 
 public interface IHaveInventories : IHaveIResourceInventory,IHaveRecipeInventory

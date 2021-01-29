@@ -4,10 +4,10 @@ using UnityEngine;
 public class UiRecipesCanvas : MonoBehaviour
 {
     [SerializeField]private UiRecipeSlot[] _recipeSlots;
-    private RecipeInventory _recipeInventory;
+    private IRecipeInventory _recipeInventory;
     public UiRecipeSlot[] Slots => _recipeSlots;
     
-    public void Bind(RecipeInventory recipeInventory)
+    public void Bind(IRecipeInventory recipeInventory)
     {
         _recipeInventory =recipeInventory;
         _recipeInventory.OnRecipeAdded += HandleRecipeAdded;
