@@ -2,7 +2,7 @@
 
 public class TestGemsBox : MonoBehaviour,IHaveIHandlePlayerInteractableFocus,IHaveIInteraclable
 {
-    [SerializeField] private LootableResource _gems;
+    [SerializeField] private Lootable _gems;
     [SerializeField] private int _minAmount;
     [SerializeField] private int _maxAmount;
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class ResourceInventoryDictionary : IResourceInventory
 {
@@ -27,5 +28,11 @@ public class ResourceInventoryDictionary : IResourceInventory
         }
         
         OnResourceAdded?.Invoke(_resourcesList);
+    }
+
+    public int GetResourceAmount(ResourceDefinition definition)
+    {
+        Debug.LogWarning("implement GetResourceAmount !");
+        return 0;
     }
 }

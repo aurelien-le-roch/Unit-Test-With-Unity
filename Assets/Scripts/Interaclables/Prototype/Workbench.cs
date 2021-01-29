@@ -49,7 +49,7 @@ public class WorkbenchInteractable : IHandlePlayerInteractableFocus, IInteraclab
     }
 }
 
-public class CraftController
+public class CraftControllerTest
 {
          // dic de recettes with crafting setting (nombre de craft possible,min goal,nombre de tentative a chaque craft,...)
          // the dic se refresh sous diff condition ...

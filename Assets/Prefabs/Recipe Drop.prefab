@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6191814086094961308}
   - component: {fileID: 7387827382057687126}
   m_Layer: 0
-  m_Name: Gems Drop after Mine
+  m_Name: Recipe Drop
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 464eefe7edafdaf4ab0a9276639933e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _definition: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c, type: 2}
+  _definition: {fileID: 11400000, guid: da37ad6eac8df4746a8b7a79a4a7e753, type: 2}
 --- !u!50 &7387827382057687126
 Rigidbody2D:
   serializedVersion: 4
@@ -138,7 +138,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 286cc5e34057ddc46819131455933728, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 3defbf0f24390aa4a8245970b4d79af7, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

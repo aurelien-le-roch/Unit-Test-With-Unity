@@ -155,7 +155,7 @@ namespace InventoryTest
 
     public class ui_resource_inventory_canvas
     {
-        private UiResourceCanvas _uiResourceCanvas;
+        private UiResourcesCanvas _uiResourcesCanvas;
         private IResourceInventory _resourceInventory;
         
         private ResourceDefinition _resourceDefinition1;
@@ -165,9 +165,9 @@ namespace InventoryTest
         [SetUp]
         public void Init()
         {
-            _uiResourceCanvas=GetUiResourceCanvas();
+            _uiResourcesCanvas=GetUiResourceCanvas();
             _resourceInventory= Substitute.For<IResourceInventory>();
-            _uiResourceCanvas.Bind(_resourceInventory);
+            _uiResourcesCanvas.Bind(_resourceInventory);
             
             _resourceDefinition1= AssetDatabase.LoadAssetAtPath<ResourceDefinition>("Assets/Scripts/ScriptableObject/unit_test_resource1.asset");
             _resourceDefinition2= AssetDatabase.LoadAssetAtPath<ResourceDefinition>("Assets/Scripts/ScriptableObject/unit_test_resource2.asset");
@@ -177,7 +177,7 @@ namespace InventoryTest
         [Test]
         public void slots_get_clear_after_binding()
         {
-            foreach (var slot in _uiResourceCanvas.Slots)
+            foreach (var slot in _uiResourcesCanvas.Slots)
             {
                 Assert.AreEqual(null,slot.Sprite);
                 Assert.AreEqual(string.Empty,slot.TextValue);
@@ -187,7 +187,7 @@ namespace InventoryTest
         [Test]
         public void there_are_40_slots()
         {
-            Assert.AreEqual(40,_uiResourceCanvas.Slots.Length);
+            Assert.AreEqual(40,_uiResourcesCanvas.Slots.Length);
         }
 
         [Test]
@@ -204,32 +204,32 @@ namespace InventoryTest
             _resourceInventory.OnResourceAdded += Raise.Event<Action<List<ResourceDefinitionWithAmount>>>(test);
 
             //Assert
-            for (int i = 0; i < _uiResourceCanvas.Slots.Length; i++)
+            for (int i = 0; i < _uiResourcesCanvas.Slots.Length; i++)
             {
                 if (i == 0)
                 {
-                    Assert.AreEqual(_resourceDefinition1.Sprite,_uiResourceCanvas.Slots[i].Sprite);
-                    Assert.AreEqual(1.ToString(),_uiResourceCanvas.Slots[i].TextValue);
+                    Assert.AreEqual(_resourceDefinition1.Sprite,_uiResourcesCanvas.Slots[i].Sprite);
+                    Assert.AreEqual(1.ToString(),_uiResourcesCanvas.Slots[i].TextValue);
                 }else if (i == 1)
                 {
-                    Assert.AreEqual(_resourceDefinition2.Sprite,_uiResourceCanvas.Slots[i].Sprite);
-                    Assert.AreEqual(2.ToString(),_uiResourceCanvas.Slots[i].TextValue);
+                    Assert.AreEqual(_resourceDefinition2.Sprite,_uiResourcesCanvas.Slots[i].Sprite);
+                    Assert.AreEqual(2.ToString(),_uiResourcesCanvas.Slots[i].TextValue);
                 }else if (i == 2)
                 {
-                    Assert.AreEqual(_resourceDefinition3.Sprite,_uiResourceCanvas.Slots[i].Sprite);
-                    Assert.AreEqual(3.ToString(),_uiResourceCanvas.Slots[i].TextValue); 
+                    Assert.AreEqual(_resourceDefinition3.Sprite,_uiResourcesCanvas.Slots[i].Sprite);
+                    Assert.AreEqual(3.ToString(),_uiResourcesCanvas.Slots[i].TextValue); 
                 }
                 else
                 {
-                    Assert.AreEqual(null,_uiResourceCanvas.Slots[i].Sprite);
-                    Assert.AreEqual(string.Empty,_uiResourceCanvas.Slots[i].TextValue); 
+                    Assert.AreEqual(null,_uiResourcesCanvas.Slots[i].Sprite);
+                    Assert.AreEqual(string.Empty,_uiResourcesCanvas.Slots[i].TextValue); 
                 }
             }
         }
 
-        private UiResourceCanvas GetUiResourceCanvas()
+        private UiResourcesCanvas GetUiResourceCanvas()
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<UiResourceCanvas>("Assets/Prefabs/Ui/Ui Resource Canvas.prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<UiResourcesCanvas>("Assets/Prefabs/Ui/Ui Resource Canvas.prefab");
             return Object.Instantiate(prefab);
         }
     }

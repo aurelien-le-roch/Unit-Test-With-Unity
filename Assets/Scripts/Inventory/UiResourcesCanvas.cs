@@ -3,20 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UiResourceCanvas : MonoBehaviour
+public class UiResourcesCanvas : MonoBehaviour
 {
-    [SerializeField] private GameObject _panel;
     [SerializeField]private UiResourceSlot[] _resourceSlots;
     private IResourceInventory _resourceInventory;
     public UiResourceSlot[] Slots => _resourceSlots;
-
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.I))
-            EnableDisablePanel();
-    }
-
+    
     public void Bind(IResourceInventory resourceInventory)
     {
         _resourceInventory =resourceInventory;
@@ -34,7 +26,6 @@ public class UiResourceCanvas : MonoBehaviour
 
     private void HandleResourceAdded(List<ResourceDefinitionWithAmount> playerResources)
     {
-        
         for (int i = 0; i < _resourceSlots.Length; i++)
         {
 
@@ -47,10 +38,5 @@ public class UiResourceCanvas : MonoBehaviour
                 _resourceSlots[i].Clear();
             }
         }
-    }
-
-    public void EnableDisablePanel()
-    {
-        _panel.SetActive(!_panel.activeSelf);
     }
 }

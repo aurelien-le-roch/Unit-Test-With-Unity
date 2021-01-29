@@ -14,6 +14,8 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
     public IPlayerHandleInteractable HandleInteractable { get; set; }
     
     public IResourceInventory ResourceInventory { get; private set; }
+    public RecipeInventory RecipeInventory { get; private set; }
+    public CraftController CraftController { get; private set; }
 
     private void Awake()
     {
@@ -22,6 +24,8 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer
         _mover = new PlayerMover(this);
         HandleInteractable = new PlayerHandleInteractable(this);
         ResourceInventory = new ResourceInventoryList();
+        RecipeInventory = new RecipeInventory();
+        CraftController=new CraftController(this);
     }
 
     private void Update()
