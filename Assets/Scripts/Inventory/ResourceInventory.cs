@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
-public class ResourceInventoryList : IResourceInventory
+public class ResourceInventory : IResourceInventory
 {
     private List<ResourceDefinitionWithAmount> _resourcesList = new List<ResourceDefinitionWithAmount>();
     public event Action<List<ResourceDefinitionWithAmount>> OnResourceChange;
@@ -10,6 +11,7 @@ public class ResourceInventoryList : IResourceInventory
     private List<ResourceDefinition> _checkListForInventoryTransfer=new List<ResourceDefinition>();
     public void Add(ResourceDefinition resourceDefinition, int amount)
     {
+        amount = Mathf.Abs(amount);
         bool resourceAdded = false;
         foreach (var resource in _resourcesList)
         {
@@ -44,8 +46,9 @@ public class ResourceInventoryList : IResourceInventory
         }
     }
 
-    private void Remove(ResourceDefinition resourceDefinition, int amount)
+    public void Remove(ResourceDefinition resourceDefinition, int amount)
     {
+        amount = Mathf.Abs(amount);
         for (int i = _resourcesList.Count;i-->0;)
         {
             if (_resourcesList[i].Definition != resourceDefinition)
@@ -67,7 +70,6 @@ public class ResourceInventoryList : IResourceInventory
         {
             Remove(resourceWithAmount.ResourceDefinition, resourceWithAmount.Amount);
         }
-
     }
     
     public int GetResourceAmount(ResourceDefinition definition)

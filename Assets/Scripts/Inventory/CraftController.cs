@@ -2,7 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class CraftController
+public interface ICraftController
+{
+    event Action<Dictionary<RecipeDefinition, int>> OnRecipeCraftableAmountChange;
+    event Action<RecipeDefinition> OnNewCurrentRecipeFocus;
+    event Action OnRecipeFocusReset;
+    void SetNewCurrentRecipeInFocus(RecipeDefinition recipeDefinition);
+    void Craft();
+}
+
+public class CraftController : ICraftController
 {
     private readonly Player _player;
     private IResourceInventory ResourceInventory => _player.ResourceInventory;
@@ -20,7 +29,7 @@ public class CraftController
     
     public CraftController(Player player)
     {
-        _resourceInventoryForHoldingCraftResources=new ResourceInventoryList();
+        _resourceInventoryForHoldingCraftResources=new ResourceInventory();
         _player = player;
         ResourceInventory.OnResourceChange += RefreshRecipeCraftableAmount;
         RecipeInventory.OnRecipeAdded += RefreshRecipeCraftableAmount;

@@ -19,8 +19,7 @@ public class UiBindingUiCraftCanvas : MonoBehaviour
         var uiResourceCanvas = GetComponent<UiResourcesCanvas>();
         var uiCraftCanvas = GetComponent<UiCraftCanvas>();
         
-        uiRecipesCanvas.Bind(player.RecipeInventory);
-        uiRecipesCanvas.BindCraftControllerForSlot(player.CraftController);
+        uiRecipesCanvas.Bind(player.RecipeInventory,player.CraftController);
         uiResourceCanvas.Bind(player.ResourceInventory);
         uiCraftCanvas.Bind(player.CraftController);
     }

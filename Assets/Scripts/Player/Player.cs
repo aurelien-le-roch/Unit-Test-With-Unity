@@ -23,7 +23,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
         PlayerInput=new PlayerInput();
         _mover = new PlayerMover(this);
         HandleInteractable = new PlayerHandleInteractable(this);
-        ResourceInventory = new ResourceInventoryList();
+        ResourceInventory = new ResourceInventory();
         RecipeInventory = new RecipeInventory();
         CraftController=new CraftController(this);
     }

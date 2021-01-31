@@ -11,8 +11,8 @@ public class UiRecipeSlot : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _textForCraftableAmount;
     [SerializeField] private UiResourcesNeededForRecipeSlot[] _uiResourcesNeededSlots;
 
-    private RecipeDefinition _recipeDefinition;
-    private CraftController _craftController;
+    public RecipeDefinition RecipeDefinition { get; private set; }
+    private ICraftController _craftController;
 
     private void Awake()
     {
@@ -22,7 +22,7 @@ public class UiRecipeSlot : MonoBehaviour
     public void Refresh(RecipeDefinition recipe)
     {
         _imageForSprite.sprite = recipe.Sprite;
-        _recipeDefinition = recipe;
+        RecipeDefinition = recipe;
         for (int i = 0; i < _uiResourcesNeededSlots.Length; i++)
         {
             if (i<recipe.ResourcesNeeded.Count)
@@ -38,14 +38,14 @@ public class UiRecipeSlot : MonoBehaviour
 
     private void HandleRecipeClick()
     {
-        _craftController.SetNewCurrentRecipeInFocus(_recipeDefinition);
+        _craftController.SetNewCurrentRecipeInFocus(RecipeDefinition);
     }
     private void RefreshCraftableAmount(int amount)
     {
         _textForCraftableAmount.text = $"x{amount}";
     }
     
-    public void Bind(CraftController craftController)
+    public void Bind(ICraftController craftController)
     {
         _craftController = craftController;
         craftController.OnRecipeCraftableAmountChange += HandleRecipeCraftableAmountChange;
@@ -53,9 +53,9 @@ public class UiRecipeSlot : MonoBehaviour
 
     private void HandleRecipeCraftableAmountChange(Dictionary<RecipeDefinition, int> recipesCraftableAmount)
     {
-        if(_recipeDefinition==null)
+        if(RecipeDefinition==null)
             return;
         
-        RefreshCraftableAmount(recipesCraftableAmount[_recipeDefinition]);
+        RefreshCraftableAmount(recipesCraftableAmount[RecipeDefinition]);
     }
 }

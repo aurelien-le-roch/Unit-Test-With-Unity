@@ -10,8 +10,7 @@ public class RecipeDefinition : ScriptableObject, ICanBeAddedToInventories
     [SerializeField] private ScriptableObject _recipeResult;
     public Sprite Sprite => _sprite;
     public List<ResourceDefinitionWithAmountStruct> ResourcesNeeded => _resourcesNeeded;
-
-
+    
     public void AddToInventories(IHaveInventories iHaveInventories)
     {
         iHaveInventories.RecipeInventory.Add(this);
@@ -49,4 +48,10 @@ public struct ResourceDefinitionWithAmountStruct
 {
     public ResourceDefinition ResourceDefinition;
     public int Amount;
+    
+    public ResourceDefinitionWithAmountStruct(ResourceDefinition resourceDefinition,int amount)
+    {
+        ResourceDefinition = resourceDefinition;
+        Amount = amount;
+    }
 }

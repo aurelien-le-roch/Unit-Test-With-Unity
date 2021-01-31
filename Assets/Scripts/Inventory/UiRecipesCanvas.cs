@@ -3,19 +3,21 @@ using UnityEngine;
 
 public class UiRecipesCanvas : MonoBehaviour
 {
-    [SerializeField]private UiRecipeSlot[] _recipeSlots;
+    [SerializeField] private UiRecipeSlot[] _slots;
     private IRecipeInventory _recipeInventory;
-    public UiRecipeSlot[] Slots => _recipeSlots;
+    public UiRecipeSlot[] Slots => _slots;
     
-    public void Bind(IRecipeInventory recipeInventory)
+    public void Bind(IRecipeInventory recipeInventory,ICraftController craftController)
     {
-        _recipeInventory =recipeInventory;
+        _recipeInventory = recipeInventory;
         _recipeInventory.OnRecipeAdded += HandleRecipeAdded;
+        
         DisableAllSlot();
         
+        BindSlots(craftController);
     }
-
-    public void BindCraftControllerForSlot(CraftController craftController)
+    
+    private void BindSlots(ICraftController craftController)
     {
         foreach (var recipeSlot in Slots)
         {
@@ -25,7 +27,7 @@ public class UiRecipesCanvas : MonoBehaviour
     
     private void DisableAllSlot()
     {
-        foreach (var slot in _recipeSlots)
+        foreach (var slot in Slots)
         {
             slot.gameObject.SetActive(false);
         }
@@ -33,16 +35,16 @@ public class UiRecipesCanvas : MonoBehaviour
 
     private void HandleRecipeAdded(List<RecipeDefinition> recipes)
     {
-        for (int i = 0; i < _recipeSlots.Length; i++)
+        for (int i = 0; i < Slots.Length; i++)
         {
             if (i < recipes.Count)
             {
-                _recipeSlots[i].Refresh(recipes[i]);
-                _recipeSlots[i].gameObject.SetActive(true);
+                Slots[i].Refresh(recipes[i]);
+                Slots[i].gameObject.SetActive(true);
             }
             else
             {
-                _recipeSlots[i].gameObject.SetActive(false);
+                Slots[i].gameObject.SetActive(false);
             }
         }
     } 

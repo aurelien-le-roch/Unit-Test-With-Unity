@@ -20,8 +20,6 @@ namespace InventoryTest
             resourceDefinition.AddToInventories(subHaveInventories);
             
             subHaveInventories.ResourceInventory.Received().Add(resourceDefinition,resourceDefinition.AmountToAddInTheResourceInventory);
-            
-            
         }
     }
 }
