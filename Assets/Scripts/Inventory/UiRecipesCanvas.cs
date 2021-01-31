@@ -11,7 +11,8 @@ public class UiRecipesCanvas : MonoBehaviour
     {
         _recipeInventory =recipeInventory;
         _recipeInventory.OnRecipeAdded += HandleRecipeAdded;
-        ClearAllSlots();
+        DisableAllSlot();
+        
     }
 
     public void BindCraftControllerForSlot(CraftController craftController)
@@ -22,11 +23,11 @@ public class UiRecipesCanvas : MonoBehaviour
         }
     }
     
-    private void ClearAllSlots()
+    private void DisableAllSlot()
     {
         foreach (var slot in _recipeSlots)
         {
-            slot.Clear();
+            slot.gameObject.SetActive(false);
         }
     }
 
@@ -34,14 +35,14 @@ public class UiRecipesCanvas : MonoBehaviour
     {
         for (int i = 0; i < _recipeSlots.Length; i++)
         {
-
             if (i < recipes.Count)
             {
                 _recipeSlots[i].Refresh(recipes[i]);
+                _recipeSlots[i].gameObject.SetActive(true);
             }
             else
             {
-                _recipeSlots[i].Clear();
+                _recipeSlots[i].gameObject.SetActive(false);
             }
         }
     } 

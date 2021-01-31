@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 public class ResourceInventoryList : IResourceInventory
 {
-    private List<ResourceDefinitionWithAmount> _resourcesListList=new List<ResourceDefinitionWithAmount>();
-    public event Action<List<ResourceDefinitionWithAmount> > OnResourceAdded;
-    public List<ResourceDefinitionWithAmount> ResourcesList => _resourcesListList;
+    private List<ResourceDefinitionWithAmount> _resourcesList = new List<ResourceDefinitionWithAmount>();
+    public event Action<List<ResourceDefinitionWithAmount>> OnResourceChange;
+    public List<ResourceDefinitionWithAmount> ResourcesList => _resourcesList;
 
+    private List<ResourceDefinition> _checkListForInventoryTransfer=new List<ResourceDefinition>();
     public void Add(ResourceDefinition resourceDefinition, int amount)
     {
-        bool resourceAdded=false;
-        foreach (var resource in _resourcesListList)
+        bool resourceAdded = false;
+        foreach (var resource in _resourcesList)
         {
             if (resource.Definition == resourceDefinition)
             {
@@ -22,14 +22,57 @@ public class ResourceInventoryList : IResourceInventory
 
         if (resourceAdded == false)
         {
-            _resourcesListList.Add(new ResourceDefinitionWithAmount(resourceDefinition,amount));
+            _resourcesList.Add(new ResourceDefinitionWithAmount(resourceDefinition, amount));
         }
-        OnResourceAdded?.Invoke(_resourcesListList);
+
+        OnResourceChange?.Invoke(_resourcesList);
+    }
+    
+    public void AddResources(List<ResourceDefinitionWithAmountStruct> resources)
+    {
+        foreach (var resourceWithAmount in resources)
+        {
+            Add(resourceWithAmount.ResourceDefinition,resourceWithAmount.Amount);
+        }
+    }
+
+    public void RemoveAll()
+    {
+        for (int i = _resourcesList.Count; i-- > 0;)
+        {
+            Remove(_resourcesList[i].Definition,_resourcesList[i].Amount);
+        }
+    }
+
+    private void Remove(ResourceDefinition resourceDefinition, int amount)
+    {
+        for (int i = _resourcesList.Count;i-->0;)
+        {
+            if (_resourcesList[i].Definition != resourceDefinition)
+                continue;
+            
+            _resourcesList[i].ReduceAmount(amount);
+            
+            if (_resourcesList[i].Amount > 0)
+                continue;
+            
+            _resourcesList.Remove(_resourcesList[i]);
+        }
+        OnResourceChange?.Invoke(_resourcesList);
+    }
+    
+    private void RemoveResources(List<ResourceDefinitionWithAmountStruct> resourcesToRemove)
+    {
+        foreach (var resourceWithAmount in resourcesToRemove)
+        {
+            Remove(resourceWithAmount.ResourceDefinition, resourceWithAmount.Amount);
+        }
+
     }
     
     public int GetResourceAmount(ResourceDefinition definition)
     {
-        foreach (var resourceInInventory in _resourcesListList)
+        foreach (var resourceInInventory in _resourcesList)
         {
             if (resourceInInventory.Definition == definition)
                 return resourceInInventory.Amount;
@@ -37,68 +80,50 @@ public class ResourceInventoryList : IResourceInventory
 
         return 0;
     }
+
+    public bool SendResourceToOtherInventory(IResourceInventory otherInventory, List<ResourceDefinitionWithAmountStruct> resourcesToSend)
+    {
+        if (AllTheResourcesWithTheirAmountArePresentAndListIsSafe(resourcesToSend)==false)
+            return false;
+
+        RemoveResources(resourcesToSend);
+        otherInventory.AddResources(resourcesToSend);
+        return true;
+    }
+
+    private bool AllTheResourcesWithTheirAmountArePresentAndListIsSafe(List<ResourceDefinitionWithAmountStruct> resourcesToSend)
+    {
+        if (OnlyOneTypeOfEachResourceDefinition(resourcesToSend) == false)
+            return false;
+        
+        foreach (var resourceWithAmount in resourcesToSend)
+        {
+            if (GetResourceAmount(resourceWithAmount.ResourceDefinition) < resourceWithAmount.Amount)
+                return false;
+        }
+        return true;
+    }
+
+    private bool OnlyOneTypeOfEachResourceDefinition(List<ResourceDefinitionWithAmountStruct> resourcesToSend)
+    {
+        _checkListForInventoryTransfer.Clear();
+
+        foreach (var resourceWithAmount in resourcesToSend)
+        {
+            if (_checkListForInventoryTransfer.Contains(resourceWithAmount.ResourceDefinition))
+                return false;
+            _checkListForInventoryTransfer.Add(resourceWithAmount.ResourceDefinition);
+        }
+
+        return true;
+    }
+    
+    
 }
 
 public interface IRecipeInventory
 {
     void Add(RecipeDefinition newRecipe);
-    event Action<List<RecipeDefinition> > OnRecipeAdded;
-}
-
-public class CraftController
-{
-    private readonly Player _player;
-    private IResourceInventory ResourceInventory => _player.ResourceInventory;
-    private IRecipeInventory RecipeInventory => _player.RecipeInventory;
-
-    private Dictionary<RecipeDefinition, int> _recipeCraftableAmount=new Dictionary<RecipeDefinition, int>();
-
-    public event Action<Dictionary<RecipeDefinition, int>> OnRecipeCraftableAmountChange;
-    public CraftController(Player player)
-    {
-        _player = player;
-        ResourceInventory.OnResourceAdded += RefreshRecipeCraftableAmount;
-        RecipeInventory.OnRecipeAdded += RefreshRecipeCraftableAmount;
-    }
-
-    private void RefreshRecipeCraftableAmount(List<RecipeDefinition> recipes)
-    {
-        AddRecipeToDictionaryKey(recipes);
-        RefreshRecipeCraftableAmount();
-    }
-
-    private void AddRecipeToDictionaryKey(List<RecipeDefinition> recipesOwn)
-    {
-        foreach (var recipeDefinitionOwn in recipesOwn)
-        {
-            if (_recipeCraftableAmount.ContainsKey(recipeDefinitionOwn) == false)
-            {
-                _recipeCraftableAmount.Add(recipeDefinitionOwn,0);
-            }
-        }
-    }
-
-    private void RefreshRecipeCraftableAmount(List<ResourceDefinitionWithAmount> resourcesOwn)
-    {
-        RefreshRecipeCraftableAmount();
-    }
-
-    private void RefreshRecipeCraftableAmount()
-    {
-        var amountChange = false;
-        foreach (var key in _recipeCraftableAmount.Keys.ToList())
-        {
-            var newAmount = key.GetCraftableAmount(ResourceInventory);
-            if (newAmount != _recipeCraftableAmount[key])
-            {
-                _recipeCraftableAmount[key] = newAmount;
-                amountChange = true;
-            }
-        }
-
-        if (amountChange)
-        {
-            OnRecipeCraftableAmountChange?.Invoke(_recipeCraftableAmount);
-        }
-    }
+    event Action<List<RecipeDefinition>> OnRecipeAdded;
+    bool Contain(RecipeDefinition recipeDefinition);
 }

@@ -6,6 +6,8 @@ public class RecipeInventory : IRecipeInventory
 {
     private List<RecipeDefinition> _recipes = new List<RecipeDefinition>();
     public event Action<List<RecipeDefinition> > OnRecipeAdded;
+    
+
     public List<RecipeDefinition> Recipes => _recipes;
     public void Add(RecipeDefinition newRecipe)
     {
@@ -14,5 +16,10 @@ public class RecipeInventory : IRecipeInventory
         
         _recipes.Add(newRecipe);
         OnRecipeAdded?.Invoke(_recipes);
+    }
+    
+    public bool Contain(RecipeDefinition recipeDefinition)
+    {
+        return _recipes.Contains(recipeDefinition);
     }
 }

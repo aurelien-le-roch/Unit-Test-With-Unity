@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Button))]
 public class UiRecipeSlot : MonoBehaviour
 {
     [SerializeField] private Image _imageForSprite;
@@ -10,6 +12,13 @@ public class UiRecipeSlot : MonoBehaviour
     [SerializeField] private UiResourcesNeededForRecipeSlot[] _uiResourcesNeededSlots;
 
     private RecipeDefinition _recipeDefinition;
+    private CraftController _craftController;
+
+    private void Awake()
+    {
+        GetComponent<Button>().onClick.AddListener(HandleRecipeClick);
+    }
+
     public void Refresh(RecipeDefinition recipe)
     {
         _imageForSprite.sprite = recipe.Sprite;
@@ -18,7 +27,7 @@ public class UiRecipeSlot : MonoBehaviour
         {
             if (i<recipe.ResourcesNeeded.Count)
             {
-                _uiResourcesNeededSlots[i].Refresh(recipe.ResourcesNeeded[i]);
+                _uiResourcesNeededSlots[i].Refresh(recipe.ResourcesNeeded[i].ResourceDefinition,recipe.ResourcesNeeded[i].Amount);
             }
             else
             {
@@ -27,22 +36,18 @@ public class UiRecipeSlot : MonoBehaviour
         }
     }
 
+    private void HandleRecipeClick()
+    {
+        _craftController.SetNewCurrentRecipeInFocus(_recipeDefinition);
+    }
     private void RefreshCraftableAmount(int amount)
     {
         _textForCraftableAmount.text = $"x{amount}";
     }
-    public void Clear()
-    {
-        _imageForSprite.sprite = null;
-        _recipeDefinition = null;
-        foreach (var resourcesNeededForRecipeSlot in _uiResourcesNeededSlots)
-        {
-            resourcesNeededForRecipeSlot.Clear();
-        }
-    }
-
+    
     public void Bind(CraftController craftController)
     {
+        _craftController = craftController;
         craftController.OnRecipeCraftableAmountChange += HandleRecipeCraftableAmountChange;
     }
 

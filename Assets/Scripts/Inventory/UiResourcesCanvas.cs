@@ -12,7 +12,7 @@ public class UiResourcesCanvas : MonoBehaviour
     public void Bind(IResourceInventory resourceInventory)
     {
         _resourceInventory =resourceInventory;
-        _resourceInventory.OnResourceAdded += HandleResourceAdded;
+        _resourceInventory.OnResourceChange += HandleResourceAdded;
         ClearAllSlots();
     }
     

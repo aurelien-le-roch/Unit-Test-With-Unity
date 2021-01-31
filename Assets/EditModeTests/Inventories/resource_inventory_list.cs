@@ -47,40 +47,40 @@ namespace InventoryTest
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_once()
         {
             var dummySubscriber = Substitute.For<IDummySubscriber>();
-            _resourceInventoryList.OnResourceAdded += dummySubscriber.HandleOnResourceAdded;
+            _resourceInventoryList.OnResourceChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventoryList.Add(_resourceDefinition1,1);
-            dummySubscriber.Received().HandleOnResourceAdded(_resourceInventoryList.ResourcesList);
+            dummySubscriber.Received().HandleOnResourceChange(_resourceInventoryList.ResourcesList);
         }
         
         [Test]
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_multiple_time_with_same_resource()
         {
             var dummySubscriber = Substitute.For<IDummySubscriber>();
-            _resourceInventoryList.OnResourceAdded += dummySubscriber.HandleOnResourceAdded;
+            _resourceInventoryList.OnResourceChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventoryList.Add(_resourceDefinition1,1);
             dummySubscriber.ClearReceivedCalls();
             _resourceInventoryList.Add(_resourceDefinition1,3);
-            dummySubscriber.Received().HandleOnResourceAdded(_resourceInventoryList.ResourcesList);
+            dummySubscriber.Received().HandleOnResourceChange(_resourceInventoryList.ResourcesList);
             dummySubscriber.ClearReceivedCalls();
             _resourceInventoryList.Add(_resourceDefinition1,2);
-            dummySubscriber.Received().HandleOnResourceAdded(_resourceInventoryList.ResourcesList);
+            dummySubscriber.Received().HandleOnResourceChange(_resourceInventoryList.ResourcesList);
         }
         
         [Test]
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_multiple_time_with_different_resource()
         {
             var dummySubscriber = Substitute.For<IDummySubscriber>();
-            _resourceInventoryList.OnResourceAdded += dummySubscriber.HandleOnResourceAdded;
+            _resourceInventoryList.OnResourceChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventoryList.Add(_resourceDefinition1,1);
             dummySubscriber.ClearReceivedCalls();
             _resourceInventoryList.Add(_resourceDefinition2,2);
-            dummySubscriber.Received().HandleOnResourceAdded(_resourceInventoryList.ResourcesList);
+            dummySubscriber.Received().HandleOnResourceChange(_resourceInventoryList.ResourcesList);
             dummySubscriber.ClearReceivedCalls();
             _resourceInventoryList.Add(_resourceDefinition3,4);
-            dummySubscriber.Received().HandleOnResourceAdded(_resourceInventoryList.ResourcesList);
+            dummySubscriber.Received().HandleOnResourceChange(_resourceInventoryList.ResourcesList);
         }
         
         [Test]
@@ -201,7 +201,7 @@ namespace InventoryTest
                 new ResourceDefinitionWithAmount(_resourceDefinition3,3),
             };
             //Act
-            _resourceInventory.OnResourceAdded += Raise.Event<Action<List<ResourceDefinitionWithAmount>>>(test);
+            _resourceInventory.OnResourceChange += Raise.Event<Action<List<ResourceDefinitionWithAmount>>>(test);
 
             //Assert
             for (int i = 0; i < _uiResourcesCanvas.Slots.Length; i++)
@@ -287,7 +287,7 @@ namespace InventoryTest
 
     public interface IDummySubscriber
     {
-        void HandleOnResourceAdded(List<ResourceDefinitionWithAmount> resources);
+        void HandleOnResourceChange(List<ResourceDefinitionWithAmount> resources);
         void HandleOnRecipeAdded(List<RecipeDefinition> recipes);
     }
 }

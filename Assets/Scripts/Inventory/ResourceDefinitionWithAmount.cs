@@ -10,12 +10,14 @@ public class ResourceDefinitionWithAmount
     
     public ResourceDefinition Definition { get; }
     public int Amount { get;  private set; }
-    public void SetAmount(Dictionary<ResourceDefinition,int> resources)
-    {
-        Amount = resources[Definition];
-    }
+    
     public void IncreaseAmount(int value)
     {
         Amount += value;
+    }
+
+    public void ReduceAmount(int value)
+    {
+        Amount -= value;
     }
 }
