@@ -1,21 +1,30 @@
 ﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "ResourceDefinition")]
-public class ResourceDefinition : ScriptableObject,ICanBeAddedToInventories
+public class ResourceDefinition : ScriptableObjectInInventories
 {
-    [SerializeField] private Sprite _sprite;
-    [SerializeField] private int _amountToAddInTheResourceInventory=1;
-    public Sprite Sprite => _sprite;
-
-    public int AmountToAddInTheResourceInventory => _amountToAddInTheResourceInventory;
-
-    public void AddToInventories(IHaveInventories iHaveInventories)
+    public override void AddToInventory(IHaveInventories iHaveInventories,int amount)
     {
-        iHaveInventories.ResourceInventory.Add(this,_amountToAddInTheResourceInventory);
+        iHaveInventories.ResourceInventory.Add(this,amount);
     }
+
+    public override void RemoveFromInventory(IHaveInventories iHaveInventories, int amount)
+    {
+        iHaveInventories.ResourceInventory.Remove(this, amount);
+    }
+
+    public override int GetAmountInInventory(IHaveInventories iHaveInventories)
+    {
+        return iHaveInventories.ResourceInventory.GetAmountOf(this);
+    }
+    
 }
 
 public interface ICanBeAddedToInventories
 {
-    void AddToInventories(IHaveInventories iHaveInventories);
+    void AddToInventory(IHaveInventories iHaveInventories,int amount);
+    
+    void RemoveFromInventory(IHaveInventories iHaveInventories,int amount);
+    int GetAmountInInventory(IHaveInventories iHaveInventories);
+    Sprite Sprite { get; }
 }

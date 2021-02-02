@@ -3,44 +3,23 @@ using UnityEngine;
 
 public class Lootable : MonoBehaviour
 {
-    [SerializeField] private ScriptableObject _definition;
-
+    [SerializeField] private ScriptableObjectInInventories _definition;
+    [SerializeField] private int _amount = 1;
     public ICanBeAddedToInventories CanBeAddedToInventories { get; set; }
-    
+    public int Amount => _amount;
+
     private void Awake()
     {
-        if (_definition is ICanBeAddedToInventories canBeAddedToPlayer)
-        {
-            CanBeAddedToInventories = canBeAddedToPlayer;
-        }
+        CanBeAddedToInventories = _definition;
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (_definition is ICanBeAddedToInventories == false)
-        {
-            Debug.LogWarning("Attention the scriptable object drop here must implement, ICanBeAddedTo player interface",this);
-            return;
-        }
-        
         var iHaveInventories = other.GetComponentInParent<IHaveInventories>();
         if (iHaveInventories == null)
             return;
-        
-        CanBeAddedToInventories.AddToInventories(iHaveInventories); 
-        Destroy(gameObject);
-    }
 
-    public void OnValidate()
-    {
-        if (_definition is ICanBeAddedToInventories canBeAddedToPlayer)
-        {
-            CanBeAddedToInventories = canBeAddedToPlayer;
-        }
-        else
-        {
-            CanBeAddedToInventories=null;
-            Debug.LogWarning("the scriptable object drop here must implement, ICanBeAddedTo player interface",this);
-        }
+        CanBeAddedToInventories.AddToInventory(iHaveInventories, Amount);
+        Destroy(gameObject);
     }
 }

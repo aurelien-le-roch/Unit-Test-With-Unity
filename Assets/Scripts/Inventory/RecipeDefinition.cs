@@ -3,27 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "RecipeDefinition")]
-public class RecipeDefinition : ScriptableObject, ICanBeAddedToInventories
+public class RecipeDefinition : ScriptableObjectInInventories
 {
-    [SerializeField] private Sprite _sprite;
-    [SerializeField] private List<ResourceDefinitionWithAmountStruct> _resourcesNeeded;
-    [SerializeField] private ScriptableObject _recipeResult;
-    public Sprite Sprite => _sprite;
-    public List<ResourceDefinitionWithAmountStruct> ResourcesNeeded => _resourcesNeeded;
-    
-    public void AddToInventories(IHaveInventories iHaveInventories)
+    [SerializeField] private List<ICanBeAddedToInventoriesWithAmountStruct> _inInventoryObjectsNeeded;
+    [SerializeField] private ScriptableObjectInInventories _recipeResult;
+    public List<ICanBeAddedToInventoriesWithAmountStruct> InInventoryObjectsNeeded => _inInventoryObjectsNeeded;
+
+    public override void AddToInventory(IHaveInventories iHaveInventories,int amount)
     {
-        iHaveInventories.RecipeInventory.Add(this);
+        iHaveInventories.RecipeInventory.Add(this,amount);
     }
 
-    public int GetCraftableAmount(IResourceInventory resourceInventory)
+    public override void RemoveFromInventory(IHaveInventories iHaveInventories, int amount)
+    {
+        iHaveInventories.RecipeInventory.Remove(this, amount);
+    }
+
+    public override int GetAmountInInventory(IHaveInventories iHaveInventories)
+    {
+        return iHaveInventories.RecipeInventory.GetAmountOf(this);
+    }
+    
+    public int GetCraftableAmount(IHaveInventories ihaveHaveInventories)
     {
         int smallerCraftableAmount = int.MaxValue;
-        for (int i = 0; i < _resourcesNeeded.Count; i++)
+        
+        for (int i = 0; i < _inInventoryObjectsNeeded.Count; i++)
         {
-            int resourceAvailable = resourceInventory.GetResourceAmount(_resourcesNeeded[i].ResourceDefinition);
-            int resourceNeeded = _resourcesNeeded[i].Amount;
-            int craftableAmount = (int) Mathf.Floor(resourceAvailable / resourceNeeded);
+            int amountInInventory =
+                _inInventoryObjectsNeeded[i].ICanBeAddedToInventories.GetAmountInInventory(ihaveHaveInventories);
+            
+            int resourceNeeded = _inInventoryObjectsNeeded[i].Amount;
+            
+            int craftableAmount = (int) Mathf.Floor(amountInInventory / resourceNeeded);
+            
             if (craftableAmount < smallerCraftableAmount)
                 smallerCraftableAmount = craftableAmount;
         }
@@ -36,22 +49,25 @@ public class RecipeDefinition : ScriptableObject, ICanBeAddedToInventories
 
     public ICanBeAddedToInventories GetRecipeResult()
     {
-        if (_recipeResult is ICanBeAddedToInventories canBeAddedToInventories)
-            return canBeAddedToInventories;
-
-        return null;
+        return _recipeResult;
     }
 }
 
 [Serializable]
-public struct ResourceDefinitionWithAmountStruct
+public struct ICanBeAddedToInventoriesWithAmountStruct 
 {
-    public ResourceDefinition ResourceDefinition;
+    [SerializeField] private ScriptableObjectInInventories ScriptableObjectInInventories;
+    public ICanBeAddedToInventories ICanBeAddedToInventories => ScriptableObjectInInventories;
     public int Amount;
     
-    public ResourceDefinitionWithAmountStruct(ResourceDefinition resourceDefinition,int amount)
-    {
-        ResourceDefinition = resourceDefinition;
-        Amount = amount;
-    }
+}
+
+public abstract class ScriptableObjectInInventories : ScriptableObject, ICanBeAddedToInventories
+{
+    [SerializeField] private Sprite _sprite;
+    public Sprite Sprite => _sprite;
+    public abstract void AddToInventory(IHaveInventories iHaveInventories,int amount);
+    public abstract void RemoveFromInventory(IHaveInventories iHaveInventories, int amount);
+    
+    public abstract int GetAmountInInventory(IHaveInventories iHaveInventories); 
 }

@@ -88,28 +88,28 @@ namespace InventoryTest
         public void resource_with_the_same_definition_are_added_with_the_correct_amount_()
         {
             _resourceInventory.Add(_resourceDefinition1,1);
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition1));
+            Assert.AreEqual(1,_resourceInventory.GetAmountOf(_resourceDefinition1));
             _resourceInventory.Add(_resourceDefinition1,2);
-            Assert.AreEqual(3,_resourceInventory.GetResourceAmount(_resourceDefinition1));
+            Assert.AreEqual(3,_resourceInventory.GetAmountOf(_resourceDefinition1));
             _resourceInventory.Add(_resourceDefinition1,4);
-            Assert.AreEqual(7,_resourceInventory.GetResourceAmount(_resourceDefinition1));
+            Assert.AreEqual(7,_resourceInventory.GetAmountOf(_resourceDefinition1));
         }
         
         [Test]
         public void resource_with_different_definition_are_added_with_the_correct_amount_()
         {
             _resourceInventory.Add(_resourceDefinition1,1);
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition3));
+            Assert.AreEqual(1,_resourceInventory.GetAmountOf(_resourceDefinition1));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition2));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition3));
             _resourceInventory.Add(_resourceDefinition2,2);
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition3));
+            Assert.AreEqual(1,_resourceInventory.GetAmountOf(_resourceDefinition1));
+            Assert.AreEqual(2,_resourceInventory.GetAmountOf(_resourceDefinition2));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition3));
             _resourceInventory.Add(_resourceDefinition3,4);
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            Assert.AreEqual(4,_resourceInventory.GetResourceAmount(_resourceDefinition3));
+            Assert.AreEqual(1,_resourceInventory.GetAmountOf(_resourceDefinition1));
+            Assert.AreEqual(2,_resourceInventory.GetAmountOf(_resourceDefinition2));
+            Assert.AreEqual(4,_resourceInventory.GetAmountOf(_resourceDefinition3));
         }
 
         [TestCase(-2)]
@@ -117,38 +117,7 @@ namespace InventoryTest
         public void Add_negative_amount_add_positive_amount(int amountAdded)
         {
             _resourceInventory.Add(_resourceDefinition1,amountAdded);
-            Assert.AreEqual(Mathf.Abs(amountAdded),_resourceInventory.GetResourceAmount(_resourceDefinition1));
-        }
-
-        [Test]
-        public void AddResources_add_the_correct_amount_of_resources()
-        {
-            var resourcesToAdd = new List<ResourceDefinitionWithAmountStruct>
-            {
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition2, 2),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4)
-            };
-            _resourceInventory.AddResources(resourcesToAdd);
-            Assert.AreEqual(8,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-        }
-        
-        
-        [Test]
-        public void AddResources_raise_OnResourceChange_event()
-        {
-            var resourcesToAdd = new List<ResourceDefinitionWithAmountStruct>
-            {
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition2, 2),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4)
-            };
-
-            var dummySubscriber = Substitute.For<IDummySubscriberForInventories>();
-            _resourceInventory.OnResourceChange += dummySubscriber.HandleOnResourceChange;
-            _resourceInventory.AddResources(resourcesToAdd);
-            dummySubscriber.Received().HandleOnResourceChange(_resourceInventory.ResourcesList);
+            Assert.AreEqual(Mathf.Abs(amountAdded),_resourceInventory.GetAmountOf(_resourceDefinition1));
         }
 
         [Test]
@@ -161,9 +130,9 @@ namespace InventoryTest
             _resourceInventory.Remove(_resourceDefinition2, 10);
             _resourceInventory.Remove(_resourceDefinition3, 5);
             
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition3));
+            Assert.AreEqual(2,_resourceInventory.GetAmountOf(_resourceDefinition1));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition2));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition3));
         }
         
         [Test]
@@ -176,9 +145,9 @@ namespace InventoryTest
             _resourceInventory.Remove(_resourceDefinition2, -10);
             _resourceInventory.Remove(_resourceDefinition3, -5);
             
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition3));
+            Assert.AreEqual(2,_resourceInventory.GetAmountOf(_resourceDefinition1));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition2));
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition3));
         }
 
         [Test]
@@ -237,10 +206,10 @@ namespace InventoryTest
 
             var resourceInList = _resourceInventory.ResourcesList[0].Amount;
             
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition1),resourceInList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition1),resourceInList);
             _resourceInventory.Add(_resourceDefinition1,4);
             resourceInList = _resourceInventory.ResourcesList[0].Amount;
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition1),resourceInList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition1),resourceInList);
         }
         
         [Test]
@@ -252,84 +221,21 @@ namespace InventoryTest
             var resource1InList = _resourceInventory.ResourcesList[0].Amount;
             var resource2InList = _resourceInventory.ResourcesList[1].Amount;
             
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition1),resource1InList);
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition2),resource2InList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition1),resource1InList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition2),resource2InList);
             _resourceInventory.Add(_resourceDefinition2,4);
             resource2InList = _resourceInventory.ResourcesList[1].Amount;
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition1),resource1InList);
-            Assert.AreEqual(_resourceInventory.GetResourceAmount(_resourceDefinition2),resource2InList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition1),resource1InList);
+            Assert.AreEqual(_resourceInventory.GetAmountOf(_resourceDefinition2),resource2InList);
         }
         
         [Test]
         public void GetResourceAmount_return_0__when_call_with_a_resource_that_not_in_inventory()
         {
             _resourceInventory.Add(_resourceDefinition1,1);
-            Assert.AreEqual(0,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-        }
-
-        [Test]
-        public void
-            SendResourceToOtherInventory_return_false_and_no_resources_are_send_when_resourceToSend_list_given_got_multiple_time_the_same_resource_type()
-        {
-            var resourcesToSend = new List<ResourceDefinitionWithAmountStruct>
-            {
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition2, 2),
-            };
-            var dummyResourceInventory = Substitute.For<IResourceInventory>();
-            _resourceInventory.Add(_resourceDefinition1,2);
-            _resourceInventory.Add(_resourceDefinition2,1);
-            var result = _resourceInventory.SendResourceToOtherInventory(dummyResourceInventory, resourcesToSend);
-            
-            Assert.IsFalse(result);
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            dummyResourceInventory.DidNotReceive().AddResources(resourcesToSend);
+            Assert.AreEqual(0,_resourceInventory.GetAmountOf(_resourceDefinition2));
         }
         
-        
-        [Test]
-        public void
-            SendResourceToOtherInventory_return_false_and_no_resources_are_send_when_resourceToSend_are_not_present_in_the_sender_inventory()
-        {
-            var resourcesToSend = new List<ResourceDefinitionWithAmountStruct>
-            {
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition2, 2),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4)
-            };
-            var dummyResourceInventory = Substitute.For<IResourceInventory>();
-            _resourceInventory.AddResources(resourcesToSend);
-            
-            var result = _resourceInventory.SendResourceToOtherInventory(dummyResourceInventory, resourcesToSend);
-            
-            Assert.IsFalse(result);
-            Assert.AreEqual(8,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(2,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            dummyResourceInventory.DidNotReceive().AddResources(resourcesToSend);
-        }
-        
-        
-        [Test]
-        public void
-            SendResourceToOtherInventory_return_true_and_resources_are_send_when_resource_in_list_to_send_have_only_one_type_and_resourceToSend_are_present_in_the_sender_inventory()
-        {
-            var resourcesToSend = new List<ResourceDefinitionWithAmountStruct>
-            {
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition1, 4),
-                new ResourceDefinitionWithAmountStruct(_resourceDefinition2, 2),
-            };
-            var dummyResourceInventory = Substitute.For<IResourceInventory>();
-            _resourceInventory.Add(_resourceDefinition1, 8);
-            _resourceInventory.Add(_resourceDefinition2,3);
-            
-            var result = _resourceInventory.SendResourceToOtherInventory(dummyResourceInventory, resourcesToSend);
-            
-            Assert.IsTrue(result);
-            Assert.AreEqual(4,_resourceInventory.GetResourceAmount(_resourceDefinition1));
-            Assert.AreEqual(1,_resourceInventory.GetResourceAmount(_resourceDefinition2));
-            dummyResourceInventory.Received().AddResources(resourcesToSend);
-        }
         private ResourceInventory GetInventory()
         {
             return new ResourceInventory();
@@ -339,6 +245,6 @@ namespace InventoryTest
     public interface IDummySubscriberForInventories
     {
         void HandleOnResourceChange(List<ResourceDefinitionWithAmount> resources);
-        void HandleOnRecipeAdded(List<RecipeDefinition> recipes);
+        void HandleOnRecipeChange(List<RecipeDefinitionWithAmount> recipes);
     }
 }

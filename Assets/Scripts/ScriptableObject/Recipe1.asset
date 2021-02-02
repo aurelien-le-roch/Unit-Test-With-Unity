@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Recipe1
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: 64c49a8307ffab24bbfe1dee8b9d1dae, type: 3}
-  _resourcesNeeded:
-  - ResourceDefinition: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c,
+  _inInventoryObjectsNeeded:
+  - ScriptableObjectInInventories: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c,
       type: 2}
     Amount: 3
   _recipeResult: {fileID: 11400000, guid: a84e98515b3b17f4ab978557e03eb165, type: 2}

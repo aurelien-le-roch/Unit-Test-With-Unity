@@ -10,7 +10,7 @@ public class UiRecipesCanvas : MonoBehaviour
     public void Bind(IRecipeInventory recipeInventory,ICraftController craftController)
     {
         _recipeInventory = recipeInventory;
-        _recipeInventory.OnRecipeAdded += HandleRecipeAdded;
+        _recipeInventory.OnRecipeChange += HandleRecipeAdded;
         
         DisableAllSlot();
         
@@ -33,17 +33,18 @@ public class UiRecipesCanvas : MonoBehaviour
         }
     }
 
-    private void HandleRecipeAdded(List<RecipeDefinition> recipes)
+    private void HandleRecipeAdded(List<RecipeDefinitionWithAmount> recipes)
     {
         for (int i = 0; i < Slots.Length; i++)
         {
             if (i < recipes.Count)
             {
-                Slots[i].Refresh(recipes[i]);
+                Slots[i].Refresh(recipes[i].Definition);
                 Slots[i].gameObject.SetActive(true);
             }
             else
             {
+                Slots[i].Clear();
                 Slots[i].gameObject.SetActive(false);
             }
         }

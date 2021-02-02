@@ -6,15 +6,15 @@ public class UiResourcesNeededForRecipeSlot : MonoBehaviour
 {
     [SerializeField] private Image _imageForSprite;
     [SerializeField] private TextMeshProUGUI _textForAmount;
-    public void Refresh(ResourceDefinition resourceDefinition,int amount)
+    public void Refresh(ICanBeAddedToInventories inInventoriesDefinition,int amount)
     {
-        _imageForSprite.sprite = resourceDefinition.Sprite;
+        _imageForSprite.sprite = inInventoriesDefinition.Sprite;
         _textForAmount.text = amount.ToString();
     }
 
     public void Clear()
     {
         _imageForSprite.sprite = null;
-        _textForAmount.text = null;
+        _textForAmount.text = string.Empty;
     }
 }

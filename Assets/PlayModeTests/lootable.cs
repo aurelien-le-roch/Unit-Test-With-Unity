@@ -34,7 +34,7 @@ namespace LootableTest
 
             foreach (var lootable in lootablesInScene)
             {
-                lootable.CanBeAddedToInventories.Received().AddToInventories(playerWithSubIHaveInventories);
+                lootable.CanBeAddedToInventories.Received().AddToInventory(playerWithSubIHaveInventories,lootable.Amount);
             }
         }
         
@@ -63,31 +63,7 @@ namespace LootableTest
                 Assert.IsTrue(lootable==null);
             }
         }
-
-        [UnityTest]
-        public IEnumerator
-            when_player_enter_lootable_that_are_not_setup_correctly_in_editor_AddToInventories_method_is_not_call()
-        {
-            yield return LoadInteractablesTestsScene();
-            var playerWithSubIHaveInventories = GetPlayer();
-
-            var prefab = AssetDatabase.LoadAssetAtPath<Lootable>
-                ("Assets/PlayModeTests/lootableNotSetupCorrectlyInEditorForTest.prefab");
-            var lootableNotSetupCorrectlyInEditor =
-                GameObject.Instantiate(prefab, Vector3.one * 100, Quaternion.identity);
-
-            var sub = Substitute.For<ICanBeAddedToInventories>();
-            lootableNotSetupCorrectlyInEditor.CanBeAddedToInventories = sub;
-
-            lootableNotSetupCorrectlyInEditor.transform.position = playerWithSubIHaveInventories.transform.position;
-
-            yield return new WaitForFixedUpdate();
-            
-            lootableNotSetupCorrectlyInEditor.CanBeAddedToInventories.DidNotReceive()
-                .AddToInventories(playerWithSubIHaveInventories);
-        }
-
-
+        
         private IEnumerator LoadInteractablesTestsScene()
         {
             var operation = SceneManager.LoadSceneAsync("LootablesTestsScene");

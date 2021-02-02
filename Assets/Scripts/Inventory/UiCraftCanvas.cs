@@ -32,10 +32,10 @@ public class UiCraftCanvas : MonoBehaviour
 
         for (int i = 0; i < _slots.Length; i++)
         {
-            if (i < recipeDefinition.ResourcesNeeded.Count)
+            if (i < recipeDefinition.InInventoryObjectsNeeded.Count)
             {
-                var definition = recipeDefinition.ResourcesNeeded[i].ResourceDefinition;
-                var amount = recipeDefinition.ResourcesNeeded[i].Amount;
+                var definition = recipeDefinition.InInventoryObjectsNeeded[i].ICanBeAddedToInventories;
+                var amount = recipeDefinition.InInventoryObjectsNeeded[i].Amount;
                 _slots[i].Refresh(definition,amount);
             }
             else

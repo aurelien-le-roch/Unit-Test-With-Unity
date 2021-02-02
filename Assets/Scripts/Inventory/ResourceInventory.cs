@@ -8,14 +8,13 @@ public class ResourceInventory : IResourceInventory
     public event Action<List<ResourceDefinitionWithAmount>> OnResourceChange;
     public List<ResourceDefinitionWithAmount> ResourcesList => _resourcesList;
 
-    private List<ResourceDefinition> _checkListForInventoryTransfer=new List<ResourceDefinition>();
     public void Add(ResourceDefinition resourceDefinition, int amount)
     {
         amount = Mathf.Abs(amount);
         bool resourceAdded = false;
         foreach (var resource in _resourcesList)
         {
-            if (resource.Definition == resourceDefinition)
+            if (resource.Definition == resourceDefinition) 
             {
                 resource.IncreaseAmount(amount);
                 resourceAdded = true;
@@ -30,14 +29,6 @@ public class ResourceInventory : IResourceInventory
         OnResourceChange?.Invoke(_resourcesList);
     }
     
-    public void AddResources(List<ResourceDefinitionWithAmountStruct> resources)
-    {
-        foreach (var resourceWithAmount in resources)
-        {
-            Add(resourceWithAmount.ResourceDefinition,resourceWithAmount.Amount);
-        }
-    }
-
     public void RemoveAll()
     {
         for (int i = _resourcesList.Count; i-- > 0;)
@@ -64,15 +55,7 @@ public class ResourceInventory : IResourceInventory
         OnResourceChange?.Invoke(_resourcesList);
     }
     
-    private void RemoveResources(List<ResourceDefinitionWithAmountStruct> resourcesToRemove)
-    {
-        foreach (var resourceWithAmount in resourcesToRemove)
-        {
-            Remove(resourceWithAmount.ResourceDefinition, resourceWithAmount.Amount);
-        }
-    }
-    
-    public int GetResourceAmount(ResourceDefinition definition)
+    public int GetAmountOf(ResourceDefinition definition)
     {
         foreach (var resourceInInventory in _resourcesList)
         {
@@ -82,50 +65,13 @@ public class ResourceInventory : IResourceInventory
 
         return 0;
     }
-
-    public bool SendResourceToOtherInventory(IResourceInventory otherInventory, List<ResourceDefinitionWithAmountStruct> resourcesToSend)
-    {
-        if (AllTheResourcesWithTheirAmountArePresentAndListIsSafe(resourcesToSend)==false)
-            return false;
-
-        RemoveResources(resourcesToSend);
-        otherInventory.AddResources(resourcesToSend);
-        return true;
-    }
-
-    private bool AllTheResourcesWithTheirAmountArePresentAndListIsSafe(List<ResourceDefinitionWithAmountStruct> resourcesToSend)
-    {
-        if (OnlyOneTypeOfEachResourceDefinition(resourcesToSend) == false)
-            return false;
-        
-        foreach (var resourceWithAmount in resourcesToSend)
-        {
-            if (GetResourceAmount(resourceWithAmount.ResourceDefinition) < resourceWithAmount.Amount)
-                return false;
-        }
-        return true;
-    }
-
-    private bool OnlyOneTypeOfEachResourceDefinition(List<ResourceDefinitionWithAmountStruct> resourcesToSend)
-    {
-        _checkListForInventoryTransfer.Clear();
-
-        foreach (var resourceWithAmount in resourcesToSend)
-        {
-            if (_checkListForInventoryTransfer.Contains(resourceWithAmount.ResourceDefinition))
-                return false;
-            _checkListForInventoryTransfer.Add(resourceWithAmount.ResourceDefinition);
-        }
-
-        return true;
-    }
-    
-    
 }
 
 public interface IRecipeInventory
 {
-    void Add(RecipeDefinition newRecipe);
-    event Action<List<RecipeDefinition>> OnRecipeAdded;
+    void Add(RecipeDefinition newRecipe,int amount);
+    event Action<List<RecipeDefinitionWithAmount>> OnRecipeChange;
     bool Contain(RecipeDefinition recipeDefinition);
+    int GetAmountOf(RecipeDefinition recipeDefinition);
+    void Remove(RecipeDefinition recipeDefinition, int amount);
 }

@@ -13,9 +13,9 @@ public interface ICraftController
 
 public class CraftController : ICraftController
 {
-    private readonly Player _player;
-    private IResourceInventory ResourceInventory => _player.ResourceInventory;
-    private IRecipeInventory RecipeInventory => _player.RecipeInventory;
+    private readonly IHaveInventories _iHaveInventories;
+    private IResourceInventory ResourceInventory => _iHaveInventories.ResourceInventory;
+    private IRecipeInventory RecipeInventory => _iHaveInventories.RecipeInventory;
 
     private Dictionary<RecipeDefinition, int> _recipeCraftableAmount = new Dictionary<RecipeDefinition, int>();
     private RecipeDefinition _currentRecipeInFocus;
@@ -27,27 +27,27 @@ public class CraftController : ICraftController
     public event Action OnRecipeFocusReset;
 
     
-    public CraftController(Player player)
+    public CraftController(IHaveInventories iHaveInventories)
     {
         _resourceInventoryForHoldingCraftResources=new ResourceInventory();
-        _player = player;
+        _iHaveInventories = iHaveInventories;
         ResourceInventory.OnResourceChange += RefreshRecipeCraftableAmount;
-        RecipeInventory.OnRecipeAdded += RefreshRecipeCraftableAmount;
+        RecipeInventory.OnRecipeChange += RefreshRecipeCraftableAmount;
     }
 
-    private void RefreshRecipeCraftableAmount(List<RecipeDefinition> recipes)
+    private void RefreshRecipeCraftableAmount(List<RecipeDefinitionWithAmount> recipes)
     {
         AddRecipeToDictionaryKey(recipes);
         RefreshRecipeCraftableAmount();
     }
 
-    private void AddRecipeToDictionaryKey(List<RecipeDefinition> recipesOwn)
+    private void AddRecipeToDictionaryKey(List<RecipeDefinitionWithAmount> recipesOwn)
     {
         foreach (var recipeDefinitionOwn in recipesOwn)
         {
-            if (_recipeCraftableAmount.ContainsKey(recipeDefinitionOwn) == false)
+            if (_recipeCraftableAmount.ContainsKey(recipeDefinitionOwn.Definition) == false)
             {
-                _recipeCraftableAmount.Add(recipeDefinitionOwn, 0);
+                _recipeCraftableAmount.Add(recipeDefinitionOwn.Definition, 0);
             }
         }
     }
@@ -62,7 +62,7 @@ public class CraftController : ICraftController
         var amountChange = false;
         foreach (var key in _recipeCraftableAmount.Keys.ToList())
         {
-            var newAmount = key.GetCraftableAmount(ResourceInventory);
+            var newAmount = key.GetCraftableAmount(_iHaveInventories);
             if (newAmount != _recipeCraftableAmount[key])
             {
                 _recipeCraftableAmount[key] = newAmount;
@@ -82,25 +82,13 @@ public class CraftController : ICraftController
         if (recipeInInventory == false)
             return;
         
-        var amountThatCanBeCrafted = recipeDefinition.GetCraftableAmount(ResourceInventory);
+        var amountThatCanBeCrafted = recipeDefinition.GetCraftableAmount(_iHaveInventories);
         
         if(amountThatCanBeCrafted<=0)
             return;
 
-        if (_currentRecipeInFocus != null)
-        {
-            //need to check that _resourceInventoryForHoldingCraftResources have the resources ?
-            _resourceInventoryForHoldingCraftResources.SendResourceToOtherInventory(ResourceInventory,
-                _currentRecipeInFocus.ResourcesNeeded);
-        }
         
         _currentRecipeInFocus = recipeDefinition;
-        
-        //send ResourceToOtherInventory
-        bool resourceGetSend =ResourceInventory.SendResourceToOtherInventory(_resourceInventoryForHoldingCraftResources,recipeDefinition.ResourcesNeeded);
-
-        if (resourceGetSend == false)
-            _currentRecipeInFocus = null;
         
         OnNewCurrentRecipeFocus?.Invoke(_currentRecipeInFocus);
     }
@@ -110,16 +98,19 @@ public class CraftController : ICraftController
         if(_currentRecipeInFocus==null)
             return;
         
-        if(_currentRecipeInFocus.GetCraftableAmount(_resourceInventoryForHoldingCraftResources)<1)
+        if(_currentRecipeInFocus.GetCraftableAmount(_iHaveInventories)<1)
             return;
 
         var recipeResult = _currentRecipeInFocus.GetRecipeResult();
         if(recipeResult==null)
             return;
 
-        _resourceInventoryForHoldingCraftResources.RemoveAll();
+        foreach (var itemNeeded in _currentRecipeInFocus.InInventoryObjectsNeeded)
+        {
+            itemNeeded.ICanBeAddedToInventories.RemoveFromInventory(_iHaveInventories,itemNeeded.Amount);
+        }
         _currentRecipeInFocus = null;
         OnRecipeFocusReset?.Invoke();
-        recipeResult.AddToInventories(_player);
+        recipeResult.AddToInventory(_iHaveInventories,1);
     }
 }

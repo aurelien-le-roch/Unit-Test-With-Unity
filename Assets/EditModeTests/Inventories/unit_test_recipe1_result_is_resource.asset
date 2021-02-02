@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: unit_test_recipe1_result_is_resource
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: 64c49a8307ffab24bbfe1dee8b9d1dae, type: 3}
-  _resourcesNeeded:
-  - ResourceDefinition: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c,
+  _inInventoryObjectsNeeded:
+  - ScriptableObjectInInventories: {fileID: 11400000, guid: 6aa16f6574c4e094b80fdcc1153aad2e,
       type: 2}
     Amount: 3
+  - ScriptableObjectInInventories: {fileID: 11400000}
+    Amount: 1
   _recipeResult: {fileID: 11400000, guid: 6aa16f6574c4e094b80fdcc1153aad2e, type: 2}

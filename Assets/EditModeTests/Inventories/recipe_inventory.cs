@@ -10,8 +10,8 @@ namespace InventoryTest
         {
             var recipeInventory = new RecipeInventory();
             var recipeDefinition = Helpers.GetRecipeDefinition1ResourceResult();
-            recipeInventory.Add(recipeDefinition);
-            Assert.AreEqual(recipeDefinition,recipeInventory.Recipes[0]);
+            recipeInventory.Add(recipeDefinition,1);
+            Assert.AreEqual(recipeDefinition,recipeInventory.Recipes[0].Definition);
             Assert.AreEqual(1,recipeInventory.Recipes.Count);
         }
         
@@ -20,24 +20,24 @@ namespace InventoryTest
         {
             var recipeInventory = new RecipeInventory();
             var recipeDefinition = Helpers.GetRecipeDefinition1ResourceResult();
-            recipeInventory.Add(recipeDefinition);
-            recipeInventory.Add(recipeDefinition);
+            recipeInventory.Add(recipeDefinition,1);
+            recipeInventory.Add(recipeDefinition,1);
             Assert.AreEqual(1,recipeInventory.Recipes.Count);
         }
         
         [Test]
-        public void when_Add_method_is_call_with_already_added_recipeDefinition_OnRecipeAdded_dont_get_raise()
+        public void when_Add_method_is_call_with_already_added_recipeDefinition_OnRecipeAdded_get_raise()
         {
             var recipeInventory = new RecipeInventory();
             var recipeDefinition = Helpers.GetRecipeDefinition1ResourceResult();
             var sub = Substitute.For<IDummySubscriberForInventories>();
-            recipeInventory.OnRecipeAdded += sub.HandleOnRecipeAdded;
+            recipeInventory.OnRecipeChange += sub.HandleOnRecipeChange;
             
-            recipeInventory.Add(recipeDefinition);
+            recipeInventory.Add(recipeDefinition,1);
             sub.ClearReceivedCalls();
-            recipeInventory.Add(recipeDefinition);
+            recipeInventory.Add(recipeDefinition,1);
             
-            sub.DidNotReceive().HandleOnRecipeAdded(recipeInventory.Recipes);
+            sub.Received().HandleOnRecipeChange(recipeInventory.Recipes);
         }
         
         [Test]
@@ -46,11 +46,11 @@ namespace InventoryTest
             var recipeInventory = new RecipeInventory();
             var recipeDefinition = Helpers.GetRecipeDefinition1ResourceResult();
             var sub = Substitute.For<IDummySubscriberForInventories>();
-            recipeInventory.OnRecipeAdded += sub.HandleOnRecipeAdded;
+            recipeInventory.OnRecipeChange += sub.HandleOnRecipeChange;
             
-            recipeInventory.Add(recipeDefinition);
+            recipeInventory.Add(recipeDefinition,1);
             
-            sub.Received().HandleOnRecipeAdded(recipeInventory.Recipes);
+            sub.Received().HandleOnRecipeChange(recipeInventory.Recipes);
         }
     }
 }

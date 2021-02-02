@@ -161,7 +161,7 @@ GameObject:
   - component: {fileID: 2326049697253331423}
   - component: {fileID: 4884141487289275806}
   m_Layer: 5
-  m_Name: Ui Resources Needed For Recipe Slot
+  m_Name: Ui Resources Needed For Recipe Slot (recipe panel)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

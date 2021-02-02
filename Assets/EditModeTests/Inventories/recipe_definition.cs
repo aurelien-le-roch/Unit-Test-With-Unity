@@ -12,41 +12,25 @@ namespace InventoryTest
             var recipeDefinition = Helpers.GetRecipeDefinition1ResourceResult();
             var sub = Substitute.For<IHaveInventories>();
 
-            recipeDefinition.AddToInventories(sub);
+            recipeDefinition.AddToInventory(sub,1);
 
-            sub.RecipeInventory.Received().Add(recipeDefinition);
+            sub.RecipeInventory.Received().Add(recipeDefinition,1);
         }
 
         [Test]
-        public void get_correct_amount_from_GetCraftableAmount_method_call_from_recipe_with_one_type_of_resource()
+        public void get_correct_amount_from_GetCraftableAmount()
         {
             var recipeDefinition1 = Helpers.GetRecipeDefinition1ResourceResult();
-            var resourceNeeded1 = recipeDefinition1.ResourcesNeeded[0].ResourceDefinition;
-            var resourceNeededAmount1 = recipeDefinition1.ResourcesNeeded[0].Amount;
+            var objectNeededForRecipe1 = Helpers.GetResourceDefinition1();
+            var objectNeededForRecipe2 = Helpers.GetRecipeDefinition1ResourceResult();
 
-            var subResourceInventory = Substitute.For<IResourceInventory>();
-            subResourceInventory.GetResourceAmount(resourceNeeded1).Returns(resourceNeededAmount1 * 3);
+            var subIHaveInventories = Substitute.For<IHaveInventories>();
+            subIHaveInventories.ResourceInventory.GetAmountOf(objectNeededForRecipe1).Returns(12);
+            subIHaveInventories.RecipeInventory.GetAmountOf(objectNeededForRecipe2).Returns(2);
 
-            Assert.AreEqual(3, recipeDefinition1.GetCraftableAmount(subResourceInventory));
+            Assert.AreEqual(2,recipeDefinition1.GetCraftableAmount(subIHaveInventories));
         }
 
-        [Test]
-        public void get_correct_amount_from_GetCraftableAmount_method_call_from_recipe_with_two_type_of_resource()
-        {
-            var recipeDefinition2 = Helpers.GetRecipeDefinition2RecipeResult();
-            var resourceNeeded1 = recipeDefinition2.ResourcesNeeded[0].ResourceDefinition;
-            var resourceNeededAmount1 = recipeDefinition2.ResourcesNeeded[0].Amount;
-
-
-            var resourceNeeded2 = recipeDefinition2.ResourcesNeeded[1].ResourceDefinition;
-            var resourceNeededAmount2 = recipeDefinition2.ResourcesNeeded[1].Amount;
-
-            var subResourceInventory = Substitute.For<IResourceInventory>();
-            subResourceInventory.GetResourceAmount(resourceNeeded1).Returns(resourceNeededAmount1 * 3);
-            subResourceInventory.GetResourceAmount(resourceNeeded2).Returns(resourceNeededAmount2);
-
-            Assert.AreEqual(1, recipeDefinition2.GetCraftableAmount(subResourceInventory));
-        }
 
         [Test]
         public void GetRecipeResult_return_ICanBeAddedToInventories_if_setup_correctly()
@@ -56,6 +40,13 @@ namespace InventoryTest
 
             Assert.IsInstanceOf<ICanBeAddedToInventories>(recipeWithResourceResult.GetRecipeResult());
             Assert.IsInstanceOf<ICanBeAddedToInventories>(recipeWithRecipeResult.GetRecipeResult());
+        }
+
+        [Test]
+        public void Sprite_dont_return_null_when_sprite_is_setup()
+        {
+            var recipe1 = Helpers.GetRecipeDefinition1ResourceResult();
+            Assert.IsNotNull(recipe1.Sprite);
         }
 
         [Test]

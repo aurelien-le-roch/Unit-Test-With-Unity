@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: Recipe3
   m_EditorClassIdentifier: 
   _sprite: {fileID: 21300000, guid: 6168b4df30398ac46bf38eb67123101b, type: 3}
-  _resourcesNeeded:
-  - ResourceDefinition: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c,
+  _inInventoryObjectsNeeded:
+  - ScriptableObjectInInventories: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c,
       type: 2}
     Amount: 99
-  - ResourceDefinition: {fileID: 11400000, guid: 0ba49e629a6c7a24c9758c8e20d24ce3,
+  - ScriptableObjectInInventories: {fileID: 11400000, guid: 0ba49e629a6c7a24c9758c8e20d24ce3,
       type: 2}
     Amount: 99
-  _recipeResult: {fileID: 11400000, guid: b8bf3d825ebd1564380c26ad31aa117c, type: 2}
+  _recipeResult: {fileID: 11400000, guid: f877c4e800421ed4c996447a67f330dc, type: 2}

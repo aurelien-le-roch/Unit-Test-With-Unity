@@ -1,9 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using NSubstitute;
+﻿using NSubstitute;
 using NUnit.Framework;
-using UnityEditor;
-using UnityEngine;
 
 namespace InventoryTest
 {
@@ -17,9 +13,9 @@ namespace InventoryTest
             var subHaveInventories = Substitute.For<IHaveInventories>();
             
             
-            resourceDefinition.AddToInventories(subHaveInventories);
+            resourceDefinition.AddToInventory(subHaveInventories,1);
             
-            subHaveInventories.ResourceInventory.Received().Add(resourceDefinition,resourceDefinition.AmountToAddInTheResourceInventory);
+            subHaveInventories.ResourceInventory.Received().Add(resourceDefinition,1);
         }
     }
 }

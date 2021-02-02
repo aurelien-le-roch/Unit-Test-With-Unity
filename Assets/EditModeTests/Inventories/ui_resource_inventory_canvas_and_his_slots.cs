@@ -8,7 +8,7 @@ using Object = UnityEngine.Object;
 
 namespace InventoryTest
 {
-    public class ui_resource_inventory_canvas
+    public class ui_resource_inventory_canvas_and_his_slots
     {
         private UiResourcesCanvas _uiResourcesCanvas;
         private IResourceInventory _resourceInventory;
@@ -85,49 +85,6 @@ namespace InventoryTest
         private UiResourcesCanvas GetUiResourceCanvas()
         {
             var prefab = AssetDatabase.LoadAssetAtPath<UiResourcesCanvas>("Assets/Prefabs/Ui/Ui Resource Canvas.prefab");
-            return Object.Instantiate(prefab);
-        }
-    }
-
-    public class ui_recipe_inventory_canvas
-    {
-        private UiRecipesCanvas _uiRecipesCanvas;
-        private IRecipeInventory _subRecipeInventory;
-        private ICraftController _subCraftController;
-        private RecipeDefinition _recipe1;
-        private RecipeDefinition _recipe2;
-
-        [SetUp]
-        public void Init()
-        {
-            _uiRecipesCanvas=GetUiRecipesCanvas();
-            _subRecipeInventory = Substitute.For<IRecipeInventory>();
-            _subCraftController = Substitute.For<ICraftController>();
-
-            _uiRecipesCanvas.Bind(_subRecipeInventory,_subCraftController);
-            
-            _recipe1= Helpers.GetRecipeDefinition1ResourceResult();
-            _recipe2= Helpers.GetRecipeDefinition2RecipeResult();
-        }
-
-        [Test]
-        public void slots_get_disable_after_binding()
-        {
-            foreach (var slot in _uiRecipesCanvas.Slots)
-            {
-                Assert.IsFalse(slot.gameObject.activeSelf);
-            }
-        }
-
-        [Test]
-        public void there_are_5_slots()
-        {
-            Assert.AreEqual(5,_uiRecipesCanvas.Slots.Length);
-        }
-        
-        private UiRecipesCanvas GetUiRecipesCanvas()
-        {
-            var prefab = AssetDatabase.LoadAssetAtPath<UiRecipesCanvas>("Assets/Prefabs/Ui/Ui Craft Canvas.prefab");
             return Object.Instantiate(prefab);
         }
     }
