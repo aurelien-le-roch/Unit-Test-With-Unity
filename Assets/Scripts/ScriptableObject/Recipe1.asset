@@ -18,3 +18,4 @@ MonoBehaviour:
       type: 2}
     Amount: 3
   _recipeResult: {fileID: 11400000, guid: a84e98515b3b17f4ab978557e03eb165, type: 2}
+  _craftMiniGamesEnum: 1

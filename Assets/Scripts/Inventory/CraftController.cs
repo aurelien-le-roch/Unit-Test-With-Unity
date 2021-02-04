@@ -1,113 +1,133 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-public interface ICraftController
-{
-    //event Action<Dictionary<RecipeDefinition, int>> OnRecipeCraftableAmountChange;
-    //event Action<RecipeDefinition> OnNewCurrentRecipeFocus;
-    //event Action OnRecipeFocusReset;
-    void SetNewCurrentRecipeInFocus(RecipeDefinition recipeDefinition);
-    //void Craft();
-}
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CraftController : ICraftController
 {
     private readonly IHaveInventories _iHaveInventories;
-    //private IResourceInventory ResourceInventory => _iHaveInventories.ResourceInventory;
     private IRecipeInventory RecipeInventory => _iHaveInventories.RecipeInventory;
 
-    //private Dictionary<RecipeDefinition, int> _recipeCraftableAmount = new Dictionary<RecipeDefinition, int>();
     private RecipeDefinition _currentRecipeInFocus;
-    
-    //public event Action<Dictionary<RecipeDefinition, int>> OnRecipeCraftableAmountChange;
+    private Scene _miniGameScene;
+    private EmptyCraftMiniGame _emptyCraftMiniGame;
+
     public event Action<RecipeDefinition> OnNewCurrentRecipeFocus;
     public event Action OnRecipeFocusReset;
-    
+
     public CraftController(IHaveInventories iHaveInventories)
     {
         _iHaveInventories = iHaveInventories;
-        //ResourceInventory.OnResourcesChange += RefreshRecipeCraftableAmount;
-        //RecipeInventory.OnRecipeChange += RefreshRecipeCraftableAmount;
     }
 
-//    private void RefreshRecipeCraftableAmount(List<RecipeDefinitionWithAmount> recipes)
-//    {
-//        AddRecipeToDictionaryKey(recipes);
-//        RefreshRecipeCraftableAmount();
-//    }
-
-//    private void AddRecipeToDictionaryKey(List<RecipeDefinitionWithAmount> recipesOwn)
-//    {
-//        foreach (var recipeDefinitionOwn in recipesOwn)
-//        {
-//            if (_recipeCraftableAmount.ContainsKey(recipeDefinitionOwn.Definition) == false)
-//            {
-//                _recipeCraftableAmount.Add(recipeDefinitionOwn.Definition, 0);
-//            }
-//        }
-//    }
-
-//    private void RefreshRecipeCraftableAmount(List<ResourceDefinitionWithAmount> resourcesOwn)
-//    {
-//        RefreshRecipeCraftableAmount();
-//    }
-//
-//    private void RefreshRecipeCraftableAmount()
-//    {
-//        var amountChange = false;
-//        foreach (var key in _recipeCraftableAmount.Keys.ToList())
-//        {
-//            var newAmount = key.GetCraftableAmount(_iHaveInventories);
-//            if (newAmount != _recipeCraftableAmount[key])
-//            {
-//                _recipeCraftableAmount[key] = newAmount;
-//                amountChange = true;
-//            }
-//        }
-//
-//        if (amountChange)
-//        {
-//            OnRecipeCraftableAmountChange?.Invoke(_recipeCraftableAmount);
-//        }
-//    }
-    
     public void SetNewCurrentRecipeInFocus(RecipeDefinition recipeDefinition)
     {
         var recipeInInventory = RecipeInventory.Contain(recipeDefinition);
 
         if (recipeInInventory == false)
             return;
-        
+
         var amountThatCanBeCrafted = recipeDefinition.GetCraftableAmount(_iHaveInventories);
-        
-        if(amountThatCanBeCrafted<=0)
+
+        if (amountThatCanBeCrafted <= 0)
             return;
 
-        
+
         _currentRecipeInFocus = recipeDefinition;
-        
+
         OnNewCurrentRecipeFocus?.Invoke(_currentRecipeInFocus);
     }
 
-    public void Craft()
+    public void TryToStartCraft()
     {
-        if(_currentRecipeInFocus==null)
+        if (_currentRecipeInFocus == null)
             return;
-        
-        if(_currentRecipeInFocus.GetCraftableAmount(_iHaveInventories)<1)
+
+        if (_currentRecipeInFocus.GetCraftableAmount(_iHaveInventories) < 1)
             return;
 
         var recipeResult = _currentRecipeInFocus.GetRecipeResult();
-        if(recipeResult==null)
+        if (recipeResult == null)
+            return;
+
+        StartCraft();
+    }
+
+    private void StartCraft()
+    {
+        if (_currentRecipeInFocus.CraftMiniGamesEnum == CraftMiniGamesEnum.None)
+        {
+            EndCraft(CraftResultEnum.Win);
+            return;
+        }
+
+
+        var loadSceneAsync =
+            SceneManager.LoadSceneAsync(_currentRecipeInFocus.CraftMiniGamesEnum.ToString(), LoadSceneMode.Additive);
+        loadSceneAsync.completed += HandleCraftMiniGamesLoaded;
+        //load scene
+        //when loaded find craftMiniGame script
+        // register for end mini game 
+    }
+
+    private void HandleCraftMiniGamesLoaded(AsyncOperation obj)
+    {
+        _miniGameScene = SceneManager.GetSceneByName(_currentRecipeInFocus.CraftMiniGamesEnum.ToString());
+
+        foreach (var rootGameObject in _miniGameScene.GetRootGameObjects())
+        {
+            _emptyCraftMiniGame = rootGameObject.GetComponent<EmptyCraftMiniGame>();
+            _emptyCraftMiniGame.OnMiniGameResult += EndCraft;
+            break;
+        }
+
+        obj.completed -= HandleCraftMiniGamesLoaded;
+    }
+
+    private void EndCraft(CraftResultEnum craftResultEnum)
+    {
+        if (_miniGameScene.isLoaded)
+        {
+            _emptyCraftMiniGame.OnMiniGameResult -= EndCraft;
+            _emptyCraftMiniGame = null;
+            SceneManager.UnloadSceneAsync(_miniGameScene);
+        }
+
+        if (craftResultEnum == CraftResultEnum.Win)
+            RemoveObjectNeededAndCraftObject();
+        else if (craftResultEnum == CraftResultEnum.Lose)
+            RemoveObjectNeededButDontCraft();
+        
+        _currentRecipeInFocus = null;
+        OnRecipeFocusReset?.Invoke();
+    }
+
+    private void RemoveObjectNeededButDontCraft()
+    {
+        foreach (var itemNeeded in _currentRecipeInFocus.InInventoryObjectsNeeded)
+        {
+            itemNeeded.ICanBeAddedToInventories.RemoveFromInventory(_iHaveInventories, itemNeeded.Amount);
+        }
+    }
+
+    private void RemoveObjectNeededAndCraftObject()
+    {
+        var recipeResult = _currentRecipeInFocus.GetRecipeResult();
+        if (recipeResult == null)
             return;
 
         foreach (var itemNeeded in _currentRecipeInFocus.InInventoryObjectsNeeded)
         {
-            itemNeeded.ICanBeAddedToInventories.RemoveFromInventory(_iHaveInventories,itemNeeded.Amount);
+            itemNeeded.ICanBeAddedToInventories.RemoveFromInventory(_iHaveInventories, itemNeeded.Amount);
         }
-        _currentRecipeInFocus = null;
-        OnRecipeFocusReset?.Invoke();
-        recipeResult.AddToInventory(_iHaveInventories,1);
+
+        recipeResult.AddToInventory(_iHaveInventories, 1);
     }
+}
+
+public enum CraftResultEnum
+{
+    Win,
+    Lose,
 }

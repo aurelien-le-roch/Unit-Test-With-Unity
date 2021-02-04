@@ -8,8 +8,10 @@ public class RecipeDefinition : ScriptableObjectInInventories
 {
     [SerializeField] private List<ICanBeAddedToInventoriesWithAmountStruct> _inInventoryObjectsNeeded;
     [SerializeField] private ScriptableObjectInInventories _recipeResult;
+    [SerializeField] private CraftMiniGamesEnum _craftMiniGamesEnum;
     public List<ICanBeAddedToInventoriesWithAmountStruct> InInventoryObjectsNeeded => _inInventoryObjectsNeeded;
-
+    public CraftMiniGamesEnum CraftMiniGamesEnum => _craftMiniGamesEnum;
+    
     public override void AddToInventory(IHaveInventories iHaveInventories,int amount)
     {
         iHaveInventories.RecipeInventory.Add(this,amount);
@@ -65,6 +67,11 @@ public class RecipeDefinition : ScriptableObjectInInventories
     }
 }
 
+public enum CraftMiniGamesEnum
+{
+    None,
+    EmptyCraftMiniGame,
+}
 [Serializable]
 public struct ICanBeAddedToInventoriesWithAmountStruct 
 {

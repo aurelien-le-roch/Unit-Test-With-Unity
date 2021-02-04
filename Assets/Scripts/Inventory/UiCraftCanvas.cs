@@ -11,7 +11,7 @@ public class UiCraftCanvas : MonoBehaviour
 
     public void Bind(CraftController craftController)
     {
-        _buttonToStartCraft.onClick.AddListener(craftController.Craft);
+        _buttonToStartCraft.onClick.AddListener(craftController.TryToStartCraft);
         _imageForCraftFocusSprite.sprite = null;
         craftController.OnNewCurrentRecipeFocus += Refresh;
         craftController.OnRecipeFocusReset += Clear;
