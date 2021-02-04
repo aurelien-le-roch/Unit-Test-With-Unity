@@ -58,7 +58,19 @@ namespace InventoryTest
         }
         
         [Test]
-        public void slots_get_refresh_when_OnRecipeAdded_is_raise_from_IRecipeInventory()
+        public void slots_get_setup_when_OnRecipeAdded_is_raise()
+        {
+            _subRecipeInventory.OnNewRecipeAdded += Raise.Event<Action<RecipeDefinition,int,int>>(_recipe1,3,4);
+
+            var slot = _uiRecipesCanvas.Slots[0];
+            Assert.AreEqual(_recipe1,slot.RecipeDefinition);
+            Assert.AreEqual("3",slot.AmountText);
+            Assert.AreEqual("x4",slot.CraftableAmountText);
+            Assert.AreEqual(_recipe1.Sprite,slot.Sprite);
+        }
+        
+        [Test]
+        public void slots_get_refresh_when_OnRecipeAmountChange_is_raise_from_IRecipeInventory()
         {
             _subRecipeInventory.OnNewRecipeAdded += Raise.Event<Action<RecipeDefinition,int,int>>(_recipe1,1,1);
             _subRecipeInventory.OnRecipeAmountChange += Raise.Event<Action<RecipeDefinition,int,int>>(_recipe1,2,3);
