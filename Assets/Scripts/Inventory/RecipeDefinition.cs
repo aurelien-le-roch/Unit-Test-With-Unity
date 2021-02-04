@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [CreateAssetMenu(menuName = "RecipeDefinition")]
 public class RecipeDefinition : ScriptableObjectInInventories
@@ -51,6 +52,17 @@ public class RecipeDefinition : ScriptableObjectInInventories
     {
         return _recipeResult;
     }
+
+    public bool NeedThatObjetForCraft(ICanBeAddedToInventories canBeAddedToInventories)
+    {
+        foreach (var element in _inInventoryObjectsNeeded)
+        {
+            if (element.ICanBeAddedToInventories == canBeAddedToInventories)
+                return true;
+        }
+
+        return false;
+    }
 }
 
 [Serializable]
@@ -71,3 +83,4 @@ public abstract class ScriptableObjectInInventories : ScriptableObject, ICanBeAd
     
     public abstract int GetAmountInInventory(IHaveInventories iHaveInventories); 
 }
+

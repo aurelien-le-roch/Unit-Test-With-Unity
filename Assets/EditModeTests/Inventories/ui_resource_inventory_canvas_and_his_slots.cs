@@ -56,7 +56,7 @@ namespace InventoryTest
                 new ResourceDefinitionWithAmount(_resourceDefinition3,3),
             };
             //Act
-            _resourceInventory.OnResourceChange += Raise.Event<Action<List<ResourceDefinitionWithAmount>>>(test);
+            _resourceInventory.OnResourcesChange += Raise.Event<Action<List<ResourceDefinitionWithAmount>>>(test);
 
             //Assert
             for (int i = 0; i < _uiResourcesCanvas.Slots.Length; i++)

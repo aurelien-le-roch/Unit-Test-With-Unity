@@ -12,7 +12,7 @@ public class UiResourcesCanvas : MonoBehaviour
     public void Bind(IResourceInventory resourceInventory)
     {
         _resourceInventory =resourceInventory;
-        _resourceInventory.OnResourceChange += HandleResourceAdded;
+        _resourceInventory.OnResourcesChange += HandleResourcesAdded;
         ClearAllSlots();
     }
     
@@ -24,7 +24,7 @@ public class UiResourcesCanvas : MonoBehaviour
         }
     }
 
-    private void HandleResourceAdded(List<ResourceDefinitionWithAmount> playerResources)
+    private void HandleResourcesAdded(List<ResourceDefinitionWithAmount> playerResources)
     {
         for (int i = 0; i < _resourceSlots.Length; i++)
         {

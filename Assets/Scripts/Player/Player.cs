@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
         _mover = new PlayerMover(this);
         HandleInteractable = new PlayerHandleInteractable(this);
         ResourceInventory = new ResourceInventory();
-        RecipeInventory = new RecipeInventory();
+        RecipeInventory = new RecipeInventory(this);
         CraftController=new CraftController(this);
     }
 

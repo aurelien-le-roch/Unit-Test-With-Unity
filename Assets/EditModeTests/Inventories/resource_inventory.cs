@@ -47,8 +47,8 @@ namespace InventoryTest
         [Test]
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_once()
         {
-            var dummySubscriber = Substitute.For<IDummySubscriberForInventories>();
-            _resourceInventory.OnResourceChange += dummySubscriber.HandleOnResourceChange;
+            var dummySubscriber = Substitute.For<IDummySubscriberForResourceInventory>();
+            _resourceInventory.OnResourcesChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventory.Add(_resourceDefinition1,1);
             dummySubscriber.Received().HandleOnResourceChange(_resourceInventory.ResourcesList);
@@ -57,8 +57,8 @@ namespace InventoryTest
         [Test]
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_multiple_time_with_same_resource()
         {
-            var dummySubscriber = Substitute.For<IDummySubscriberForInventories>();
-            _resourceInventory.OnResourceChange += dummySubscriber.HandleOnResourceChange;
+            var dummySubscriber = Substitute.For<IDummySubscriberForResourceInventory>();
+            _resourceInventory.OnResourcesChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventory.Add(_resourceDefinition1,1);
             dummySubscriber.ClearReceivedCalls();
@@ -72,8 +72,8 @@ namespace InventoryTest
         [Test]
         public void OnResourceAdded_event_get_raise_after_Add_method_is_call_multiple_time_with_different_resource()
         {
-            var dummySubscriber = Substitute.For<IDummySubscriberForInventories>();
-            _resourceInventory.OnResourceChange += dummySubscriber.HandleOnResourceChange;
+            var dummySubscriber = Substitute.For<IDummySubscriberForResourceInventory>();
+            _resourceInventory.OnResourcesChange += dummySubscriber.HandleOnResourceChange;
             
             _resourceInventory.Add(_resourceDefinition1,1);
             dummySubscriber.ClearReceivedCalls();
@@ -167,9 +167,9 @@ namespace InventoryTest
         [Test]
         public void Remove_raise_OnResourceChange_event()
         {
-            var dummy = Substitute.For<IDummySubscriberForInventories>();
+            var dummy = Substitute.For<IDummySubscriberForResourceInventory>();
             _resourceInventory.Add(_resourceDefinition1,5);
-            _resourceInventory.OnResourceChange += dummy.HandleOnResourceChange;
+            _resourceInventory.OnResourcesChange += dummy.HandleOnResourceChange;
             _resourceInventory.Remove(_resourceDefinition1, 3);
             dummy.Received().HandleOnResourceChange(_resourceInventory.ResourcesList);
         }
@@ -191,8 +191,8 @@ namespace InventoryTest
             _resourceInventory.Add(_resourceDefinition1,5);
             _resourceInventory.Add(_resourceDefinition2,8);
             _resourceInventory.Add(_resourceDefinition3,12);
-            var dummy = Substitute.For<IDummySubscriberForInventories>();
-            _resourceInventory.OnResourceChange += dummy.HandleOnResourceChange;
+            var dummy = Substitute.For<IDummySubscriberForResourceInventory>();
+            _resourceInventory.OnResourcesChange += dummy.HandleOnResourceChange;
             
             _resourceInventory.RemoveAll();
             
@@ -242,9 +242,8 @@ namespace InventoryTest
         }
     }
 
-    public interface IDummySubscriberForInventories
+    public interface IDummySubscriberForResourceInventory
     {
         void HandleOnResourceChange(List<ResourceDefinitionWithAmount> resources);
-        void HandleOnRecipeChange(List<RecipeDefinitionWithAmount> recipes);
     }
 }

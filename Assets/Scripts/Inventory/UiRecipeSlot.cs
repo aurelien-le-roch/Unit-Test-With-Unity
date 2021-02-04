@@ -13,7 +13,10 @@ public class UiRecipeSlot : MonoBehaviour
 
     public RecipeDefinition RecipeDefinition { get; private set; }
     public Sprite Sprite => _imageForSprite.sprite;
-    public String TextForAmount => _textForCraftableAmount.text;
+    public String CraftableAmountText => _textForCraftableAmount.text;
+    public bool IsEmpty => RecipeDefinition == null;
+    public string AmountText { get; private set; }
+
     private ICraftController _craftController;
 
     private void Awake()
@@ -21,40 +24,19 @@ public class UiRecipeSlot : MonoBehaviour
         GetComponent<Button>().onClick.AddListener(HandleRecipeClick);
     }
 
-    public void Refresh(RecipeDefinition recipe)
-    {
-        _imageForSprite.sprite = recipe.Sprite;
-        RecipeDefinition = recipe;
-        for (int i = 0; i < _uiResourcesNeededSlots.Length; i++)
-        {
-            if (i<recipe.InInventoryObjectsNeeded.Count)
-            {
-                _uiResourcesNeededSlots[i].Refresh(recipe.InInventoryObjectsNeeded[i].ICanBeAddedToInventories,recipe.InInventoryObjectsNeeded[i].Amount);
-            }
-            else
-            {
-                _uiResourcesNeededSlots[i].Clear();
-            }
-        }
-    }
-
     private void HandleRecipeClick()
     {
         _craftController.SetNewCurrentRecipeInFocus(RecipeDefinition);
     }
-    private void RefreshCraftableAmount(int amount)
-    {
-        _textForCraftableAmount.text = $"x{amount}";
-    }
-    
+
     public void Bind(ICraftController craftController)
     {
         _craftController = craftController;
-        craftController.OnRecipeCraftableAmountChange += HandleRecipeCraftableAmountChange;
     }
 
     public void Clear()
     {
+        gameObject.SetActive(false);
         RecipeDefinition = null;
         _imageForSprite.sprite = null;
         _textForCraftableAmount.text = string.Empty;
@@ -63,11 +45,45 @@ public class UiRecipeSlot : MonoBehaviour
             slot.Clear();
         }
     }
-    private void HandleRecipeCraftableAmountChange(Dictionary<RecipeDefinition, int> recipesCraftableAmount)
+
+
+    public void BindToNewRecipeDefinition(RecipeDefinition recipeDefinition, int amount, int craftableAmount)
     {
-        if(RecipeDefinition==null)
-            return;
         
-        RefreshCraftableAmount(recipesCraftableAmount[RecipeDefinition]);
+        RecipeDefinition = recipeDefinition;
+        RefreshCraftableAmountText(craftableAmount);
+        RefreshResourceNeededSlots(recipeDefinition);
+        _imageForSprite.sprite = recipeDefinition.Sprite;
+        AmountText = amount.ToString();
+        gameObject.SetActive(true);
+    }
+
+    public void Refresh(int amount, int craftableAmount)
+    {
+        RefreshCraftableAmountText(craftableAmount);
+        AmountText = amount.ToString();
+    }
+
+    private void RefreshCraftableAmountText(int amount)
+    {
+        _textForCraftableAmount.text = $"x{amount}";
+        Debug.Log("refresh craftable amount");
+    }
+
+    private void RefreshResourceNeededSlots(RecipeDefinition recipeDefinition)
+    {
+        for (int i = 0; i < _uiResourcesNeededSlots.Length; i++)
+        {
+            if (i<recipeDefinition.InInventoryObjectsNeeded.Count)
+            {
+                _uiResourcesNeededSlots[i].Refresh
+                    (recipeDefinition.InInventoryObjectsNeeded[i].ICanBeAddedToInventories
+                    ,recipeDefinition.InInventoryObjectsNeeded[i].Amount);
+            }
+            else
+            {
+                _uiResourcesNeededSlots[i].Clear();
+            }
+        }
     }
 }

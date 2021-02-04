@@ -10,13 +10,47 @@ public class UiRecipesCanvas : MonoBehaviour
     public void Bind(IRecipeInventory recipeInventory,ICraftController craftController)
     {
         _recipeInventory = recipeInventory;
-        _recipeInventory.OnRecipeChange += HandleRecipeAdded;
+        _recipeInventory.OnNewRecipeAdded += HandleNewRecipeAdded;
+        _recipeInventory.OnRecipeAmountChange += HandleRecipeAmountChange;
+        _recipeInventory.OnRecipeRemoved += HandleRecipeRemoved;
         
         DisableAllSlot();
         
         BindSlots(craftController);
     }
-    
+
+    private void HandleRecipeRemoved(RecipeDefinition recipeDefinition)
+    {
+        foreach (var slot in _slots)
+        {
+            if(slot.RecipeDefinition!=recipeDefinition)
+                continue;
+            slot.Clear();
+        }
+    }
+
+    private void HandleRecipeAmountChange(RecipeDefinition recipeDefinition, int amount, int craftableAmount)
+    {
+        foreach (var slot in _slots)
+        {
+            if(slot.RecipeDefinition!=recipeDefinition)
+                continue;
+            slot.Refresh(amount, craftableAmount);
+        }
+    }
+
+    private void HandleNewRecipeAdded(RecipeDefinition recipeDefinition, int amount, int craftableAmount)
+    {
+        //test ca
+        foreach (var slot in _slots)
+        {
+            if (!slot.IsEmpty) 
+                continue;
+            slot.BindToNewRecipeDefinition(recipeDefinition,amount,craftableAmount);
+            return;
+        }
+    }
+
     private void BindSlots(ICraftController craftController)
     {
         foreach (var recipeSlot in Slots)
@@ -32,21 +66,4 @@ public class UiRecipesCanvas : MonoBehaviour
             slot.gameObject.SetActive(false);
         }
     }
-
-    private void HandleRecipeAdded(List<RecipeDefinitionWithAmount> recipes)
-    {
-        for (int i = 0; i < Slots.Length; i++)
-        {
-            if (i < recipes.Count)
-            {
-                Slots[i].Refresh(recipes[i].Definition);
-                Slots[i].gameObject.SetActive(true);
-            }
-            else
-            {
-                Slots[i].Clear();
-                Slots[i].gameObject.SetActive(false);
-            }
-        }
-    } 
 }
