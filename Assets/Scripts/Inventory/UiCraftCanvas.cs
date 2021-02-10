@@ -9,12 +9,26 @@ public class UiCraftCanvas : MonoBehaviour
     [SerializeField] private Image _imageForCraftFocusSprite;
     [SerializeField] private Button _buttonToStartCraft;
 
+    [SerializeField] private GameObject _panel;
+
     public void Bind(CraftController craftController)
     {
         _buttonToStartCraft.onClick.AddListener(craftController.TryToStartCraft);
         _imageForCraftFocusSprite.sprite = null;
         craftController.OnNewCurrentRecipeFocus += Refresh;
         craftController.OnRecipeFocusReset += Clear;
+        craftController.OnCraftMiniGameBegin += DisablePanel;
+        craftController.OnCraftMiniGameEnd += EnablePanel;
+    }
+
+    private void EnablePanel()
+    {
+        _panel.SetActive(true);
+    }
+
+    private void DisablePanel()
+    {
+        _panel.SetActive(false);
     }
 
     private void Clear()

@@ -11,10 +11,12 @@ public class CraftController : ICraftController
 
     private RecipeDefinition _currentRecipeInFocus;
     private Scene _miniGameScene;
-    private EmptyCraftMiniGame _emptyCraftMiniGame;
+    private ICraftMiniGame _craftMiniGame;
 
     public event Action<RecipeDefinition> OnNewCurrentRecipeFocus;
     public event Action OnRecipeFocusReset;
+    public event Action OnCraftMiniGameBegin;
+    public event Action OnCraftMiniGameEnd;
 
     public CraftController(IHaveInventories iHaveInventories)
     {
@@ -77,21 +79,25 @@ public class CraftController : ICraftController
 
         foreach (var rootGameObject in _miniGameScene.GetRootGameObjects())
         {
-            _emptyCraftMiniGame = rootGameObject.GetComponent<EmptyCraftMiniGame>();
-            _emptyCraftMiniGame.OnMiniGameResult += EndCraft;
+            _craftMiniGame = rootGameObject.GetComponent<ICraftMiniGame>();
+            if (_craftMiniGame == null) 
+                continue;
+            _craftMiniGame.OnMiniGameResult += EndCraft;
             break;
         }
 
         obj.completed -= HandleCraftMiniGamesLoaded;
+        OnCraftMiniGameBegin?.Invoke();
     }
 
     private void EndCraft(CraftResultEnum craftResultEnum)
     {
         if (_miniGameScene.isLoaded)
         {
-            _emptyCraftMiniGame.OnMiniGameResult -= EndCraft;
-            _emptyCraftMiniGame = null;
+            _craftMiniGame.OnMiniGameResult -= EndCraft;
+            _craftMiniGame = null;
             SceneManager.UnloadSceneAsync(_miniGameScene);
+            OnCraftMiniGameEnd?.Invoke();
         }
 
         if (craftResultEnum == CraftResultEnum.Win)

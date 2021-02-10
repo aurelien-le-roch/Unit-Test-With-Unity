@@ -71,6 +71,7 @@ public enum CraftMiniGamesEnum
 {
     None,
     EmptyCraftMiniGame,
+    AimCraftMiniGame,
 }
 [Serializable]
 public struct ICanBeAddedToInventoriesWithAmountStruct 
@@ -85,6 +86,11 @@ public abstract class ScriptableObjectInInventories : ScriptableObject, ICanBeAd
 {
     [SerializeField] private Sprite _sprite;
     public Sprite Sprite => _sprite;
+//    public float FragmentGivenMultiplacateur;
+//    public float FragmentNeededMultiplacteur;
+//    public float XpGivenMultiplicateur;
+//    public float XpNeededForInstantCraftMultiplicateur;
+    
     public abstract void AddToInventory(IHaveInventories iHaveInventories,int amount);
     public abstract void RemoveFromInventory(IHaveInventories iHaveInventories, int amount);
     

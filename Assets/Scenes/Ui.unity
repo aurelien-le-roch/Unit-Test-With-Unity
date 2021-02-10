@@ -451,7 +451,7 @@ PrefabInstance:
     - target: {fileID: 996248959727254054, guid: b20dcae3459d7c845892abdf912cb469,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 996248961065689649, guid: b20dcae3459d7c845892abdf912cb469,
         type: 3}
@@ -2043,6 +2043,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3670914977027617537, guid: b20dcae3459d7c845892abdf912cb469,
+        type: 3}
+      propertyPath: _panel
+      value: 
+      objectReference: {fileID: 901075068}
     - target: {fileID: 3670914977027617538, guid: b20dcae3459d7c845892abdf912cb469,
         type: 3}
       propertyPath: _uiRecipeSlots.Array.size
