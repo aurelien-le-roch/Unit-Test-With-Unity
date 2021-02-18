@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-[RequireComponent(typeof(UiCraftRecipes))]
-
-public class UiBindingUiCraftCanvas : MonoBehaviour
+public class UiBindingRecipeCanvas : MonoBehaviour
 {
     IEnumerator Start()
     {
@@ -14,8 +12,8 @@ public class UiBindingUiCraftCanvas : MonoBehaviour
             player = FindObjectOfType<Player>();
         }
 
-        var uiCraftRecipes = GetComponent<UiCraftRecipes>();
+        var uiRecipesCanvas = GetComponent<UiRecipesCanvas>();
         
-        uiCraftRecipes.Bind(player.WorkController.CraftController);
+        uiRecipesCanvas.Bind(player.RecipeInventory);
     }
 }

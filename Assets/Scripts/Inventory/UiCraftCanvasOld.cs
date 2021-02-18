@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiCraftCanvas : MonoBehaviour
+public class UiCraftCanvasOld : MonoBehaviour
 {
     [SerializeField] private UiResourcesNeededForRecipeSlot[] _slots;
     [SerializeField] private Image _imageForCraftFocusSprite;

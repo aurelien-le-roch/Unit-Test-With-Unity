@@ -17,22 +17,23 @@ public class UiRecipeSlot : MonoBehaviour
     public bool IsEmpty => RecipeDefinition == null;
     public string AmountText { get; private set; }
 
-    private ICraftController _craftController;
+    public event Action<RecipeDefinition> OnRecipeSlotGetClicked;
+    //private ICraftController _craftController;
 
     private void Awake()
     {
-        GetComponent<Button>().onClick.AddListener(HandleRecipeClick);
+        GetComponent<Button>().onClick.AddListener(()=>OnRecipeSlotGetClicked?.Invoke(RecipeDefinition));
     }
 
-    private void HandleRecipeClick()
-    {
-        _craftController.SetNewCurrentRecipeInFocus(RecipeDefinition);
-    }
+//    private void HandleRecipeClick()
+//    {
+//        _craftController.SetNewCurrentRecipeInFocus(RecipeDefinition);
+//    }
 
-    public void Bind(ICraftController craftController)
-    {
-        _craftController = craftController;
-    }
+//    public void Bind(ICraftController craftController)
+//    {
+//        _craftController = craftController;
+//    }
 
     public void Clear()
     {
@@ -49,7 +50,6 @@ public class UiRecipeSlot : MonoBehaviour
 
     public void BindToNewRecipeDefinition(RecipeDefinition recipeDefinition, int amount, int craftableAmount)
     {
-        
         RecipeDefinition = recipeDefinition;
         RefreshCraftableAmountText(craftableAmount);
         RefreshResourceNeededSlots(recipeDefinition);
@@ -87,3 +87,4 @@ public class UiRecipeSlot : MonoBehaviour
         }
     }
 }
+

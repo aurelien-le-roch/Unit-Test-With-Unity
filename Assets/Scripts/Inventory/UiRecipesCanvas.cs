@@ -7,7 +7,7 @@ public class UiRecipesCanvas : MonoBehaviour
     private IRecipeInventory _recipeInventory;
     public UiRecipeSlot[] Slots => _slots;
     
-    public void Bind(IRecipeInventory recipeInventory,ICraftController craftController)
+    public void Bind(IRecipeInventory recipeInventory)
     {
         _recipeInventory = recipeInventory;
         _recipeInventory.OnNewRecipeAdded += HandleNewRecipeAdded;
@@ -16,7 +16,7 @@ public class UiRecipesCanvas : MonoBehaviour
         
         DisableAllSlot();
         
-        BindSlots(craftController);
+        //BindSlots(craftController);
     }
 
     private void HandleRecipeRemoved(RecipeDefinition recipeDefinition)
@@ -51,13 +51,13 @@ public class UiRecipesCanvas : MonoBehaviour
         }
     }
 
-    private void BindSlots(ICraftController craftController)
-    {
-        foreach (var recipeSlot in Slots)
-        {
-            recipeSlot.Bind(craftController);
-        }
-    }
+//    private void BindSlots(ICraftController craftController)
+//    {
+//        foreach (var recipeSlot in Slots)
+//        {
+//            recipeSlot.Bind(craftController);
+//        }
+//    }
     
     private void DisableAllSlot()
     {

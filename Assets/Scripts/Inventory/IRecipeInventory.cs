@@ -12,4 +12,6 @@ public interface IRecipeInventory
     event Action<RecipeDefinition, int,int> OnNewRecipeAdded;
     event Action<RecipeDefinition, int,int> OnRecipeAmountChange;
     event Action<RecipeDefinition> OnRecipeRemoved;
+    List<RecipeDefinitionWithAmount> Recipes { get; }
 }
+

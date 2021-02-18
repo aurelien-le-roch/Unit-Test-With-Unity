@@ -22,7 +22,7 @@ namespace InventoryTest
             _subRecipeInventory = Substitute.For<IRecipeInventory>();
             _subCraftController = Substitute.For<ICraftController>();
 
-            _uiRecipesCanvas.Bind(_subRecipeInventory,_subCraftController);
+            _uiRecipesCanvas.Bind(_subRecipeInventory);
             
             _recipe1= Helpers.GetRecipeDefinition1ResourceResult();
             _recipe2= Helpers.GetRecipeDefinition2RecipeResult();
@@ -89,7 +89,7 @@ namespace InventoryTest
         
         private UiRecipesCanvas GetUiRecipesCanvas()
         {
-            var prefab = AssetDatabase.LoadAssetAtPath<UiRecipesCanvas>("Assets/Prefabs/Ui/Ui Craft Canvas.prefab");
+            var prefab = AssetDatabase.LoadAssetAtPath<UiRecipesCanvas>("Assets/Prefabs/Ui/Ui Recipe And Resources Inventories Canvas.prefab");
             return Object.Instantiate(prefab);
         }
     }

@@ -1,118 +1,76 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class AimCraftStation : MonoBehaviour, IHaveIHandlePlayerInteractableFocus, IHaveIInteraclable
 {
-    public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; }
-    public IInteraclable Interaclable { get; }
+    [SerializeField] private CraftInfo _craftInfo;
+    [SerializeField] private AimStateMachine _aimStateMachine;
+    public IHandlePlayerInteractableFocus HandlePlayerInteractableFocus { get; private set; }
+    public IInteraclable Interaclable { get; private set; }
+
+    private void Awake()
+    {
+        var craftInteractable = new AimCraftStationInteraclable(_craftInfo,_aimStateMachine);
+        HandlePlayerInteractableFocus = craftInteractable;
+        Interaclable = craftInteractable;
+    }
 }
 
-//public class AimCraftStationInteraclable : IHandlePlayerInteractableFocus, IInteraclable
-//{
-//    public event Action OnPlayerFocusMe;
-//    public event Action OnPlayerStopFocusMe;
-//    public bool IHavePlayerFocus { get; private set; }
-//
-//    private IHaveInventories _haveInventories;
-//    private AimStateMachine _aimStateMachine;
-//
-//    private ObjectQualityGiveIntDefinition _xpNeededDefinition;
-//    private ObjectQualityGiveIntDefinition _xpToGiveDefinition;
-//    private ObjectQualityGiveIntDefinition _miniGameMaxDefinition;
-//    private ObjectQualityGiveIntDefinition _fragmentDefinition;
-//    
-//
-//    public void PlayerStartToFocusMe()
-//    {
-//        IHavePlayerFocus = true;
-//        OnPlayerFocusMe?.Invoke();
-//    }
-//
-//    public void PlayerStopToFocusMe()
-//    {
-//        IHavePlayerFocus = false;
-//        OnPlayerStopFocusMe?.Invoke();
-//    }
-//
-//    public void InteractDown(GameObject interactor)
-//    {
-//        //enable craft ui
-//        if (_haveInventories == null)
-//        {
-//            _haveInventories = interactor.GetComponent<IHaveInventories>();
-//            //_miniGameXp = interactor.GetComponent<MiniGameXp>();
-//        }
-//    }
-//
-//    public void InteractHold(GameObject interactor, float deltaTime)
-//    {
-//    }
-//
-//    public void DontInteract(float deltaTime)
-//    {
-//    }
-//
-//    public void TryToStartCraft(RecipeDefinition recipeDefinition)
-//    {
-//        if (_haveInventories == null)
-//            return;
-//
-//        var resourcesForCraft = recipeDefinition.GetCraftableAmount(_haveInventories) > 0;
-//
-//        if (resourcesForCraft == false)
-//            return;
-//
-//        var playerXp = _miniGameXp.GetAimXp;
-//
-//        //ici on peut check si il s'agit d'un craftworkshop avec un mod 2fois moin d xp needed
-//
-//        var craftResultQuality = recipeDefinition.getRecipeResultQuality;
-//        var xpNeeded = _xpNeededDefinition.GetValue(craftResultQuality);
-//        if (playerXp >= xpNeeded)
-//        {
-//            //remove resource
-//            //craft objet
-//            var xpToGive = _xpToGiveDefinition.GetValue(craftResultQuality);
-//            _miniGameXp.GiveXpToAim(xpToGive);
-//            return;
-//        }
-//
-//        if (_aimStateMachine.CanStartMiniGame == false)
-//            return;
-//
-//        //remove resource
-//        //start mini game
-//        var miniGameMax = _miniGameMaxDefinition.GetValue(craftResultQuality);
-//        _aimStateMachine.TryToBeginMiniGame(miniGameMax);
-//        //register event
-//    }
-//
-//    private void HandleMiniGameResult(int result)
-//    {
-//
-//        var resultQuality = _miniGameMaxDefinition.GetRarity(result);
-//        var xpToGive = _xpToGiveDefinition.GetValue(resultQuality);
-//        _miniGameXp.GiveXpToAim(xpToGive);
-//
-//        if (miniGameWin)
-//        {
-//            //craft
-//        }
-//        else
-//        {
-//            var fragmentAmount = _fragmentDefinition.GetValue(resultQuality);
-//        }
-//            //if result == max
-//        //craft item
-//        //give xp
-//        //else 
-//        //give fragment
-//        //give xp
-//
-//
-//        _miniGameXp.GiveXpToAim();
-//    }
-//}
+public class AimCraftStationInteraclable : IHandlePlayerInteractableFocus, IInteraclable
+{
+    public event Action OnPlayerFocusMe;
+    public event Action OnPlayerStopFocusMe;
+    public bool IHavePlayerFocus { get; private set; }
+
+    private IHaveInventories _haveInventories;
+    private IHaveWorkController _haveWorkController;
+    private AimStateMachine _aimStateMachine;
+
+    private CraftInfo _craftInfo;
+    private int _maxGoal;
+    public AimCraftStationInteraclable(CraftInfo craftInfo,AimStateMachine aimStateMachine)
+    {
+        _craftInfo = craftInfo;
+        _aimStateMachine = aimStateMachine;
+    }
+    public void PlayerStartToFocusMe()
+    {
+        IHavePlayerFocus = true;
+        OnPlayerFocusMe?.Invoke();
+    }
+
+    public void PlayerStopToFocusMe()
+    {
+        IHavePlayerFocus = false;
+        OnPlayerStopFocusMe?.Invoke();
+    }
+
+    public void InteractDown(GameObject interactor)
+    {
+        var haveInventories = interactor.GetComponent<IHaveInventories>();
+        var haveWorkController = interactor.GetComponent<IHaveWorkController>();
+        if (haveInventories != null && haveWorkController != null)
+        {
+            haveWorkController.WorkController.CraftController.ProcessCraftWorkshopInteraction(haveInventories,_craftInfo,_aimStateMachine);
+            var player = interactor.GetComponent<Player>();
+            if(player==null)
+                return;
+
+            _aimStateMachine.BindToAPlayer(player);
+        }
+    }
+
+    public void InteractHold(GameObject interactor, float deltaTime)
+    {
+    }
+
+    public void DontInteract(float deltaTime)
+    {
+    }
+    
+}
+
 
 public enum ObjectRarity
 {
@@ -122,47 +80,69 @@ public enum ObjectRarity
     Purple,
     Orange,
 }
-public class ObjectQualityGiveIntDefinition : ScriptableObject
-{
-    [SerializeField] private int _white;
-    [SerializeField] private int _green;
-    [SerializeField] private int _blue;
-    [SerializeField] private int _purple;
-    [SerializeField] private int _orange;
 
-    public int GetValue(ObjectRarity rarity)
+[Serializable]
+public struct ObjectRarityAndValue
+{
+    public ObjectRarity ObjectRarity;
+    public int Value;
+}
+
+[CreateAssetMenu(menuName = "Craft/RaritiesValue")]
+public class RaritiesValuesDefinition : ScriptableObject
+{
+    [SerializeField] private List<ObjectRarityAndValue> _objectRarityAndValues;
+
+    public int GetValue(ObjectRarity objectRarity)
     {
-        switch (rarity)
+        foreach (var objectRarityAndValue in _objectRarityAndValues)
         {
-            case ObjectRarity.White:
-                return _white;
-            case ObjectRarity.Green:
-                return _green;
-            case ObjectRarity.Blue:
-                return _blue;
-            case ObjectRarity.Purple:
-                return _purple;
-            case ObjectRarity.Orange:
-                return _orange;
-            default:
-                return 0;
+            if (objectRarityAndValue.ObjectRarity == objectRarity)
+                return objectRarityAndValue.Value;
         }
+
+        return 0;
+    }
+}
+
+[CreateAssetMenu(menuName = "Craft/CraftInfo")]
+public class CraftInfo : ScriptableObject
+{
+    [SerializeField] private RaritiesValuesDefinition _xpNeeded;
+    [SerializeField] private RaritiesValuesDefinition _xpToGive;
+    [SerializeField] private RaritiesValuesDefinition _miniGameMaxScore;
+    [SerializeField] private RaritiesValuesDefinition _fragments;
+
+    public int GetXpNeeded(ObjectRarity rarity)
+    {
+        return _xpNeeded.GetValue(rarity);
+    }
+    public int GetXpToGive(ObjectRarity rarity)
+    {
+        return _xpToGive.GetValue(rarity);
+    }
+    public int GetMiniGameMaxScore(ObjectRarity rarity)
+    {
+        return _miniGameMaxScore.GetValue(rarity);
+    }
+    public int GetFragments(ObjectRarity rarity)
+    {
+        return _fragments.GetValue(rarity);
     }
 
-    public ObjectRarity GetRarity(int amount)
+    public ObjectRarity GetRarityFromMiniGameScore(int score)
     {
-        if (GetValue(ObjectRarity.Orange) <= amount)
+        if(score>=GetMiniGameMaxScore(ObjectRarity.Orange))
             return ObjectRarity.Orange;
-
-        if (GetValue(ObjectRarity.Purple) <= amount)
+        
+        if(score>=GetMiniGameMaxScore(ObjectRarity.Purple))
             return ObjectRarity.Purple;
-
-        if (GetValue(ObjectRarity.Blue) <= amount)
+        if(score>=GetMiniGameMaxScore(ObjectRarity.Blue))
             return ObjectRarity.Blue;
-
-        if (GetValue(ObjectRarity.Green) <= amount)
+        
+        if(score>=GetMiniGameMaxScore(ObjectRarity.Green))
             return ObjectRarity.Green;
-
+        
         return ObjectRarity.White;
     }
 }

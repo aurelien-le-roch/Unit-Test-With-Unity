@@ -65,6 +65,11 @@ public class RecipeDefinition : ScriptableObjectInInventories
 
         return false;
     }
+
+    public ObjectRarity GetRecipeResultQuality()
+    {
+        return ObjectRarity.White;
+    }
 }
 
 public enum CraftMiniGamesEnum

@@ -15,7 +15,7 @@ public class InputHandlerUi : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C))
         {
-            _craftPanel.SetActive(!_craftPanel.activeSelf);
+            _craftPanel.SetActive(false);
         }
     }
 }
