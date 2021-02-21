@@ -16,8 +16,19 @@ public class UiCraftRecipes : MonoBehaviour
         {
             slot.OnRecipeSlotGetClicked += RefreshCraftPanel;
         }
+
+        _craftController.OnPlayerLeaveCraftWorkShopArea += HandlePlayerLeaveCraftWorkShopArea;
         DisableAllSlot();
         ClearAllSlot();
+        _craftPanel.Clear();
+    }
+
+    private void HandlePlayerLeaveCraftWorkShopArea()
+    {
+        _view.gameObject.SetActive(false);
+        DisableAllSlot();
+        ClearAllSlot();
+        _craftPanel.Clear();
     }
 
 
@@ -31,8 +42,11 @@ public class UiCraftRecipes : MonoBehaviour
             return;
         
         var craftStart = _craftController.TryToStartCraft(recipeDefinitionToCraft);
-        if(craftStart)
+        if (craftStart)
+        {
             _view.SetActive(false);
+            _craftPanel.Clear();
+        }
     }
     private void RefreshAllSlots(IHaveInventories haveInventories, CraftInfo craftInfo, AimStateMachine miniGame)
     {

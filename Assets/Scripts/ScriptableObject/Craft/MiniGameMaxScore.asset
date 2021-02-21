@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Scripts::RaritiesValuesDefinition
   _objectRarityAndValues:
   - ObjectRarity: 0
-    Value: 1
+    Value: 10
   - ObjectRarity: 1
     Value: 40
   - ObjectRarity: 2

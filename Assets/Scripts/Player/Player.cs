@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventories
+public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventories,ICharacterWithSpells
 {
     [SerializeField] private float _speed;
     public IWorkController WorkController { get; private set; }
@@ -16,8 +16,9 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
     
     public IResourceInventory ResourceInventory { get; private set; }
     public IRecipeInventory RecipeInventory { get; private set; }
-    public CraftController CraftController { get; private set; }
-
+    //public CraftController CraftController { get; private set; }
+    public CharacterSpells CharacterSpells { get; private set; }
+    private PlayerUseSpell _playerUseSpell;
     private void Awake()
     {
         WorkController = new WorkControllerTest();
@@ -30,14 +31,18 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
         HandleInteractable = new PlayerHandleInteractable(this);
         ResourceInventory = new ResourceInventory();
         RecipeInventory = new RecipeInventory(this);
-        CraftController=new CraftController(this);
+        //CraftController=new CraftController(this);
+        CharacterSpells=new CharacterSpells(transform);
+        _playerUseSpell = new PlayerUseSpell(this);
     }
 
     private void Update()
     {
+        CharacterSpells.Tick(Time.deltaTime);
         if(_inputEnable==false)
             return;
         HandleInteractable.Tick(Time.deltaTime);
+        _playerUseSpell.Tick();
     }
 
     private void FixedUpdate()
@@ -67,6 +72,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
     {
         _inputEnable = value;
     }
+
 }
 
 public interface IHaveIResourceInventory
@@ -112,5 +118,46 @@ public class PlayerCamera
     public void SetTarget(Transform target)
     {
         _target = target;
+    }
+
+    public Vector3 GetWorldMousePosition(Vector3 mousePosition)
+    {
+        return _camera.ScreenToWorldPoint(mousePosition);
+    }
+}
+
+public class PlayerUseSpell
+{
+    private Player _player;
+    private IPlayerInput PlayerInput => _player.PlayerInput;
+    private CharacterSpells CharacterSpells => _player.CharacterSpells;
+    public PlayerUseSpell(Player player)
+    {
+        _player = player;
+    }
+
+    public void Tick()
+    {
+        if (PlayerInput.Spell1)
+            CharacterSpells.UseSpell(CharacterSpells.Spells[0],GetMouseWorldPosition());
+        else
+            CharacterSpells.NotUseSpell(CharacterSpells.Spells[0]);
+
+//        if (PlayerInput.Spell2)
+//            CharacterSpells.UseSpell(CharacterSpells.Spells[1],GetMouseWorldPosition());
+//        else
+//            CharacterSpells.NotUseSpell(CharacterSpells.Spells[1]);
+//        if (PlayerInput.Spell3)
+//            CharacterSpells.UseSpell(CharacterSpells.Spells[2],GetMouseWorldPosition());
+//        else
+//            CharacterSpells.NotUseSpell(CharacterSpells.Spells[2]);
+//        if (PlayerInput.Spell4)
+//            CharacterSpells.UseSpell(spellsList[3],worldMousePosition);
+    }
+
+    private Vector3 GetMouseWorldPosition()
+    {
+        var mousePosition = _player.PlayerInput.MousePosition;
+        return _player.PlayerCamera.GetWorldMousePosition(mousePosition);
     }
 }

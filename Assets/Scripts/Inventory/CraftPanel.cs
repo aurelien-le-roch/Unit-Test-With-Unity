@@ -33,4 +33,14 @@ public class CraftPanel : MonoBehaviour
             }
         }
     }
+
+    public void Clear()
+    {
+        _currentRecipeDefinition = null;
+        _imageForCraftFocusSprite.sprite = null;
+        foreach (var slot in _slots)
+        {
+            slot.Clear();
+        }
+    }
 }

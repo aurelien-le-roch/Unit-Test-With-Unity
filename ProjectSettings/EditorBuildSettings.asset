@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/AimCraftMiniGame.unity
     guid: b98c2d6e7c9d6c043a043a44788b2778
+  - enabled: 1
+    path: Assets/Scenes/AimMiniGame.unity
+    guid: 745f693e5b9875e4fb49c676e1626f28
   m_configObjects: {}

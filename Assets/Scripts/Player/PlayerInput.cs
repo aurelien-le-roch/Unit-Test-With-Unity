@@ -10,4 +10,8 @@ public class PlayerInput : IPlayerInput
     public bool LeftClickDown => Input.GetMouseButtonDown(0);
 
     public Vector3 MousePosition => Input.mousePosition;
+    public bool Spell1 => Input.GetKey(KeyCode.Alpha1);
+    public bool Spell2 => Input.GetKey(KeyCode.Alpha2);
+    public bool Spell3 => Input.GetKey(KeyCode.Alpha3);
+    public bool Spell4 => Input.GetKey(KeyCode.Alpha4);
 }

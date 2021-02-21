@@ -9,4 +9,8 @@ public interface IPlayerInput
     bool InteractDown { get; }
     bool LeftClickDown { get; }
     Vector3 MousePosition { get; }
+    bool Spell1 { get;}
+    bool Spell2 { get;}
+    bool Spell3 { get;}
+    bool Spell4 { get;}
 }

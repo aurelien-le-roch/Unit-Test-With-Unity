@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AimCraftStation : MonoBehaviour, IHaveIHandlePlayerInteractableFocus, IHaveIInteraclable
@@ -42,6 +41,11 @@ public class AimCraftStationInteraclable : IHandlePlayerInteractableFocus, IInte
 
     public void PlayerStopToFocusMe()
     {
+        if (_haveWorkController != null)
+        {
+            _haveWorkController.WorkController.CraftController.PlayerLeaveCraftWorkshopArea();
+            _haveWorkController = null;
+        }
         IHavePlayerFocus = false;
         OnPlayerStopFocusMe?.Invoke();
     }
@@ -49,10 +53,10 @@ public class AimCraftStationInteraclable : IHandlePlayerInteractableFocus, IInte
     public void InteractDown(GameObject interactor)
     {
         var haveInventories = interactor.GetComponent<IHaveInventories>();
-        var haveWorkController = interactor.GetComponent<IHaveWorkController>();
-        if (haveInventories != null && haveWorkController != null)
+        _haveWorkController = interactor.GetComponent<IHaveWorkController>();
+        if (haveInventories != null && _haveWorkController != null)
         {
-            haveWorkController.WorkController.CraftController.ProcessCraftWorkshopInteraction(haveInventories,_craftInfo,_aimStateMachine);
+            _haveWorkController.WorkController.CraftController.ProcessCraftWorkshopInteraction(haveInventories,_craftInfo,_aimStateMachine);
             var player = interactor.GetComponent<Player>();
             if(player==null)
                 return;
@@ -86,63 +90,4 @@ public struct ObjectRarityAndValue
 {
     public ObjectRarity ObjectRarity;
     public int Value;
-}
-
-[CreateAssetMenu(menuName = "Craft/RaritiesValue")]
-public class RaritiesValuesDefinition : ScriptableObject
-{
-    [SerializeField] private List<ObjectRarityAndValue> _objectRarityAndValues;
-
-    public int GetValue(ObjectRarity objectRarity)
-    {
-        foreach (var objectRarityAndValue in _objectRarityAndValues)
-        {
-            if (objectRarityAndValue.ObjectRarity == objectRarity)
-                return objectRarityAndValue.Value;
-        }
-
-        return 0;
-    }
-}
-
-[CreateAssetMenu(menuName = "Craft/CraftInfo")]
-public class CraftInfo : ScriptableObject
-{
-    [SerializeField] private RaritiesValuesDefinition _xpNeeded;
-    [SerializeField] private RaritiesValuesDefinition _xpToGive;
-    [SerializeField] private RaritiesValuesDefinition _miniGameMaxScore;
-    [SerializeField] private RaritiesValuesDefinition _fragments;
-
-    public int GetXpNeeded(ObjectRarity rarity)
-    {
-        return _xpNeeded.GetValue(rarity);
-    }
-    public int GetXpToGive(ObjectRarity rarity)
-    {
-        return _xpToGive.GetValue(rarity);
-    }
-    public int GetMiniGameMaxScore(ObjectRarity rarity)
-    {
-        return _miniGameMaxScore.GetValue(rarity);
-    }
-    public int GetFragments(ObjectRarity rarity)
-    {
-        return _fragments.GetValue(rarity);
-    }
-
-    public ObjectRarity GetRarityFromMiniGameScore(int score)
-    {
-        if(score>=GetMiniGameMaxScore(ObjectRarity.Orange))
-            return ObjectRarity.Orange;
-        
-        if(score>=GetMiniGameMaxScore(ObjectRarity.Purple))
-            return ObjectRarity.Purple;
-        if(score>=GetMiniGameMaxScore(ObjectRarity.Blue))
-            return ObjectRarity.Blue;
-        
-        if(score>=GetMiniGameMaxScore(ObjectRarity.Green))
-            return ObjectRarity.Green;
-        
-        return ObjectRarity.White;
-    }
 }

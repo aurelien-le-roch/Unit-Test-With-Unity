@@ -19,13 +19,13 @@ public class WorkControllerTest : IWorkController
 public class CraftController2
 {
     public event Action<IHaveInventories, CraftInfo, AimStateMachine> OnCraftWorkshopInteraction;
-
+    public event Action OnPlayerLeaveCraftWorkShopArea; 
     private IHaveInventories _currentInventories;
     private CraftInfo _currentCraftInfo;
     private AimStateMachine _currentMiniGame;
     private RecipeDefinition _currentRecipeDefinition;
     private CraftXp _craftXp=new CraftXp();
-    private int _currentMaxScore;
+    private int _currentMaxScore=-1;
 
     public void ProcessCraftWorkshopInteraction(IHaveInventories haveInventories, CraftInfo craftInfo,
         AimStateMachine aimStateMachine)
@@ -36,8 +36,16 @@ public class CraftController2
         OnCraftWorkshopInteraction?.Invoke(haveInventories,craftInfo,aimStateMachine);
         //update and enable ui with event
     }
-    
 
+    public void PlayerLeaveCraftWorkshopArea()
+    {
+        _currentInventories = null;
+        _currentCraftInfo = null;
+        _currentMiniGame =  null;
+        _currentRecipeDefinition = null;
+        _currentMaxScore = -1;
+        OnPlayerLeaveCraftWorkShopArea?.Invoke();
+    }
     public bool TryToStartCraft(RecipeDefinition recipeDefinition)
     {
         _currentRecipeDefinition = recipeDefinition;
