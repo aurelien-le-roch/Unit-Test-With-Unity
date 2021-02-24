@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public class SimpleProjectileChargeSpell : ChargedSpell
 {
@@ -87,3 +89,55 @@ public interface IChargeSpell
     void Charging(Vector3 casterPosition, Vector3 targetPosition);
     void MaxCharge(Vector3 casterPosition, Vector3 targetPosition);
 }
+
+
+public class TestSpell
+{
+    private TestEffect _effect;
+    private float _delayBetweenLoopIteration;
+    private int _lootTime;
+    
+    public IEnumerator Use(Vector3 casterPosition, Vector3 targetPosition)
+    {
+        for (int i = 0; i < _lootTime; i++)
+        {
+            _effect.Use(casterPosition, targetPosition);
+            yield return new WaitForSeconds(_delayBetweenLoopIteration);
+        }
+    }
+}
+
+internal class TestEffect
+{
+    public void Use(Vector3 casterPosition, Vector3 targetPosition)
+    {
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

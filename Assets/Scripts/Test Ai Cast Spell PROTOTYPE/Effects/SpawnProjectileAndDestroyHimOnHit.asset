@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c39dc8c453741bd9f8361a06e86107c, type: 3}
+  m_Name: SpawnProjectileAndDestroyHimOnHit
+  m_EditorClassIdentifier: 
+  _canHitTargetPrefabAsGO: {fileID: 4851666040052302571, guid: c524d166c8534bc42be458b2db293a88,
+    type: 3}
+  _effectDefinitionsToApplyWhenSpawn:
+  - {fileID: 11400000, guid: f0370f4d4b3cf674d8df7c43f862a48f, type: 2}
+  _actionDefinitionsToApplyWhenSpawn:
+  - {fileID: 11400000, guid: 6ea6395dd664a394ba0a42f58742402f, type: 2}
+  _effectDefinitionsToApplyWhenHitTarget: []
+  _actionDefinitionsToApplyWhenHitTarget:
+  - {fileID: 11400000, guid: 303d0c276cbc7324a822de9c252620ea, type: 2}

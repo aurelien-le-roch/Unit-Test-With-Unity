@@ -4,6 +4,7 @@ using UnityEngine;
 public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventories,ICharacterWithSpells
 {
     [SerializeField] private float _speed;
+    [SerializeField] private SpellEffectDefinition _spellEffectDefinition;
     public IWorkController WorkController { get; private set; }
     public IPlayerInput PlayerInput { get; set; }
     public float Speed => _speed;
@@ -19,6 +20,9 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
     //public CraftController CraftController { get; private set; }
     public CharacterSpells CharacterSpells { get; private set; }
     private PlayerUseSpell _playerUseSpell;
+    
+    //Test
+    private PlayerUseEffectsTest _playerUseEffectsTest;
     private void Awake()
     {
         WorkController = new WorkControllerTest();
@@ -34,6 +38,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
         //CraftController=new CraftController(this);
         CharacterSpells=new CharacterSpells(transform);
         _playerUseSpell = new PlayerUseSpell(this);
+        _playerUseEffectsTest= new PlayerUseEffectsTest(this,_spellEffectDefinition);
     }
 
     private void Update()
@@ -41,6 +46,7 @@ public class Player : MonoBehaviour, IHaveWorkController,IPlayer,IHaveInventorie
         CharacterSpells.Tick(Time.deltaTime);
         if(_inputEnable==false)
             return;
+        _playerUseEffectsTest.Tick();
         HandleInteractable.Tick(Time.deltaTime);
         _playerUseSpell.Tick();
     }
@@ -159,5 +165,32 @@ public class PlayerUseSpell
     {
         var mousePosition = _player.PlayerInput.MousePosition;
         return _player.PlayerCamera.GetWorldMousePosition(mousePosition);
+    }
+}
+
+public class PlayerUseEffectsTest
+{
+    private readonly Player _player;
+    private readonly SpellEffect _effect;
+
+    public PlayerUseEffectsTest(Player player,SpellEffectDefinition effectDefinition)
+    {
+        _player = player;
+        _effect = effectDefinition.GetSpellEffect();
+    }
+
+    public void Tick()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _effect.Apply(_player.transform,GetMouseWorldPosition());
+        }
+    }
+    
+    private Vector3 GetMouseWorldPosition()
+    {
+        var mousePosition = _player.PlayerInput.MousePosition;
+        var position= _player.PlayerCamera.GetWorldMousePosition(mousePosition);
+        return new Vector3(position.x,position.y,0);
     }
 }

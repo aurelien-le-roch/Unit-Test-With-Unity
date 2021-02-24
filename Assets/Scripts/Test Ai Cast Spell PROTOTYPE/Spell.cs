@@ -20,7 +20,8 @@ public abstract class Spell
     
     public void Tick(float deltaTime)
     {
-        _cooldownTimer -= deltaTime;
+        if(_cooldownTimer<=0)
+            _cooldownTimer -= deltaTime;
     }
     private bool _casting;
     
@@ -71,4 +72,3 @@ public abstract class Spell
         _casting = value;
     }
 }
-
